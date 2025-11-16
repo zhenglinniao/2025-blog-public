@@ -123,7 +123,7 @@
 		"logo": "https://assets.awwwards.com/assets/images/favicon.svg",
 		"description": "网站评选网站，你总能从这里发现惊艳的网站",
 		"tags": [
-			"网站"
+			"网站集"
 		],
 		"stars": 3
 	},
@@ -133,7 +133,7 @@
 		"logo": "/images/share/aaae2bf4f74c8eb1.svg",
 		"description": "网站评选网站，跟 Awwwards 类似，可以看到每期的优秀网站。观感上会好些。",
 		"tags": [
-			"网站"
+			"网站集"
 		],
 		"stars": 3
 	},
@@ -144,7 +144,7 @@
 		"description": "收集 404 设计的网站，无聊的时候可以看下。",
 		"tags": [
 			"404",
-			"网站"
+			"网站集"
 		],
 		"stars": 3
 	},
