@@ -1,0 +1,105 @@
+@import 'tailwindcss';
+@import './theme.css';
+@import './article.css';
+
+@plugin 'tailwindcss-animate';
+
+@utility scrollbar-none {
+	scrollbar-width: none;
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+@layer base {
+	html {
+		@apply text-primary bg-bg h-full leading-tight;
+		scroll-behavior: smooth;
+	}
+
+	body {
+		@apply h-full bg-none;
+	}
+	* {
+		@apply border-border;
+	}
+
+	input:focus,
+	textarea:focus {
+		outline: none;
+	}
+	input:placeholder-shown {
+		text-overflow: ellipsis;
+	}
+
+	button {
+		@apply cursor-pointer;
+	}
+
+	.windows {
+		@apply scrollbar-none;
+		* {
+			@apply scrollbar-none;
+		}
+	}
+
+	/* Sonner Toaster styles */
+	html li[data-sonner-toast][data-styled='true'] {
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+		@apply bg-white/40! backdrop-blur;
+	}
+}
+
+@utility card {
+	@apply absolute rounded-[40px] border bg-white/40 p-6;
+	box-shadow:
+		0 40px 50px -32px rgba(0, 0, 0, 0.05),
+		inset 0 0 20 rgba(255, 255, 255, 0.25);
+	backdrop-filter: blur(4px);
+}
+
+@utility text-linear {
+	background: linear-gradient(to right bottom, #2a91be 40%, #afe68c);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+}
+
+@utility bg-linear {
+	background: linear-gradient(to right bottom, #35bf91 0%, #1fc9e7);
+	color: white;
+}
+
+@utility shadow {
+	box-shadow: 0 40px 50px -32px rgba(0, 0, 0, 0.05);
+}
+
+@utility brand-btn {
+	@apply bg-brand flex items-center gap-2 rounded-xl border-[1.5px] px-4 py-2 text-sm font-medium text-white;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+@keyframes heartbeat-frame {
+	0%,
+	100% {
+		transform: scale(1);
+	}
+	20% {
+		transform: scale(1.15);
+	}
+	40% {
+		transform: scale(1);
+	}
+	60% {
+		transform: scale(1.15);
+	}
+	80% {
+		transform: scale(1);
+	}
+}
+
+.heartbeat-container:hover {
+	.heartbeat {
+		animation: heartbeat-frame 0.8s ease-in-out;
+	}
+}

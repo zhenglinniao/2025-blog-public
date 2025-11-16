@@ -1,0 +1,27 @@
+import { useCenterStore } from '@/hooks/use-center'
+import Card from '@/components/card'
+
+export const styles = {
+	width: 360,
+	height: 288,
+	order: 1
+}
+
+export default function HiCard() {
+	const center = useCenterStore()
+
+	return (
+		<Card
+			order={styles.order}
+			width={styles.width}
+			height={styles.height}
+			x={center.x}
+			y={center.y}
+			className='-translate-1/2 text-center max-sm:static max-sm:translate-0'>
+			<img src='/images/avatar.png' className='mx-auto rounded-full' style={{ width: 120, height: 120, boxShadow: ' 0 16px 32px -5px #E2D9CE' }} />
+			<h1 className='font-averia mt-3 text-2xl'>
+				Good Morning <br /> I’m <span className='text-linear text-[32px]'>Suni</span> , Nice to <br /> meet you!
+			</h1>
+		</Card>
+	)
+}
