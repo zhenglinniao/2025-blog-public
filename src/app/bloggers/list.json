@@ -180,5 +180,12 @@
 		"url": "https://ivankapunac.com/",
 		"description": "3D 个人介绍网站，看上去会惊讶一下。但交互的还是缺失的。如果建模是自己原创的话，还是挺厉害的。",
 		"stars": 3
+	},
+	{
+		"name": "微尔微",
+		"avatar": "https://www.vio.vin/apple-touch-icon.png",
+		"url": "https://www.vio.vin/",
+		"description": "23 年新晋散修，如他所说，一天倒腾一些奇怪的东西。应该是以后端为主，喜欢完一些硬件。静森系 blog，25年 blog 稳定输出。",
+		"stars": 2
 	}
 ]
