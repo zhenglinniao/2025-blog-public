@@ -15,8 +15,10 @@ import Svg10 from './scroll-filled.svg'
 import Svg11 from './scroll-outline.svg'
 import Svg12 from './share-filled.svg'
 import Svg13 from './share-outline.svg'
-import Svg14 from './website-filled.svg'
-import Svg15 from './website-outline.svg'
+import Svg14 from './short-line.svg'
+import Svg15 from './top.svg'
+import Svg16 from './website-filled.svg'
+import Svg17 from './website-outline.svg'
 
 export type SvgComponent = React.ComponentType<React.SVGProps<SVGSVGElement>>
 
@@ -35,6 +37,8 @@ export const svgItems: { key: string; Component: SvgComponent }[] = [
 	{ key: './scroll-outline.svg', Component: Svg11 },
 	{ key: './share-filled.svg', Component: Svg12 },
 	{ key: './share-outline.svg', Component: Svg13 },
-	{ key: './website-filled.svg', Component: Svg14 },
-	{ key: './website-outline.svg', Component: Svg15 }
+	{ key: './short-line.svg', Component: Svg14 },
+	{ key: './top.svg', Component: Svg15 },
+	{ key: './website-filled.svg', Component: Svg16 },
+	{ key: './website-outline.svg', Component: Svg17 }
 ]
