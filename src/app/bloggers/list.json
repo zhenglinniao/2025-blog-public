@@ -94,7 +94,7 @@
 		"name": "Tonsky",
 		"url": "https://tonsky.me/",
 		"avatar": "https://avatars.githubusercontent.com/u/285292?v=4",
-		"description": "一个过去的国外大神，忘了是什么时候发现它的，blog 依旧时不时更新。就是现在 blog 太刺眼了，不知道时不时故意的。",
+		"description": "一个过去的国外大神，忘了是什么时候发现它的，blog 依旧时不时更新。就是现在 blog 太刺眼了，不知道是不是故意的。",
 		"stars": 3
 	},
 	{
@@ -194,5 +194,12 @@
 		"url": "https://banzhuanriji.com/",
 		"description": "白底黑字。但是打理得挺好的。应该是 Andriod 开发者，24 年开始分享各种探索。摸不清根底。",
 		"stars": 2
+	},
+	{
+		"name": "博客.cn",
+		"avatar": "https://xmind.design/favicon.ico",
+		"url": "https://loud-fear-11e.notion.site/eb29a49346a742989582723f950fcf0f?v=4b4f7b7d24274ba7853426c101a149d7",
+		"description": "好像是 XMind 的内部 blog notion，不确认，但里面的内容确实专业深刻，先收藏一波",
+		"stars": 3
 	}
 ]
