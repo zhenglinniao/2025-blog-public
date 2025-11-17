@@ -4,6 +4,7 @@ import { motion, useScroll, useSpring, useTransform } from 'motion/react'
 import { ANIMATION_DELAY, INIT_DELAY } from '@/consts'
 import LikeButton from '@/components/like-button'
 import { BlogToc } from '@/components/blog-toc'
+import { ScrollTopButton } from '@/components/scroll-top-button'
 
 type TocItem = {
 	id: string
@@ -29,7 +30,7 @@ export function BlogSidebar({ cover, summary, toc, slug }: BlogSidebarProps) {
 	})
 
 	return (
-		<motion.div className='relative w-[200px] shrink-0 space-y-4 self-start max-sm:hidden' style={{ y: sidebarY }}>
+		<motion.div className='relative flex w-[200px] shrink-0 flex-col items-start gap-4 self-start max-sm:hidden' style={{ y: sidebarY }}>
 			{cover && (
 				<motion.div
 					initial={{ opacity: 0, scale: 0.8 }}
@@ -54,6 +55,8 @@ export function BlogSidebar({ cover, summary, toc, slug }: BlogSidebarProps) {
 			<BlogToc toc={toc} delay={INIT_DELAY + ANIMATION_DELAY * 3} />
 
 			<LikeButton slug={slug} delay={(INIT_DELAY + ANIMATION_DELAY * 4) * 1000} />
+
+			<ScrollTopButton delay={INIT_DELAY + ANIMATION_DELAY * 5} />
 		</motion.div>
 	)
 }
