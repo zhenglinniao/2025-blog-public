@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { motion } from 'motion/react'
+import siteContent from '@/config/site-content.json'
 
 // Simplex noise implementation (small, inline) adapted from Jonas Wagner (public domain)
 // https://github.com/jwagner/simplex-noise.js (trimmed for 2D)
@@ -76,7 +77,7 @@ function rand(a: number, b: number) {
  */
 export default function BlurredBubblesBackground({
 	count = 6,
-	colors = ['#EDDD62', '#9EE7D1', '#84D68A', '#EDDD62', '#88E6E5', '#a7f3d0'],
+	colors = siteContent.backgroundColors,
 	minRadius = 250,
 	maxRadius = 400,
 	bottomBandStart = 0.8,

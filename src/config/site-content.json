@@ -1,0 +1,7 @@
+{
+	"meta": {
+		"title": "YYsuni",
+		"description": "YYsuni 的个人博客，分享前端开发、React、TypeScript、动画效果等技术文章。基于 Next.js 构建的现代化博客系统，所有内容托管在 Github。"
+	},
+	"backgroundColors": ["#EDDD62", "#9EE7D1", "#84D68A", "#EDDD62", "#88E6E5", "#a7f3d0"]
+}
