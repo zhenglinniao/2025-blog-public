@@ -229,5 +229,12 @@
 		"url": "https://blog.hehouhui.cn/",
 		"description": "折腾 blog 的后端，是个后端学习的榜样，折腾了这么多年。网站弄得还挺好的，就是加载内容有点慢。",
 		"stars": 3
+	},
+	{
+		"name": "ElysiumStack",
+		"avatar": "https://www.elysium-stack.cn/upload/b4136969-e1a1-44b9-833f-36e54392f018.png",
+		"url": "https://www.elysium-stack.cn/",
+		"description": "UI 设计师 blogger，少见，blog 设计的很棒。一股游戏感铺面而来，25 年开始的内容。",
+		"stars": 3
 	}
 ]
