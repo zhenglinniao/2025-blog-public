@@ -42,7 +42,7 @@ export async function prepareBlogsIndex(token: string, owner: string, repo: stri
 	return JSON.stringify(next, null, 2)
 }
 
-export async function removeBlogFromIndex(token: string, owner: string, repo: string, slug: string, branch: string): Promise<string> {
+export async function removeBlogsFromIndex(token: string, owner: string, repo: string, slugs: string[], branch: string): Promise<string> {
 	const indexPath = 'public/blogs/index.json'
 	let list: BlogIndexItem[] = []
 	try {
@@ -51,6 +51,14 @@ export async function removeBlogFromIndex(token: string, owner: string, repo: st
 	} catch {
 		// ignore parse errors and keep empty list
 	}
-	const next = list.filter(item => item.slug !== slug)
+	const slugSet = new Set(slugs.filter(Boolean))
+	if (slugSet.size === 0) {
+		return JSON.stringify(list, null, 2)
+	}
+	const next = list.filter(item => !slugSet.has(item.slug))
 	return JSON.stringify(next, null, 2)
+}
+
+export async function removeBlogFromIndex(token: string, owner: string, repo: string, slug: string, branch: string): Promise<string> {
+	return removeBlogsFromIndex(token, owner, repo, [slug], branch)
 }
