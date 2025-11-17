@@ -187,5 +187,12 @@
 		"url": "https://www.vio.vin/",
 		"description": "23 年新晋散修，如他所说，一天倒腾一些奇怪的东西。应该是以后端为主，喜欢完一些硬件。静森系 blog，25年 blog 稳定输出。",
 		"stars": 2
+	},
+	{
+		"name": "搬砖日记",
+		"avatar": "https://banzhuanriji.com/img/icon.ico",
+		"url": "https://banzhuanriji.com/",
+		"description": "白底黑字。但是打理得挺好的。应该是 Andriod 开发者，24 年开始分享各种探索。摸不清根底。",
+		"stars": 2
 	}
 ]
