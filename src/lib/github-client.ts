@@ -108,7 +108,7 @@ export type TreeItem = {
 	mode: '100644' | '100755' | '040000' | '160000' | '120000'
 	type: 'blob' | 'tree' | 'commit'
 	content?: string
-	sha?: string
+	sha?: string | null
 }
 
 export async function createTree(token: string, owner: string, repo: string, tree: TreeItem[], baseTree?: string): Promise<{ sha: string }> {
@@ -178,6 +178,39 @@ export async function readTextFileFromRepo(token: string, owner: string, repo: s
 	} catch {
 		return atob(data.content)
 	}
+}
+
+export async function listRepoFilesRecursive(token: string, owner: string, repo: string, path: string, ref: string): Promise<string[]> {
+	async function fetchPath(targetPath: string): Promise<string[]> {
+		const res = await fetch(`${GH_API}/repos/${owner}/${repo}/contents/${encodeURIComponent(targetPath)}?ref=${encodeURIComponent(ref)}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+				Accept: 'application/vnd.github+json',
+				'X-GitHub-Api-Version': '2022-11-28'
+			}
+		})
+		if (res.status === 401) handle401Error()
+		if (res.status === 404) return []
+		if (!res.ok) throw new Error(`read directory failed: ${res.status}`)
+		const data: any = await res.json()
+		if (Array.isArray(data)) {
+			const files: string[] = []
+			for (const item of data) {
+				if (item.type === 'file') {
+					files.push(item.path)
+				} else if (item.type === 'dir') {
+					const nested = await fetchPath(item.path)
+					files.push(...nested)
+				}
+			}
+			return files
+		}
+		if (data?.type === 'file') return [data.path]
+		if (data?.type === 'dir') return fetchPath(data.path)
+		return []
+	}
+
+	return fetchPath(path)
 }
 
 export async function createBlob(

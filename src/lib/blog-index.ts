@@ -41,3 +41,16 @@ export async function prepareBlogsIndex(token: string, owner: string, repo: stri
 	const next = Array.from(map.values()).sort((a, b) => (b.date || '').localeCompare(a.date || ''))
 	return JSON.stringify(next, null, 2)
 }
+
+export async function removeBlogFromIndex(token: string, owner: string, repo: string, slug: string, branch: string): Promise<string> {
+	const indexPath = 'public/blogs/index.json'
+	let list: BlogIndexItem[] = []
+	try {
+		const txt = await readTextFileFromRepo(token, owner, repo, indexPath, branch)
+		if (txt) list = JSON.parse(txt)
+	} catch {
+		// ignore parse errors and keep empty list
+	}
+	const next = list.filter(item => item.slug !== slug)
+	return JSON.stringify(next, null, 2)
+}

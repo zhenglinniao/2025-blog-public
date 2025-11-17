@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 import { readFileAsText } from '@/lib/file-utils'
 import { toast } from 'sonner'
 import { pushBlog } from '../services/push-blog'
+import { deleteBlog } from '../services/delete-blog'
 import { useWriteStore } from '../stores/write-store'
 import { useAuthStore } from '@/hooks/use-auth'
 
@@ -38,10 +39,28 @@ export function usePublish() {
 		}
 	}, [form, cover, images, mode, originalSlug, setLoading])
 
+	const onDelete = useCallback(async () => {
+		const targetSlug = originalSlug || form.slug
+		if (!targetSlug) {
+			toast.error('缺少 slug，无法删除')
+			return
+		}
+		try {
+			setLoading(true)
+			await deleteBlog(targetSlug)
+		} catch (err: any) {
+			console.error(err)
+			toast.error(err?.message || '删除失败')
+		} finally {
+			setLoading(false)
+		}
+	}, [form.slug, originalSlug, setLoading])
+
 	return {
 		isAuth,
 		loading,
 		onChoosePrivateKey,
-		onPublish
+		onPublish,
+		onDelete
 	}
 }
