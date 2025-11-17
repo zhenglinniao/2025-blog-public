@@ -215,5 +215,12 @@
 		"url": "https://maplezz.com/",
 		"description": "通过 issue 发现的另外一个开源的，也是这几天开源的，好巧。液态玻璃感设计，是有这种感觉，挺好的，就是有的花。我还是挺喜欢的。内容从 25年开始。",
 		"stars": 3
+	},
+	{
+		"name": "手里有只毛毛虫",
+		"avatar": "https://www.krjojo.com/wp-content/uploads/2024/05/avatar.avif",
+		"url": "https://www.krjojo.com/",
+		"description": "网站很舒服，一位六边形战士的独立开发者。文章目录能一眼看完就好了，想翻点想看的比较不容易。",
+		"stars": 4
 	}
 ]
