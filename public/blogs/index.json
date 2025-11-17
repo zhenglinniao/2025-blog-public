@@ -10,6 +10,17 @@
     "cover": "/blogs/batch-delete-1/d9036b2a2038fec1.png"
   },
   {
+    "slug": "batch-delete-2",
+    "title": "测试批量删除 2",
+    "tags": [
+      "测试",
+      "测试2"
+    ],
+    "date": "2025-11-17",
+    "summary": "测试",
+    "cover": "/blogs/batch-delete-2/d9036b2a2038fec1.png"
+  },
+  {
     "slug": "readme",
     "title": "2025 Blog 的使用引导",
     "tags": [
