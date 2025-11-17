@@ -222,5 +222,12 @@
 		"url": "https://www.krjojo.com/",
 		"description": "网站很舒服，一位六边形战士的独立开发者。文章目录能一眼看完就好了，想翻点想看的比较不容易。",
 		"stars": 4
+	},
+	{
+		"name": "Honesty",
+		"avatar": "https://cdn.jsdelivr.net/gh/listener-He/images@default/202309111525908.jpeg",
+		"url": "https://blog.hehouhui.cn/",
+		"description": "折腾 blog 的后端，是个后端学习的榜样，折腾了这么多年。网站弄得还挺好的，就是加载内容有点慢。",
+		"stars": 3
 	}
 ]
