@@ -208,5 +208,12 @@
 		"url": "https://kaiyi.cool/",
 		"description": "kk 是跟很厉害的人。突然看朋友圈想起他了，发现他是有 blog 的，虽然已经不维护了。但他的 blog 还残留一些好东西，或许对你有帮助。",
 		"stars": 3
+	},
+	{
+		"name": "猫普的精神世界",
+		"avatar": "https://maplezz.com/_astro/picture.DavLO-HP_1hhoaS.webp",
+		"url": "https://maplezz.com/",
+		"description": "通过 issue 发现的另外一个开源的，也是这几天开源的，好巧。液态玻璃感设计，是有这种感觉，挺好的，就是有的花。我还是挺喜欢的。内容从 25年开始。",
+		"stars": 3
 	}
 ]
