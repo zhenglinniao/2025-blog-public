@@ -1,70 +1,178 @@
 'use client'
 
+import { useState, useRef } from 'react'
 import { motion } from 'motion/react'
-import { projects } from './list'
-import { ANIMATION_DELAY, INIT_DELAY } from '@/consts'
-import Link from 'next/link'
+import { toast } from 'sonner'
+import { ProjectCard, type Project } from './components/project-card'
+import CreateDialog from './components/create-dialog'
+import { pushProjects } from './services/push-projects'
+import { useAuthStore } from '@/hooks/use-auth'
+import initialList from './list.json'
+import type { ImageItem } from './components/image-upload-dialog'
 
 export default function Page() {
+	const [projects, setProjects] = useState<Project[]>(initialList as Project[])
+	const [originalProjects, setOriginalProjects] = useState<Project[]>(initialList as Project[])
+	const [isEditMode, setIsEditMode] = useState(false)
+	const [isSaving, setIsSaving] = useState(false)
+	const [editingProject, setEditingProject] = useState<Project | null>(null)
+	const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
+	const [imageItems, setImageItems] = useState<Map<string, ImageItem>>(new Map())
+	const keyInputRef = useRef<HTMLInputElement>(null)
+
+	const { isAuth, setPrivateKey } = useAuthStore()
+
+	const handleUpdate = (updatedProject: Project, oldProject: Project, imageItem?: ImageItem) => {
+		setProjects(prev => prev.map(p => (p.url === oldProject.url ? updatedProject : p)))
+		if (imageItem) {
+			setImageItems(prev => {
+				const newMap = new Map(prev)
+				newMap.set(updatedProject.url, imageItem)
+				return newMap
+			})
+		}
+	}
+
+	const handleAdd = () => {
+		setEditingProject(null)
+		setIsCreateDialogOpen(true)
+	}
+
+	const handleSaveProject = (updatedProject: Project) => {
+		if (editingProject) {
+			const updated = projects.map(p => (p.url === editingProject.url ? updatedProject : p))
+			setProjects(updated)
+		} else {
+			setProjects([...projects, updatedProject])
+		}
+	}
+
+	const handleDelete = (project: Project) => {
+		if (confirm(`确定要删除 ${project.name} 吗？`)) {
+			setProjects(projects.filter(p => p.url !== project.url))
+		}
+	}
+
+	const handleChoosePrivateKey = async (file: File) => {
+		try {
+			const text = await file.text()
+			setPrivateKey(text)
+			await handleSave()
+		} catch (error) {
+			console.error('Failed to read private key:', error)
+			toast.error('读取密钥文件失败')
+		}
+	}
+
+	const handleSaveClick = () => {
+		if (!isAuth) {
+			keyInputRef.current?.click()
+		} else {
+			handleSave()
+		}
+	}
+
+	const handleSave = async () => {
+		setIsSaving(true)
+
+		try {
+			await pushProjects({
+				projects,
+				imageItems
+			})
+
+			setOriginalProjects(projects)
+			setImageItems(new Map())
+			setIsEditMode(false)
+			toast.success('保存成功！')
+		} catch (error: any) {
+			console.error('Failed to save:', error)
+			toast.error(`保存失败: ${error?.message || '未知错误'}`)
+		} finally {
+			setIsSaving(false)
+		}
+	}
+
+	const handleCancel = () => {
+		setProjects(originalProjects)
+		setImageItems(new Map())
+		setIsEditMode(false)
+	}
+
+	const buttonText = isAuth ? '保存' : '导入密钥'
+
 	return (
-		<div className='flex flex-col items-center justify-center px-6 pt-32 pb-12'>
-			<div className='grid w-full max-w-[1200px] grid-cols-2 gap-6 max-md:grid-cols-1'>
-				{projects.map((project, index) => (
-					<motion.div
-						key={project.name}
-						initial={{ opacity: 0, scale: 0.9 }}
-						animate={{ opacity: 1, scale: 1 }}
-						transition={{ delay: INIT_DELAY + ANIMATION_DELAY * index }}
-						className='card relative flex flex-col gap-4'>
-						<div className='flex items-start gap-4'>
-							<img src={project.image} alt={project.name} className='h-16 w-16 shrink-0 rounded-xl object-cover' />
-							<div className='flex-1'>
-								<div className='flex items-center gap-2'>
-									<h3 className='text-lg font-semibold'>{project.name}</h3>
-									<span className='text-secondary text-sm'>{project.year}</span>
-								</div>
-								<div className='mt-2 flex flex-wrap gap-2'>
-									{project.tags.map(tag => (
-										<span key={tag} className='text-secondary rounded-lg bg-white/50 px-2 py-1 text-xs'>
-											{tag}
-										</span>
-									))}
-								</div>
-							</div>
-						</div>
+		<>
+			<input
+				ref={keyInputRef}
+				type='file'
+				accept='.pem'
+				className='hidden'
+				onChange={async e => {
+					const f = e.target.files?.[0]
+					if (f) await handleChoosePrivateKey(f)
+					if (e.currentTarget) e.currentTarget.value = ''
+				}}
+			/>
 
-						<p className='text-secondary text-sm leading-relaxed'>{project.description}</p>
-
-						<div className='flex flex-wrap gap-2'>
-							<Link
-								href={project.url}
-								target='_blank'
-								rel='noopener noreferrer'
-								className='rounded-lg border bg-white/50 px-3 py-1.5 text-sm font-medium transition-colors hover:bg-white/80'>
-								Website
-							</Link>
-							{project.github && (
-								<Link
-									href={project.github}
-									target='_blank'
-									rel='noopener noreferrer'
-									className='rounded-lg border bg-white/50 px-3 py-1.5 text-sm font-medium transition-colors hover:bg-white/80'>
-									GitHub
-								</Link>
-							)}
-							{project.npm && (
-								<Link
-									href={project.npm}
-									target='_blank'
-									rel='noopener noreferrer'
-									className='rounded-lg border bg-white/50 px-3 py-1.5 text-sm font-medium transition-colors hover:bg-white/80'>
-									NPM
-								</Link>
-							)}
-						</div>
-					</motion.div>
-				))}
+			<div className='flex flex-col items-center justify-center px-6 pt-32 pb-12'>
+				<div className='grid w-full max-w-[1200px] grid-cols-2 gap-6 max-md:grid-cols-1'>
+					{projects.map((project, index) => (
+						<ProjectCard
+							key={project.url}
+							project={project}
+							isEditMode={isEditMode}
+							onUpdate={handleUpdate}
+							onDelete={() => handleDelete(project)}
+						/>
+					))}
+				</div>
 			</div>
-		</div>
+
+			<motion.div
+				initial={{ opacity: 0, scale: 0.6 }}
+				animate={{ opacity: 1, scale: 1 }}
+				className='absolute top-4 right-6 flex gap-3 max-sm:hidden'>
+				{isEditMode ? (
+					<>
+						<motion.button
+							whileHover={{ scale: 1.05 }}
+							whileTap={{ scale: 0.95 }}
+							onClick={handleCancel}
+							disabled={isSaving}
+							className='rounded-xl border bg-white/60 px-6 py-2 text-sm'>
+							取消
+						</motion.button>
+						<motion.button
+							whileHover={{ scale: 1.05 }}
+							whileTap={{ scale: 0.95 }}
+							onClick={handleAdd}
+							className='rounded-xl border bg-white/60 px-6 py-2 text-sm'>
+							添加
+						</motion.button>
+						<motion.button
+							whileHover={{ scale: 1.05 }}
+							whileTap={{ scale: 0.95 }}
+							onClick={handleSaveClick}
+							disabled={isSaving}
+							className='brand-btn px-6'>
+							{isSaving ? '保存中...' : buttonText}
+						</motion.button>
+					</>
+				) : (
+					<motion.button
+						whileHover={{ scale: 1.05 }}
+						whileTap={{ scale: 0.95 }}
+						onClick={() => setIsEditMode(true)}
+						className='rounded-xl border bg-white/60 px-6 py-2 text-sm backdrop-blur-sm transition-colors hover:bg-white/80'>
+						编辑
+					</motion.button>
+				)}
+			</motion.div>
+
+			{isCreateDialogOpen && (
+				<CreateDialog project={editingProject} onClose={() => setIsCreateDialogOpen(false)} onSave={handleSaveProject} />
+			)}
+		</>
 	)
 }

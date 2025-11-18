@@ -5,16 +5,16 @@ import { toast } from 'sonner'
 import { Plus } from 'lucide-react'
 import { DialogModal } from '@/components/dialog-modal'
 
-export type AvatarItem = { type: 'url'; url: string } | { type: 'file'; file: File; previewUrl: string; hash?: string }
+export type ImageItem = { type: 'url'; url: string } | { type: 'file'; file: File; previewUrl: string; hash?: string }
 
-interface AvatarUploadDialogProps {
-	currentAvatar?: string
+interface ImageUploadDialogProps {
+	currentImage?: string
 	onClose: () => void
-	onSubmit: (avatar: AvatarItem) => void
+	onSubmit: (image: ImageItem) => void
 }
 
-export default function AvatarUploadDialog({ currentAvatar, onClose, onSubmit }: AvatarUploadDialogProps) {
-	const [urlInput, setUrlInput] = useState(currentAvatar || '')
+export default function ImageUploadDialog({ currentImage, onClose, onSubmit }: ImageUploadDialogProps) {
+	const [urlInput, setUrlInput] = useState(currentImage || '')
 	const [previewFile, setPreviewFile] = useState<{ file: File; previewUrl: string } | null>(null)
 	const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -52,7 +52,7 @@ export default function AvatarUploadDialog({ currentAvatar, onClose, onSubmit }:
 		}
 
 		setPreviewFile(null)
-		setUrlInput(currentAvatar || '')
+		setUrlInput(currentImage || '')
 		onClose()
 	}
 
@@ -61,23 +61,22 @@ export default function AvatarUploadDialog({ currentAvatar, onClose, onSubmit }:
 			URL.revokeObjectURL(previewFile.previewUrl)
 		}
 		setPreviewFile(null)
-		setUrlInput(currentAvatar || '')
+		setUrlInput(currentImage || '')
 		onClose()
 	}
 
 	return (
-		<DialogModal open onClose={handleClose} className='card static max-w-md'>
-			<h2 className='mb-4 text-xl font-bold'>选择头像</h2>
-
+		<DialogModal open onClose={handleClose} className='card max-w-md'>
+			<h2 className='mb-4 text-xl font-bold'>选择图片</h2>
 			<form onSubmit={handleSubmit} className='space-y-4'>
 				<div>
 					<label className='text-secondary mb-2 block text-sm font-medium'>上传图片</label>
 					<input ref={fileInputRef} type='file' accept='image/*' className='hidden' onChange={handleFileSelect} />
 					<div
 						onClick={() => fileInputRef.current?.click()}
-						className='mx-auto flex h-32 w-32 cursor-pointer items-center justify-center rounded-full border border-gray-300 bg-gray-100 transition-colors hover:bg-gray-200'>
+						className='mx-auto flex h-32 w-32 cursor-pointer items-center justify-center rounded-xl border border-gray-300 bg-gray-100 transition-colors hover:bg-gray-200'>
 						{previewFile ? (
-							<img src={previewFile.previewUrl} alt='preview' className='h-full w-full rounded-lg object-cover' />
+							<img src={previewFile.previewUrl} alt='preview' className='h-full w-full rounded-xl object-cover' />
 						) : (
 							<div className='text-center'>
 								<Plus className='text-secondary mx-auto mb-1 h-8 w-8' />
@@ -108,7 +107,7 @@ export default function AvatarUploadDialog({ currentAvatar, onClose, onSubmit }:
 								setPreviewFile(null)
 							}
 						}}
-						placeholder='https://example.com/avatar.png'
+						placeholder='https://example.com/image.png'
 						className='focus:ring-brand w-full rounded-lg border border-gray-300 bg-gray-200 px-4 py-2 focus:ring-2 focus:outline-none'
 					/>
 				</div>
@@ -128,3 +127,4 @@ export default function AvatarUploadDialog({ currentAvatar, onClose, onSubmit }:
 		</DialogModal>
 	)
 }
+
