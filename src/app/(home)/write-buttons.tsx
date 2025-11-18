@@ -8,6 +8,7 @@ import { useCenterStore } from '@/hooks/use-center'
 import { useRouter } from 'next/navigation'
 import { useSize } from '@/hooks/use-size'
 import DotsSVG from '@/svgs/dots.svg'
+import ConfigDialog from './config-dialog'
 
 const styles = {
 	height: 42,
@@ -18,6 +19,7 @@ export default function WriteButton() {
 	const center = useCenterStore()
 	const { maxSM } = useSize()
 	const router = useRouter()
+	const [isConfigOpen, setIsConfigOpen] = useState(false)
 
 	const [show, setShow] = useState(false)
 	useEffect(() => {
@@ -55,9 +57,11 @@ export default function WriteButton() {
 				animate={{ opacity: 1, scale: 1 }}
 				whileHover={{ scale: 1.05 }}
 				whileTap={{ scale: 0.95 }}
+				onClick={() => setIsConfigOpen(true)}
 				className='p-2'>
 				<DotsSVG className='h-6 w-6' />
 			</motion.button>
+			<ConfigDialog open={isConfigOpen} onClose={() => setIsConfigOpen(false)} />
 		</motion.div>
 	)
 }
