@@ -73,7 +73,7 @@ export default function CreateDialog({ share, onClose, onSave }: CreateDialogPro
 	}
 
 	return (
-		<DialogModal open onClose={onClose} className='card max-w-sm max-h-[90vh] overflow-y-auto'>
+		<DialogModal open onClose={onClose} className='card max-h-[90vh] w-sm overflow-y-auto'>
 			{/* 卡片样式的内容 */}
 			<div>
 				<div className='mb-4 flex items-center gap-4'>
@@ -161,4 +161,3 @@ export default function CreateDialog({ share, onClose, onSave }: CreateDialogPro
 		</DialogModal>
 	)
 }
-

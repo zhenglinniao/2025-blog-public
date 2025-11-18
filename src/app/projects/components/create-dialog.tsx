@@ -77,7 +77,7 @@ export default function CreateDialog({ project, onClose, onSave }: CreateDialogP
 	}
 
 	return (
-		<DialogModal open onClose={onClose} className='card static w-[600px] max-sm:w-full'>
+		<DialogModal open onClose={onClose} className='card static w-md max-sm:w-full'>
 			<div>
 				<div className='mb-4 flex items-center gap-4'>
 					<div className='group relative cursor-pointer' onClick={() => setShowImageDialog(true)}>
@@ -134,7 +134,7 @@ export default function CreateDialog({ project, onClose, onSave }: CreateDialogP
 							<span key={tag} className='rounded-full bg-gray-100 px-2.5 py-0.5 text-xs text-gray-600'>
 								{tag}
 							</span>
-							))}
+						))}
 					</div>
 				</div>
 

@@ -61,7 +61,7 @@ export default function CreateDialog({ blogger, onClose, onSave }: CreateDialogP
 	}
 
 	return (
-		<DialogModal open onClose={onClose} className='card max-w-sm'>
+		<DialogModal open onClose={onClose} className='card w-sm'>
 			{/* 卡片样式的内容 */}
 			<div>
 				<div className='mb-4 flex items-center gap-4'>
@@ -131,4 +131,3 @@ export default function CreateDialog({ blogger, onClose, onSave }: CreateDialogP
 		</DialogModal>
 	)
 }
-

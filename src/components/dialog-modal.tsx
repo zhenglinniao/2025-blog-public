@@ -60,7 +60,7 @@ export function DialogModal({ open, onClose, children, className, disableCloseOn
 						initial={{ opacity: 0, scale: 0.8, y: 20 }}
 						animate={{ opacity: 1, scale: 1, y: 0 }}
 						exit={{ opacity: 0, scale: 0.8, y: 20 }}
-						className={cn('static w-full max-w-md', className)}
+						className={cn('static', className)}
 						onClick={e => e.stopPropagation()}>
 						{children}
 					</motion.div>

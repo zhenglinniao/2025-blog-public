@@ -65,7 +65,7 @@ export default function LogoUploadDialog({ currentLogo, onClose, onSubmit }: Log
 		onClose()
 	}
 	return (
-		<DialogModal open onClose={handleClose} className='card max-w-md'>
+		<DialogModal open onClose={handleClose} className='card w-md'>
 			<h2 className='mb-4 text-xl font-bold'>选择图标</h2>
 			<form onSubmit={handleSubmit} className='space-y-4'>
 				<div>
