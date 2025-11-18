@@ -1,5 +1,5 @@
 'use client'
-import { PropsWithChildren } from 'react'
+import { PropsWithChildren, useEffect } from 'react'
 import { useCenterInit } from '@/hooks/use-center'
 import BlurredBubblesBackground from './backgrounds/blurred-bubbles'
 import NavCard from '@/components/nav-card'
@@ -12,6 +12,17 @@ export default function Layout({ children }: PropsWithChildren) {
 	useCenterInit()
 	useSizeInit()
 	const { siteContent, regenerateKey } = useConfigStore()
+
+	useEffect(() => {
+		if (typeof document === 'undefined') return
+		const color = siteContent.theme?.colorBrand
+		if (color) {
+			document.documentElement.style.setProperty('--color-brand', color)
+			if (document.body) {
+				document.body.style.setProperty('--color-brand', color)
+			}
+		}
+	}, [siteContent.theme?.colorBrand])
 
 	return (
 		<>

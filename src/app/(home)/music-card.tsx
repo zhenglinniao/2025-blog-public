@@ -36,7 +36,7 @@ export default function MusicCard() {
 			</div>
 
 			<button className='flex h-10 w-10 items-center justify-center rounded-full bg-white'>
-				<PlaySVG className='ml-1 h-4 w-4' />
+				<PlaySVG className='text-brand ml-1 h-4 w-4' />
 			</button>
 		</Card>
 	)

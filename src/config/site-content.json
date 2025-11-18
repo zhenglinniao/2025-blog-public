@@ -3,6 +3,9 @@
 		"title": "YYsuni",
 		"description": "YYsuni 的个人博客，记录前端开发、探索笔记。前端 UI 更新代码仓库。"
 	},
+	"theme": {
+		"colorBrand": "#35bfab"
+	},
 	"backgroundColors": [
 		"#EDDD62",
 		"#9EE7D1",

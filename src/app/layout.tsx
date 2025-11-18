@@ -1,6 +1,7 @@
 import '@/styles/globals.css'
 
 import type { Metadata } from 'next'
+import type { CSSProperties } from 'react'
 import Layout from '@/layout'
 import Head from '@/layout/head'
 import siteContent from '@/config/site-content.json'
@@ -22,12 +23,17 @@ export const metadata: Metadata = {
 	}
 }
 
+const bodyStyle: CSSProperties & { '--color-brand'?: string } = {
+	cursor: 'url(/images/cursor.svg) 2 1, auto',
+	'--color-brand': siteContent.theme?.colorBrand
+}
+
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
 	return (
 		<html lang='en' suppressHydrationWarning>
 			<Head />
 
-			<body style={{ cursor: 'url(/images/cursor.svg) 2 1, auto' }}>
+			<body style={bodyStyle}>
 				<script
 					dangerouslySetInnerHTML={{
 						__html: `

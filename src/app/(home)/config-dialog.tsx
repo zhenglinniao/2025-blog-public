@@ -75,6 +75,7 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 		try {
 			await pushSiteContent(formData, faviconItem, avatarItem)
 			setSiteContent(formData)
+			updateBrandColorVariable(formData.theme?.colorBrand)
 			setFaviconItem(null)
 			setAvatarItem(null)
 			onClose()
@@ -105,9 +106,18 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 				metaDescription.setAttribute('content', originalData.meta.description)
 			}
 		}
+		updateBrandColorVariable(originalData.theme?.colorBrand)
 		setFaviconItem(null)
 		setAvatarItem(null)
 		onClose()
+	}
+
+	const updateBrandColorVariable = (color?: string) => {
+		if (typeof document === 'undefined' || !color) return
+		document.documentElement.style.setProperty('--color-brand', color)
+		if (document.body) {
+			document.body.style.setProperty('--color-brand', color)
+		}
 	}
 
 	const handlePreview = () => {
@@ -122,8 +132,19 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 				metaDescription.setAttribute('content', formData.meta.description)
 			}
 		}
+		updateBrandColorVariable(formData.theme?.colorBrand)
 
 		onClose()
+	}
+
+	const handleBrandColorChange = (value: string) => {
+		setFormData(prev => ({
+			...prev,
+			theme: {
+				...prev.theme,
+				colorBrand: value
+			}
+		}))
 	}
 
 	const handleColorChange = (index: number, value: string) => {
@@ -312,6 +333,24 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 							rows={3}
 							className='w-full rounded-lg border bg-gray-100 px-4 py-2 text-sm'
 						/>
+					</div>
+
+					<div>
+						<label className='mb-2 block text-sm font-medium'>主题色</label>
+						<div className='flex items-center gap-3'>
+							<input
+								type='color'
+								value={formData.theme?.colorBrand ?? '#35bfab'}
+								onChange={e => handleBrandColorChange(e.target.value)}
+								className='h-10 w-16 cursor-pointer'
+							/>
+							<input
+								type='text'
+								value={formData.theme?.colorBrand ?? ''}
+								onChange={e => handleBrandColorChange(e.target.value)}
+								className='flex-1 rounded-lg border bg-gray-100 px-4 py-2 text-sm'
+							/>
+						</div>
 					</div>
 
 					<div>

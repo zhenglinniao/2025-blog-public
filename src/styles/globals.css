@@ -66,7 +66,7 @@
 }
 
 @utility bg-linear {
-	background: linear-gradient(to right bottom, #35bf91 0%, #1fc9e7);
+	background: linear-gradient(to right bottom, var(--color-brand) 0%, #1fc9e7);
 	color: white;
 }
 
