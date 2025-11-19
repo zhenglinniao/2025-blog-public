@@ -153,6 +153,29 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 		setFormData({ ...formData, backgroundColors: newColors })
 	}
 
+	const generateRandomColor = () => {
+		const randomChannel = () => Math.floor(Math.random() * 256)
+		return `#${[randomChannel(), randomChannel(), randomChannel()]
+			.map(channel => channel.toString(16).padStart(2, '0'))
+			.join('')
+			.toUpperCase()}`
+	}
+
+	const handleRandomizeColors = () => {
+		const count = Math.floor(Math.random() * 5) + 4 // 4 ~ 8 个颜色
+		const backgroundColors = Array.from({ length: count }, () => generateRandomColor())
+		const colorBrand = generateRandomColor()
+
+		setFormData(prev => ({
+			...prev,
+			backgroundColors,
+			theme: {
+				...prev.theme,
+				colorBrand
+			}
+		}))
+	}
+
 	const handleAddColor = () => {
 		setFormData({
 			...formData,
@@ -354,15 +377,24 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 					</div>
 
 					<div>
-						<div className='mb-2 flex items-center justify-between'>
+						<div className='mb-2 flex items-center justify-between gap-3'>
 							<label className='block text-sm font-medium'>背景颜色</label>
-							<motion.button
-								whileHover={{ scale: 1.05 }}
-								whileTap={{ scale: 0.95 }}
-								onClick={handleAddColor}
-								className='rounded-lg border bg-white/60 px-3 py-1 text-xs'>
-								+ 添加颜色
-							</motion.button>
+							<div className='flex gap-2'>
+								<motion.button
+									whileHover={{ scale: 1.05 }}
+									whileTap={{ scale: 0.95 }}
+									onClick={handleRandomizeColors}
+									className='rounded-lg border bg-white/60 px-3 py-1 text-xs whitespace-nowrap'>
+									随机配色
+								</motion.button>
+								<motion.button
+									whileHover={{ scale: 1.05 }}
+									whileTap={{ scale: 0.95 }}
+									onClick={handleAddColor}
+									className='rounded-lg border bg-white/60 px-3 py-1 text-xs whitespace-nowrap'>
+									+ 添加颜色
+								</motion.button>
+							</div>
 						</div>
 						<div className='grid grid-cols-2 gap-3'>
 							{formData.backgroundColors.map((color, index) => (
