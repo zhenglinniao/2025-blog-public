@@ -2,6 +2,7 @@ import siteContent from '@/config/site-content.json'
 import blogIndex from '@/../public/blogs/index.json'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.yysuni.com'
+const FEED_PATH = '/rss.xml'
 
 type BlogIndexItem = {
 	slug: string
@@ -9,6 +10,7 @@ type BlogIndexItem = {
 	tags?: string[]
 	date: string
 	summary?: string
+	cover?: string
 }
 
 const blogs = blogIndex as BlogIndexItem[]
@@ -16,24 +18,42 @@ const blogs = blogIndex as BlogIndexItem[]
 const escapeXml = (value: string): string =>
 	value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;')
 
+const wrapCdata = (value: string): string => `<![CDATA[${value}]]>`
+
+const getMimeTypeFromUrl = (url?: string): string | null => {
+	if (!url) return null
+	const ext = url.split('.').pop()?.toLowerCase()
+	if (!ext) return null
+	if (ext === 'jpg' || ext === 'jpeg') return 'image/jpeg'
+	if (ext === 'png') return 'image/png'
+	if (ext === 'gif') return 'image/gif'
+	if (ext === 'webp') return 'image/webp'
+	if (ext === 'svg') return 'image/svg+xml'
+	return null
+}
+
 const serializeItem = (item: BlogIndexItem): string => {
 	const link = `${SITE_URL}/blog/${item.slug}`
 	const title = escapeXml(item.title || item.slug)
-	const description = escapeXml(item.summary || '')
+	const description = wrapCdata(item.summary || '')
 	const pubDate = new Date(item.date).toUTCString()
 	const categories = (item.tags || [])
 		.filter(Boolean)
 		.map(tag => `<category>${escapeXml(tag)}</category>`)
 		.join('')
 
+	const enclosureType = getMimeTypeFromUrl(item.cover)
+	const enclosure = item.cover && enclosureType ? `<enclosure url="${escapeXml(`${SITE_URL}${item.cover}`)}" type="${enclosureType}" />` : ''
+
 	return `
 		<item>
 			<title>${title}</title>
 			<link>${link}</link>
-			<guid>${link}</guid>
+			<guid isPermaLink="false">${escapeXml(link)}</guid>
 			<description>${description}</description>
 			<pubDate>${pubDate}</pubDate>
 			${categories}
+			${enclosure}
 		</item>`.trim()
 }
 
@@ -50,12 +70,15 @@ export function GET(): Response {
 		.join('')
 
 	const rss = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 	<channel>
 		<title>${escapeXml(title)}</title>
 		<link>${SITE_URL}</link>
+		<atom:link href="${SITE_URL}${FEED_PATH}" rel="self" type="application/rss+xml" />
 		<description>${escapeXml(description)}</description>
 		<language>zh-CN</language>
+		<docs>https://www.rssboard.org/rss-specification</docs>
+		<ttl>60</ttl>
 		<lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
 		${items}
 	</channel>
