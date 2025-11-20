@@ -29,7 +29,7 @@ export const GITHUB_CONFIG = {
 
 大约 60 秒会部署完成，有一个直接 vercel 域名，如：https://2025-blog-public.vercel.app/
 
-到这里部署网站依旧完成了，下一步创建 Github App
+到这里部署网站已经完成了，下一步创建 Github App
 
 ## 3. 创建 Github App 链接仓库
 

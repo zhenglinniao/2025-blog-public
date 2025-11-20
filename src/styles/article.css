@@ -14,7 +14,7 @@
 .prose h3 {
 	font-weight: 700;
 	line-height: 1.25;
-	margin-top: 1.75em;
+	margin-top: 2em;
 	margin-bottom: 1.5em;
 
 	&::before {
@@ -29,10 +29,29 @@
 	font-size: 1.25rem;
 }
 .prose h3 {
-	font-size: 1.15rem;
+	font-size: 1rem;
+	font-weight: 600;
+
+	&::before {
+		content: '## ';
+		@apply text-brand/60;
+	}
 }
 .prose h4 {
-	font-size: 1rem;
+	font-size: 0.85rem;
+	font-weight: 500;
+	&::before {
+		content: '### ';
+		@apply text-brand/60;
+	}
+}
+.prose h5 {
+	font-size: 0.75rem;
+	font-weight: 500;
+	&::before {
+		content: '#### ';
+		@apply text-brand/60;
+	}
 }
 
 /* Paragraph */
