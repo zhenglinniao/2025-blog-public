@@ -1,5 +1,7 @@
 # 2025 Blog
 
+> 最新引导说明：https://www.yysuni.com/blog/readme
+
 该项目使用 Github App 管理项目内容，请保管好后续创建的 **Private key**，不要上传到公开网上。
 
 ## 1. 安装
@@ -75,24 +77,59 @@ export const GITHUB_CONFIG = {
 * 也可以手动选择创建一次部署
 ![](https://www.yysuni.com/blogs/readme/59a802ed8d1c3a13.png)
 
-## 完成
+## 4. 完成
 
 现在，部署的这个网站就可以开始使用前端改内容了。比如更改一个分享内容。
 
-## 删除
+**提示**，网站前端页面删改完提示成功之后，你需要等待后台的部署完成，再刷新页面才能完成服务器内容的更新哦。
+
+## 5. 删除
 
 使用这个项目应该第一件事需要删除我的 blog，单独删除，批量删除已完成。
 
-## 配置
+## 6. 配置
 
 大部分页面右上角都会有一个编辑按钮，意味着你可以使用 **private key** 进行配置部署。
 
-### 网站配置
+### 6.1 网站配置
 
 首页有一个不显眼的配置按钮，点击就能看到现在可以配置的内容。
 
 ![](https://www.yysuni.com/blogs/readme/cddb4710e08a5069.png)
 
-## 写 blog
+## 7. 写 blog
 
 写 blog 的图片管理，可能会有疑惑。图片管理推荐逻辑是先点击 **+ 号** 添加图片，（推荐先压缩好，尺寸推荐宽度不超过 1200）。然后将上传好的图片直接拖入文案编辑区，这就已经添加好了，点击右上角预览就可以看到效果。
+
+## 8. 写给非前端
+
+非前端配置内容，还是需要一个文件指引。下面写一些更细致的代码配置。
+
+### 8.1 移除 Liquid Grass
+
+进入 `src/layout/index.tsx` 文件，删除两行代码，然后提交代码到你的 github
+```tsx
+const LiquidGrass = dynamic(() => import('@/components/liquid-grass'), { ssr: false })
+// 中间省略...
+<LiquidGrass /> // 第 53 行
+```
+
+![](https://www.yysuni.com/blogs/readme/f70ff3fe3a77f193.png)
+
+### 8.2 配置首页内容
+
+首页的内容现在只能前端配置一部分，所以代码更改在 `src/app/(home)` 目录，这个目录代表首页所有文件。首页的具体文件为  `src/app/(home)/page.tsx`
+
+ ![](https://www.yysuni.com/blogs/readme/011679cd9bf73602.png)
+
+这里可以看到有很多 `Card` 文件，需要改那个首页 Card 内容就可以点入那个具体文件修改。
+
+比如中间的内容，为 `HiCard`，点击 `hi-card.tsx` 文件，即可更改其内容。
+
+![](https://www.yysuni.com/blogs/readme/20b0791d012163ee.png)
+
+#### 特殊的导航 Card
+
+因为这个 Card 是全局都在的，所以放在了 `src/components` 目录
+
+![](https://www.yysuni.com/blogs/readme/9780c38f886322fd.png)
