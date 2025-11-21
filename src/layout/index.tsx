@@ -7,6 +7,8 @@ import { Toaster } from 'sonner'
 import { CircleCheckIcon, InfoIcon, Loader2Icon, OctagonXIcon, TriangleAlertIcon } from 'lucide-react'
 import { useSizeInit } from '@/hooks/use-size'
 import { useConfigStore } from '@/app/(home)/stores/config-store'
+import dynamic from 'next/dynamic'
+const LiquidGrass = dynamic(() => import('@/components/liquid-grass'), { ssr: false })
 
 export default function Layout({ children }: PropsWithChildren) {
 	useCenterInit()
@@ -48,6 +50,7 @@ export default function Layout({ children }: PropsWithChildren) {
 				{children}
 				<NavCard />
 			</main>
+			<LiquidGrass />
 		</>
 	)
 }

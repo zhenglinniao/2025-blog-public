@@ -5,7 +5,7 @@ import { motion } from 'motion/react'
 import displacement1 from './displacement-1.png'
 import displacement2 from './displacement-2.png'
 import borderImg from './border.png'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const width = 210
 const height = 150
@@ -13,9 +13,21 @@ const height = 150
 export default function LiquidGrass() {
 	const bodyRef = useRef(document.body)
 	const [isTouched, setIsTouched] = useState(false)
+	const [show, setShow] = useState(false)
+
+	useEffect(() => {
+		setTimeout(() => {
+			setShow(true)
+		}, 1000)
+	}, [])
+
+	if (!show) return null
 
 	return createPortal(
 		<motion.div
+			onMouseDown={() => setIsTouched(true)}
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
 			drag
 			dragConstraints={bodyRef}
 			style={{ width, height }}
@@ -58,7 +70,6 @@ export default function LiquidGrass() {
 			</svg>
 
 			<div
-				onClick={() => setIsTouched(true)}
 				className='absolute inset-0 flex items-center justify-center rounded-full font-mono'
 				style={{
 					backdropFilter: 'url(#magnifying-glass-filter)',
