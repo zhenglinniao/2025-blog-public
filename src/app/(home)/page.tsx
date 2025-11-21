@@ -12,6 +12,10 @@ import WriteButtons from '@/app/(home)/write-buttons'
 import LikePosition from './like-position'
 import { useSize } from '@/hooks/use-size'
 
+import dynamic from 'next/dynamic'
+
+const LiquidGrass = dynamic(() => import('@/components/liquid-grass'), { ssr: false })
+
 export default function Home() {
 	const { maxSM } = useSize()
 
@@ -27,6 +31,8 @@ export default function Home() {
 			<AritcleCard />
 			{!maxSM && <WriteButtons />}
 			<LikePosition />
+
+			<LiquidGrass />
 		</div>
 	)
 }
