@@ -86,7 +86,7 @@ export function BlogToc({ toc, delay = 0 }: BlogTocProps) {
 			initial={{ opacity: 0, scale: 0.8 }}
 			animate={{ opacity: 1, scale: 1 }}
 			transition={{ delay }}
-			className='rounded-xl border bg-white/40 p-3 text-sm'>
+			className='w-full rounded-xl border bg-white/40 p-3 text-sm'>
 			<h2 className='text-secondary mb-2 font-medium'>目录</h2>
 			<div className='relative space-y-2'>
 				{/* {indicatorStyle.height > 0 && (
