@@ -107,12 +107,7 @@ export const GITHUB_CONFIG = {
 
 ### 8.1 移除 Liquid Grass
 
-进入 `src/layout/index.tsx` 文件，删除两行代码，然后提交代码到你的 github
-```tsx
-const LiquidGrass = dynamic(() => import('@/components/liquid-grass'), { ssr: false })
-// 中间省略...
-<LiquidGrass /> // 第 53 行
-```
+> 已移动至相关文章中显示，图例已过时
 
 ![](/blogs/readme/f70ff3fe3a77f193.png)
 

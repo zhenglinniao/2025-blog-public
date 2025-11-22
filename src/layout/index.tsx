@@ -5,16 +5,13 @@ import BlurredBubblesBackground from './backgrounds/blurred-bubbles'
 import NavCard from '@/components/nav-card'
 import { Toaster } from 'sonner'
 import { CircleCheckIcon, InfoIcon, Loader2Icon, OctagonXIcon, TriangleAlertIcon } from 'lucide-react'
-import { useSize, useSizeInit } from '@/hooks/use-size'
+import { useSizeInit } from '@/hooks/use-size'
 import { useConfigStore } from '@/app/(home)/stores/config-store'
-import dynamic from 'next/dynamic'
-const LiquidGrass = dynamic(() => import('@/components/liquid-grass'), { ssr: false })
 
 export default function Layout({ children }: PropsWithChildren) {
 	useCenterInit()
 	useSizeInit()
 	const { siteContent, regenerateKey } = useConfigStore()
-	const { maxMD, init } = useSize()
 
 	useEffect(() => {
 		if (typeof document === 'undefined') return
@@ -51,7 +48,6 @@ export default function Layout({ children }: PropsWithChildren) {
 				{children}
 				<NavCard />
 			</main>
-			{init && !maxMD && <LiquidGrass />}
 		</>
 	)
 }
