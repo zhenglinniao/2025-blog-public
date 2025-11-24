@@ -128,6 +128,18 @@ const LiquidGrass = dynamic(() => import('@/components/liquid-grass'), { ssr: fa
 
 ![](https://www.yysuni.com/blogs/readme/20b0791d012163ee.png)
 
+## 9. 互助群
+
+对于完全不是**程序员**的用户，确实会对于更新代码后，如何同步，如何**合并代码**手足无措。我创建了一个 **QQ群**（加群会简单点），或者 vx 群还是 tg 群会好一点可以 issue 里面说下就行。
+
+QQ 群：**1021438316**
+
+应该主要是我自己亲自帮助你们遇到问题怎么办。（后续看看有没有好心人）
+
+希望多多的非程序员加入 blogger 行列，web blog 还是很好玩的，属于自己的 blog 世界。
+
+游戏资产不一定属于你的，你只有**使用权**，但这个 blog **网站、内容、仓库一定是属于你的**
+
 #### 特殊的导航 Card
 
 因为这个 Card 是全局都在的，所以放在了 `src/components` 目录
