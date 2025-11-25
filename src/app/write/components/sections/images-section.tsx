@@ -20,9 +20,9 @@ export function ImagesSection({ delay = 0 }: ImagesSectionProps) {
 		<motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay }} className='card relative'>
 			<div className='flex items-center justify-between'>
 				<h2 className='text-sm'>图片管理</h2>
-				<button className='text-brand text-sm'>
-					<Link href='/image-toolbox'>图片工具</Link>
-				</button>
+				<Link href='/image-toolbox' target='_blank' className='text-xs hover:underline'>
+					压缩工具
+				</Link>
 			</div>
 
 			<div className='mt-3 flex items-center gap-2'>
