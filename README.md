@@ -132,7 +132,8 @@ const LiquidGrass = dynamic(() => import('@/components/liquid-grass'), { ssr: fa
 
 对于完全不是**程序员**的用户，确实会对于更新代码后，如何同步，如何**合并代码**手足无措。我创建了一个 **QQ群**（加群会简单点），或者 vx 群还是 tg 群会好一点可以 issue 里面说下就行。
 
-QQ 群：**1021438316**
+QQ 群：[https://qm.qq.com/q/spdpenr4k2](https://qm.qq.com/q/spdpenr4k2)
+> 不好意思，之前的那个qq群ID（1021438316），不知道为啥搜不到😂
 
 应该主要是我自己亲自帮助你们遇到问题怎么办。（后续看看有没有好心人）
 
