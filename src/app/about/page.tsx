@@ -109,23 +109,23 @@ export default function Page() {
 									<input
 										type='text'
 										placeholder='标题'
-										className='w-full rounded-xl border bg-white/60 px-4 py-3 text-2xl font-bold'
+										className='w-full rounded-xl px-4 py-3 text-center text-2xl font-bold'
 										value={data.title}
 										onChange={e => setData({ ...data, title: e.target.value })}
 									/>
 									<input
 										type='text'
 										placeholder='描述'
-										className='w-full rounded-xl border bg-white/60 px-4 py-3 text-lg'
+										className='w-full rounded-xl px-4 py-3 text-center text-lg'
 										value={data.description}
 										onChange={e => setData({ ...data, description: e.target.value })}
 									/>
 								</div>
 
-								<div className='card relative p-6'>
+								<div className='card relative'>
 									<textarea
 										placeholder='Markdown 内容'
-										className='min-h-[400px] w-full resize-none rounded-xl border bg-white/60 p-4 text-sm'
+										className='min-h-[400px] w-full resize-none rounded-xl text-sm'
 										value={data.content}
 										onChange={e => setData({ ...data, content: e.target.value })}
 									/>
