@@ -1,0 +1,6 @@
+{
+	"title": "关于本站",
+	"description": "一个基于 Github 的现代化博客系统",
+	"content": "## 特性\n\n### Github 存储\n网站基于 Github 仓库完全存储，所有内容版本可控\n\n### 无服务器\n无后端，无 serverless function，纯静态站点\n\n### UI 编辑\n文章通过可视化 UI 直接编辑并提交到 Github 仓库\n\n### 开放协作\n所有用户都可以编辑，提交需要 Owner 的 Private Key\n\n## 技术栈\n\n- Next.js\n- React\n- TypeScript\n- Tailwind CSS\n- Motion\n- Github API"
+}
+
