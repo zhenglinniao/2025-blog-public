@@ -15,6 +15,7 @@ export default function Page() {
 	const [originalData, setOriginalData] = useState<AboutData>(initialData as AboutData)
 	const [isEditMode, setIsEditMode] = useState(false)
 	const [isSaving, setIsSaving] = useState(false)
+	const [isPreviewMode, setIsPreviewMode] = useState(false)
 	const keyInputRef = useRef<HTMLInputElement>(null)
 
 	const { isAuth, setPrivateKey } = useAuthStore()
@@ -39,6 +40,11 @@ export default function Page() {
 		}
 	}
 
+	const handleEnterEditMode = () => {
+		setIsEditMode(true)
+		setIsPreviewMode(false)
+	}
+
 	const handleSave = async () => {
 		setIsSaving(true)
 
@@ -47,6 +53,7 @@ export default function Page() {
 
 			setOriginalData(data)
 			setIsEditMode(false)
+			setIsPreviewMode(false)
 			toast.success('保存成功！')
 		} catch (error: any) {
 			console.error('Failed to save:', error)
@@ -59,6 +66,7 @@ export default function Page() {
 	const handleCancel = () => {
 		setData(originalData)
 		setIsEditMode(false)
+		setIsPreviewMode(false)
 	}
 
 	const buttonText = isAuth ? '保存' : '导入密钥'
@@ -80,33 +88,50 @@ export default function Page() {
 			<div className='flex flex-col items-center justify-center px-6 pt-32 pb-12'>
 				<div className='w-full max-w-[800px]'>
 					{isEditMode ? (
-						<div className='space-y-6'>
-							<div className='space-y-4'>
-								<input
-									type='text'
-									placeholder='标题'
-									className='w-full rounded-xl border bg-white/60 px-4 py-3 text-2xl font-bold'
-									value={data.title}
-									onChange={e => setData({ ...data, title: e.target.value })}
-								/>
-								<input
-									type='text'
-									placeholder='描述'
-									className='w-full rounded-xl border bg-white/60 px-4 py-3 text-lg'
-									value={data.description}
-									onChange={e => setData({ ...data, description: e.target.value })}
-								/>
-							</div>
+						isPreviewMode ? (
+							<div className='space-y-6'>
+								<div className='text-center'>
+									<h1 className='mb-4 text-4xl font-bold'>{data.title || '标题预览'}</h1>
+									<p className='text-secondary text-lg'>{data.description || '描述预览'}</p>
+								</div>
 
-							<div className='card relative p-6'>
-								<textarea
-									placeholder='Markdown 内容'
-									className='min-h-[400px] w-full resize-none rounded-xl border bg-white/60 p-4 text-sm'
-									value={data.content}
-									onChange={e => setData({ ...data, content: e.target.value })}
-								/>
+								{loading ? (
+									<div className='text-secondary text-center'>预览渲染中...</div>
+								) : (
+									<div className='card relative p-6'>
+										<div className='prose prose-sm max-w-none'>{content}</div>
+									</div>
+								)}
 							</div>
-						</div>
+						) : (
+							<div className='space-y-6'>
+								<div className='space-y-4'>
+									<input
+										type='text'
+										placeholder='标题'
+										className='w-full rounded-xl border bg-white/60 px-4 py-3 text-2xl font-bold'
+										value={data.title}
+										onChange={e => setData({ ...data, title: e.target.value })}
+									/>
+									<input
+										type='text'
+										placeholder='描述'
+										className='w-full rounded-xl border bg-white/60 px-4 py-3 text-lg'
+										value={data.description}
+										onChange={e => setData({ ...data, description: e.target.value })}
+									/>
+								</div>
+
+								<div className='card relative p-6'>
+									<textarea
+										placeholder='Markdown 内容'
+										className='min-h-[400px] w-full resize-none rounded-xl border bg-white/60 p-4 text-sm'
+										value={data.content}
+										onChange={e => setData({ ...data, content: e.target.value })}
+									/>
+								</div>
+							</div>
+						)
 					) : (
 						<>
 							<motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className='mb-12 text-center'>
@@ -152,6 +177,14 @@ export default function Page() {
 							className='rounded-xl border bg-white/60 px-6 py-2 text-sm'>
 							取消
 						</motion.button>
+						<motion.button
+							whileHover={{ scale: 1.05 }}
+							whileTap={{ scale: 0.95 }}
+							onClick={() => setIsPreviewMode(prev => !prev)}
+							disabled={isSaving}
+							className={`rounded-xl border bg-white/60 px-6 py-2 text-sm`}>
+							{isPreviewMode ? '继续编辑' : '预览'}
+						</motion.button>
 						<motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={handleSaveClick} disabled={isSaving} className='brand-btn px-6'>
 							{isSaving ? '保存中...' : buttonText}
 						</motion.button>
@@ -160,7 +193,7 @@ export default function Page() {
 					<motion.button
 						whileHover={{ scale: 1.05 }}
 						whileTap={{ scale: 0.95 }}
-						onClick={() => setIsEditMode(true)}
+						onClick={handleEnterEditMode}
 						className='rounded-xl border bg-white/60 px-6 py-2 text-sm backdrop-blur-sm transition-colors hover:bg-white/80'>
 						编辑
 					</motion.button>
