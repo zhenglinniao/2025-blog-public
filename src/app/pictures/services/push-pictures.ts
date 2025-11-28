@@ -76,5 +76,3 @@ export async function pushPictures(params: PushPicturesParams): Promise<void> {
 
 	toast.success('发布成功！')
 }
-
-

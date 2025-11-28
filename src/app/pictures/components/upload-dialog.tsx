@@ -73,46 +73,47 @@ export default function UploadDialog({ onClose, onSubmit }: UploadDialogProps) {
 
 				<div>
 					<label className='text-secondary mb-2 block text-sm font-medium'>选择图片（可多选）</label>
-					<input
-						ref={fileInputRef}
-						type='file'
-						accept='image/*'
-						multiple
-						className='hidden'
-						onChange={handleFileSelect}
-					/>
-					<div
-						onClick={() => fileInputRef.current?.click()}
-						className='flex h-32 cursor-pointer items-center justify-center rounded-xl border border-dashed border-gray-300 bg-gray-50 transition-colors hover:bg-gray-100'>
-						<div className='text-center'>
-							<Plus className='mx-auto mb-1 h-8 w-8 text-gray-500' />
-							<p className='text-secondary text-xs'>{images.length > 0 ? `已选择 ${images.length} 张图片` : '点击选择图片'}</p>
-						</div>
-					</div>
+					<input ref={fileInputRef} type='file' accept='image/*' multiple className='hidden' onChange={handleFileSelect} />
 
-					{images.length > 0 && (
-						<div className='mt-3'>
-							<div className='flex -space-x-4'>
-								{images.slice(0, 5).map((image, index) =>
+					{images.length === 0 ? (
+						<div
+							onClick={() => fileInputRef.current?.click()}
+							className='flex h-32 cursor-pointer items-center justify-center rounded-xl border border-dashed border-gray-300 bg-gray-50 transition-colors hover:bg-gray-100'>
+							<div className='text-center'>
+								<Plus className='mx-auto mb-1 h-8 w-8 text-gray-500' />
+								<p className='text-secondary text-xs'>点击选择图片</p>
+							</div>
+						</div>
+					) : (
+						<>
+							<div className='relative flex h-40 items-center justify-center overflow-visible rounded-xl bg-linear-to-br from-gray-50 to-gray-100'>
+								{images.slice(0, 3).map((image, index) =>
 									image.type === 'file' ? (
 										<div
 											key={index}
-											className='relative inline-block rounded-xl border-4 border-white bg-white shadow-sm'>
-											<img
-												src={image.previewUrl}
-												alt={`preview-${index}`}
-												className='h-16 w-16 rounded-lg object-cover'
-											/>
+											className={`absolute h-32 w-44 overflow-hidden rounded-xl border-4 border-white bg-white shadow-xl transition-transform ${
+												index === 0 ? '-left-4 -translate-y-2 -rotate-6' : index === 1 ? 'z-20 rotate-1' : 'right-0 translate-y-2 rotate-6'
+											}`}>
+											<img src={image.previewUrl} alt={`preview-${index}`} className='h-full w-full object-cover' />
 										</div>
 									) : null
 								)}
-								{images.length > 5 && (
-									<div className='flex h-16 w-16 items-center justify-center rounded-xl border-4 border-white bg-gray-100 text-xs text-gray-500 shadow-sm'>
-										+{images.length - 5}
-									</div>
+
+								{images.length > 3 && (
+									<div className='absolute right-4 -bottom-2 rounded-full bg-black/70 px-3 py-1 text-xs text-white shadow-lg'>共 {images.length} 张</div>
 								)}
 							</div>
-						</div>
+
+							<div className='mt-3 flex items-center justify-between'>
+								<span className='text-secondary text-xs'>已选择 {images.length} 张图片</span>
+								<button
+									type='button'
+									onClick={() => fileInputRef.current?.click()}
+									className='rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-700 transition-colors hover:bg-gray-50'>
+									继续添加
+								</button>
+							</div>
+						</>
 					)}
 				</div>
 
@@ -142,5 +143,3 @@ export default function UploadDialog({ onClose, onSubmit }: UploadDialogProps) {
 		</DialogModal>
 	)
 }
-
-

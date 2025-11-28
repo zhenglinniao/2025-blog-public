@@ -9,6 +9,7 @@ import UploadDialog from './components/upload-dialog'
 import { pushPictures } from './services/push-pictures'
 import { useAuthStore } from '@/hooks/use-auth'
 import type { ImageItem } from '../projects/components/image-upload-dialog'
+import { useRouter } from 'next/navigation'
 
 export default function Page() {
 	const [pictures, setPictures] = useState<Picture[]>(initialList as Picture[])
@@ -18,6 +19,7 @@ export default function Page() {
 	const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false)
 	const [imageItems, setImageItems] = useState<Map<string, ImageItem>>(new Map())
 	const keyInputRef = useRef<HTMLInputElement>(null)
+	const router = useRouter()
 
 	const { isAuth, setPrivateKey } = useAuthStore()
 
@@ -127,28 +129,23 @@ export default function Page() {
 			<div className='flex flex-col items-center justify-center px-6 pt-32 pb-12'>
 				<div className='grid w-full max-w-[1200px] grid-cols-3 gap-6 max-lg:grid-cols-2 max-sm:grid-cols-1'>
 					{pictures.map(picture => (
-						<PictureCard
-							key={picture.id}
-							picture={picture}
-							isEditMode={isEditMode}
-							onDelete={() => handleDelete(picture)}
-						/>
+						<PictureCard key={picture.id} picture={picture} isEditMode={isEditMode} onDelete={() => handleDelete(picture)} />
 					))}
 				</div>
 
-				{pictures.length === 0 && (
-					<div className='mt-16 text-center text-sm text-gray-500'>
-						还没有上传图片，点击右上角「编辑」后即可开始上传。
-					</div>
-				)}
+				{pictures.length === 0 && <div className='mt-16 text-center text-sm text-gray-500'>还没有上传图片，点击右上角「编辑」后即可开始上传。</div>}
 			</div>
 
-			<motion.div
-				initial={{ opacity: 0, scale: 0.6 }}
-				animate={{ opacity: 1, scale: 1 }}
-				className='absolute top-4 right-6 flex gap-3 max-sm:hidden'>
+			<motion.div initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }} className='absolute top-4 right-6 flex gap-3 max-sm:hidden'>
 				{isEditMode ? (
 					<>
+						<motion.button
+							whileHover={{ scale: 1.05 }}
+							whileTap={{ scale: 0.95 }}
+							onClick={() => router.push('/image-toolbox')}
+							className='rounded-xl border bg-blue-50 px-4 py-2 text-sm text-blue-700'>
+							压缩工具
+						</motion.button>
 						<motion.button
 							whileHover={{ scale: 1.05 }}
 							whileTap={{ scale: 0.95 }}
@@ -164,12 +161,7 @@ export default function Page() {
 							className='rounded-xl border bg-white/60 px-6 py-2 text-sm'>
 							上传
 						</motion.button>
-						<motion.button
-							whileHover={{ scale: 1.05 }}
-							whileTap={{ scale: 0.95 }}
-							onClick={handleSaveClick}
-							disabled={isSaving}
-							className='brand-btn px-6'>
+						<motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={handleSaveClick} disabled={isSaving} className='brand-btn px-6'>
 							{isSaving ? '保存中...' : buttonText}
 						</motion.button>
 					</>
@@ -188,5 +180,3 @@ export default function Page() {
 		</>
 	)
 }
-
-
