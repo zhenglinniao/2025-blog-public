@@ -21,6 +21,8 @@ export default function Page() {
 	const keyInputRef = useRef<HTMLInputElement>(null)
 	const router = useRouter()
 
+	console.log('[suni pictures]', pictures)
+
 	const { isAuth, setPrivateKey } = useAuthStore()
 
 	const handleUploadSubmit = ({ images, description }: { images: ImageItem[]; description: string }) => {
