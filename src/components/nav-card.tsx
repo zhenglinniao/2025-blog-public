@@ -6,7 +6,6 @@ import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'motion/react'
 import { useCenterStore } from '@/hooks/use-center'
-import { styles as hiCardStyles } from '../app/(home)/hi-card'
 import { CARD_SPACING } from '@/consts'
 import ScrollOutlineSVG from '@/svgs/scroll-outline.svg'
 import ScrollFilledSVG from '@/svgs/scroll-filled.svg'
@@ -23,12 +22,6 @@ import clsx from 'clsx'
 import { cn } from '@/lib/utils'
 import { useSize } from '@/hooks/use-size'
 import { useConfigStore } from '@/app/(home)/stores/config-store'
-
-export const styles = {
-	width: 280,
-	height: 434,
-	order: 2
-}
 
 const list = [
 	{
@@ -71,7 +64,9 @@ export default function NavCard() {
 	const [show, setShow] = useState(false)
 	const { maxSM } = useSize()
 	const [hoveredIndex, setHoveredIndex] = useState<number>(0)
-	const { siteContent } = useConfigStore()
+	const { siteContent, cardStyles } = useConfigStore()
+	const styles = cardStyles.navCard
+	const hiCardStyles = cardStyles.hiCard
 
 	const activeIndex = useMemo(() => {
 		const index = list.findIndex(item => pathname === item.href)
@@ -92,17 +87,17 @@ export default function NavCard() {
 	const itemHeight = form === 'full' ? 52 : 28
 
 	let position = useMemo(() => {
-		if (form === 'full')
-			return {
-				x: center.x - hiCardStyles.width / 2 - styles.width - CARD_SPACING,
-				y: center.y + hiCardStyles.height / 2 - styles.height
-			}
+		if (form === 'full') {
+			const x = styles.offsetX !== null ? center.x + styles.offsetX : center.x - hiCardStyles.width / 2 - styles.width - CARD_SPACING
+			const y = styles.offsetY !== null ? center.y + styles.offsetY : center.y + hiCardStyles.height / 2 - styles.height
+			return { x, y }
+		}
 
 		return {
 			x: 24,
 			y: 16
 		}
-	}, [form, center])
+	}, [form, center, styles, hiCardStyles])
 
 	const size = useMemo(() => {
 		if (form === 'mini') return { width: 64, height: 64 }

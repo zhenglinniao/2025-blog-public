@@ -2,45 +2,37 @@ import { ANIMATION_DELAY, CARD_SPACING } from '@/consts'
 import PenSVG from '@/svgs/pen.svg'
 import { motion } from 'motion/react'
 import { useEffect, useState } from 'react'
-import { styles as hiCardStyles } from './hi-card'
-import { styles as clockCardStyles } from './clock-card'
+import { useConfigStore } from './stores/config-store'
 import { useCenterStore } from '@/hooks/use-center'
 import { useRouter } from 'next/navigation'
 import { useSize } from '@/hooks/use-size'
 import DotsSVG from '@/svgs/dots.svg'
 import ConfigDialog from './config-dialog'
 
-const styles = {
-	height: 42,
-	order: 8
-}
-
 export default function WriteButton() {
 	const center = useCenterStore()
+	const { cardStyles } = useConfigStore()
 	const { maxSM } = useSize()
 	const router = useRouter()
 	const [isConfigOpen, setIsConfigOpen] = useState(false)
+	const styles = cardStyles.writeButtons
+	const hiCardStyles = cardStyles.hiCard
+	const clockCardStyles = cardStyles.clockCard
 
 	const [show, setShow] = useState(false)
 	useEffect(() => {
 		setTimeout(() => setShow(true), styles.order * ANIMATION_DELAY * 1000)
-	}, [])
+	}, [styles.order])
 
 	if (maxSM) return null
 
 	if (!show) return null
 
+	const x = styles.offsetX !== null ? center.x + styles.offsetX : center.x + CARD_SPACING + hiCardStyles.width / 2
+	const y = styles.offsetY !== null ? center.y + styles.offsetY : center.y - clockCardStyles.offset - styles.height - CARD_SPACING / 2 - clockCardStyles.height
+
 	return (
-		<motion.div
-			initial={{
-				left: center.x + CARD_SPACING + hiCardStyles.width / 2,
-				top: center.y - clockCardStyles.offset - styles.height - CARD_SPACING / 2 - clockCardStyles.height
-			}}
-			animate={{
-				left: center.x + CARD_SPACING + hiCardStyles.width / 2,
-				top: center.y - clockCardStyles.offset - styles.height - CARD_SPACING / 2 - clockCardStyles.height
-			}}
-			className='absolute flex items-center gap-4'>
+		<motion.div initial={{ left: x, top: y }} animate={{ left: x, top: y }} className='absolute flex items-center gap-4'>
 			<motion.button
 				onClick={() => router.push('/write')}
 				initial={{ opacity: 0, scale: 0.6 }}

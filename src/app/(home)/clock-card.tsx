@@ -3,19 +3,15 @@
 import { useState, useEffect } from 'react'
 import Card from '@/components/card'
 import { useCenterStore } from '@/hooks/use-center'
+import { useConfigStore } from './stores/config-store'
 import { CARD_SPACING } from '@/consts'
-import { styles as hiCardStyles } from './hi-card'
-
-export const styles = {
-	width: 232,
-	height: 132,
-	offset: 92,
-	order: 4
-}
 
 export default function ClockCard() {
 	const center = useCenterStore()
+	const { cardStyles } = useConfigStore()
 	const [time, setTime] = useState(new Date())
+	const styles = cardStyles.clockCard
+	const hiCardStyles = cardStyles.hiCard
 
 	useEffect(() => {
 		const timer = setInterval(() => {
@@ -28,14 +24,11 @@ export default function ClockCard() {
 	const hours = time.getHours().toString().padStart(2, '0')
 	const minutes = time.getMinutes().toString().padStart(2, '0')
 
+	const x = styles.offsetX !== null ? center.x + styles.offsetX : center.x + CARD_SPACING + hiCardStyles.width / 2
+	const y = styles.offsetY !== null ? center.y + styles.offsetY : center.y - styles.offset - styles.height
+
 	return (
-		<Card
-			order={styles.order}
-			width={styles.width}
-			height={styles.height}
-			x={center.x + CARD_SPACING + hiCardStyles.width / 2}
-			y={center.y - styles.offset - styles.height}
-			className='p-2'>
+		<Card order={styles.order} width={styles.width} height={styles.height} x={x} y={y} className='p-2'>
 			<div className='flex h-full w-full items-center justify-center gap-1.5 rounded-4xl bg-[#DDDDDD]'>
 				<SevenSegmentDigit value={parseInt(hours[0])} />
 				<SevenSegmentDigit value={parseInt(hours[1])} />

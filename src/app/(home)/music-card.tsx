@@ -1,30 +1,23 @@
 import Card from '@/components/card'
 import { useCenterStore } from '@/hooks/use-center'
-import { styles as hiCardStyles } from './hi-card'
+import { useConfigStore } from './stores/config-store'
 import { CARD_SPACING } from '@/consts'
-import { styles as clockCardStyles } from './clock-card'
-import { styles as calendarCardStyles } from './calendar-card'
 import MusicSVG from '@/svgs/music.svg'
 import PlaySVG from '@/svgs/play.svg'
 
-export const styles = {
-	width: 293,
-	height: 66,
-	offset: 120,
-	order: 6
-}
-
 export default function MusicCard() {
 	const center = useCenterStore()
+	const { cardStyles } = useConfigStore()
+	const styles = cardStyles.musicCard
+	const hiCardStyles = cardStyles.hiCard
+	const clockCardStyles = cardStyles.clockCard
+	const calendarCardStyles = cardStyles.calendarCard
+
+	const x = styles.offsetX !== null ? center.x + styles.offsetX : center.x + CARD_SPACING + hiCardStyles.width / 2 - styles.offset
+	const y = styles.offsetY !== null ? center.y + styles.offsetY : center.y - clockCardStyles.offset + CARD_SPACING + calendarCardStyles.height + CARD_SPACING
 
 	return (
-		<Card
-			order={styles.order}
-			width={styles.width}
-			height={styles.height}
-			x={center.x + CARD_SPACING + hiCardStyles.width / 2 - styles.offset}
-			y={center.y - clockCardStyles.offset + CARD_SPACING + calendarCardStyles.height + CARD_SPACING}
-			className='flex items-center gap-3'>
+		<Card order={styles.order} width={styles.width} height={styles.height} x={x} y={y} className='flex items-center gap-3'>
 			<MusicSVG className='h-8 w-8' />
 
 			<div className='flex-1'>

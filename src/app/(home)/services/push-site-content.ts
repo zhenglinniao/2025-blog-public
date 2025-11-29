@@ -3,10 +3,15 @@ import { getAuthToken } from '@/lib/auth'
 import { GITHUB_CONFIG } from '@/consts'
 import { toast } from 'sonner'
 import { fileToBase64NoPrefix } from '@/lib/file-utils'
-import type { SiteContent } from '../stores/config-store'
+import type { SiteContent, CardStyles } from '../stores/config-store'
 import type { FileItem } from '../config-dialog'
 
-export async function pushSiteContent(siteContent: SiteContent, faviconItem?: FileItem | null, avatarItem?: FileItem | null): Promise<void> {
+export async function pushSiteContent(
+	siteContent: SiteContent,
+	cardStyles: CardStyles,
+	faviconItem?: FileItem | null,
+	avatarItem?: FileItem | null
+): Promise<void> {
 	const token = await getAuthToken()
 
 	toast.info('正在获取分支信息...')
@@ -53,6 +58,16 @@ export async function pushSiteContent(siteContent: SiteContent, faviconItem?: Fi
 		mode: '100644',
 		type: 'blob',
 		sha: siteContentBlob.sha
+	})
+
+	// Handle card styles JSON
+	const cardStylesJson = JSON.stringify(cardStyles, null, '\t')
+	const cardStylesBlob = await createBlob(token, GITHUB_CONFIG.OWNER, GITHUB_CONFIG.REPO, toBase64Utf8(cardStylesJson), 'base64')
+	treeItems.push({
+		path: 'src/config/card-styles.json',
+		mode: '100644',
+		type: 'blob',
+		sha: cardStylesBlob.sha
 	})
 
 	toast.info('正在创建文件树...')

@@ -7,7 +7,7 @@ import { DialogModal } from '@/components/dialog-modal'
 import { useAuthStore } from '@/hooks/use-auth'
 import { useConfigStore } from './stores/config-store'
 import { pushSiteContent } from './services/push-site-content'
-import type { SiteContent } from './stores/config-store'
+import type { SiteContent, CardStyles } from './stores/config-store'
 import { hashFileSHA256 } from '@/lib/file-utils'
 
 export type FileItem = { type: 'file'; file: File; previewUrl: string; hash?: string } | { type: 'url'; url: string }
@@ -19,9 +19,11 @@ interface ConfigDialogProps {
 
 export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 	const { isAuth, setPrivateKey } = useAuthStore()
-	const { siteContent, setSiteContent, regenerateBubbles } = useConfigStore()
+	const { siteContent, setSiteContent, cardStyles, setCardStyles, regenerateBubbles } = useConfigStore()
 	const [formData, setFormData] = useState<SiteContent>(siteContent)
+	const [cardStylesData, setCardStylesData] = useState<CardStyles>(cardStyles)
 	const [originalData, setOriginalData] = useState<SiteContent>(siteContent)
+	const [originalCardStyles, setOriginalCardStyles] = useState<CardStyles>(cardStyles)
 	const [isSaving, setIsSaving] = useState(false)
 	const keyInputRef = useRef<HTMLInputElement>(null)
 	const [faviconItem, setFaviconItem] = useState<FileItem | null>(null)
@@ -32,12 +34,15 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 	useEffect(() => {
 		if (open) {
 			const current = { ...siteContent }
+			const currentCardStyles = { ...cardStyles }
 			setFormData(current)
+			setCardStylesData(currentCardStyles)
 			setOriginalData(current)
+			setOriginalCardStyles(currentCardStyles)
 			setFaviconItem(null)
 			setAvatarItem(null)
 		}
-	}, [open, siteContent])
+	}, [open, siteContent, cardStyles])
 
 	useEffect(() => {
 		return () => {
@@ -73,8 +78,9 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 	const handleSave = async () => {
 		setIsSaving(true)
 		try {
-			await pushSiteContent(formData, faviconItem, avatarItem)
+			await pushSiteContent(formData, cardStylesData, faviconItem, avatarItem)
 			setSiteContent(formData)
+			setCardStyles(cardStylesData)
 			updateBrandColorVariable(formData.theme?.colorBrand)
 			setFaviconItem(null)
 			setAvatarItem(null)
@@ -97,6 +103,7 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 		}
 		// Restore to the state when dialog was opened
 		setSiteContent(originalData)
+		setCardStyles(originalCardStyles)
 		regenerateBubbles()
 		// Restore document title and meta if they were changed by preview
 		if (typeof document !== 'undefined') {
@@ -122,6 +129,7 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 
 	const handlePreview = () => {
 		setSiteContent(formData)
+		setCardStyles(cardStylesData)
 		regenerateBubbles()
 
 		// Update document title
@@ -415,6 +423,115 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 											删除
 										</motion.button>
 									)}
+								</div>
+							))}
+						</div>
+					</div>
+
+					<div>
+						<div className='mb-2 flex items-center justify-between gap-3'>
+							<label className='block text-sm font-medium'>Card 样式配置</label>
+						</div>
+						<div className='space-y-4'>
+							{Object.entries(cardStylesData).map(([key, cardStyle]: [string, any]) => (
+								<div key={key} className='rounded-lg border bg-white/60 p-4'>
+									<h3 className='mb-3 text-sm font-medium capitalize'>{key.replace(/([A-Z])/g, ' $1').trim()}</h3>
+									<div className='grid grid-cols-2 gap-3'>
+										{cardStyle.width !== undefined && (
+											<div>
+												<label className='mb-1 block text-xs text-gray-600'>Width</label>
+												<input
+													type='number'
+													value={cardStyle.width}
+													onChange={e =>
+														setCardStylesData(prev => ({
+															...prev,
+															[key]: { ...prev[key as keyof CardStyles], width: parseInt(e.target.value) || 0 }
+														}))
+													}
+													className='w-full rounded-lg border bg-gray-100 px-3 py-1.5 text-sm'
+												/>
+											</div>
+										)}
+										{cardStyle.height !== undefined && (
+											<div>
+												<label className='mb-1 block text-xs text-gray-600'>Height</label>
+												<input
+													type='number'
+													value={cardStyle.height}
+													onChange={e =>
+														setCardStylesData(prev => ({
+															...prev,
+															[key]: { ...prev[key as keyof CardStyles], height: parseInt(e.target.value) || 0 }
+														}))
+													}
+													className='w-full rounded-lg border bg-gray-100 px-3 py-1.5 text-sm'
+												/>
+											</div>
+										)}
+										<div>
+											<label className='mb-1 block text-xs text-gray-600'>Order</label>
+											<input
+												type='number'
+												value={cardStyle.order}
+												onChange={e =>
+													setCardStylesData(prev => ({
+														...prev,
+														[key]: { ...prev[key as keyof CardStyles], order: parseInt(e.target.value) || 0 }
+													}))
+												}
+												className='w-full rounded-lg border bg-gray-100 px-3 py-1.5 text-sm'
+											/>
+										</div>
+										{cardStyle.offset !== undefined && (
+											<div>
+												<label className='mb-1 block text-xs text-gray-600'>Offset</label>
+												<input
+													type='number'
+													value={cardStyle.offset}
+													onChange={e =>
+														setCardStylesData(prev => ({
+															...prev,
+															[key]: { ...prev[key as keyof CardStyles], offset: parseInt(e.target.value) || 0 }
+														}))
+													}
+													className='w-full rounded-lg border bg-gray-100 px-3 py-1.5 text-sm'
+												/>
+											</div>
+										)}
+										<div>
+											<label className='mb-1 block text-xs text-gray-600'>Offset X</label>
+											<input
+												type='number'
+												value={cardStyle.offsetX ?? ''}
+												placeholder='null'
+												onChange={e => {
+													const value = e.target.value === '' ? null : parseInt(e.target.value) || 0
+													setCardStylesData(prev => ({
+														...prev,
+														[key]: { ...prev[key as keyof CardStyles], offsetX: value }
+													}))
+												}}
+												className='w-full rounded-lg border bg-gray-100 px-3 py-1.5 text-sm'
+											/>
+										</div>
+										<div>
+											<label className='mb-1 block text-xs text-gray-600'>Offset Y</label>
+											<input
+												type='number'
+												value={cardStyle.offsetY ?? ''}
+												placeholder='null'
+												onChange={e => {
+													const value = e.target.value === '' ? null : parseInt(e.target.value) || 0
+													setCardStylesData(prev => ({
+														...prev,
+														[key]: { ...prev[key as keyof CardStyles], offsetY: value }
+													}))
+												}}
+												className='w-full rounded-lg border bg-gray-100 px-3 py-1.5 text-sm'
+											/>
+										</div>
+									</div>
 								</div>
 							))}
 						</div>
