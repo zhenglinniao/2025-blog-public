@@ -26,7 +26,7 @@ export function ColorPicker({ value = '#000000', onChange, className }: ColorPic
 		if (open && triggerRef.current) {
 			const rect = triggerRef.current.getBoundingClientRect()
 			setPosition({
-				top: rect.top - 280, // Panel height + margin
+				top: rect.top - 240,
 				left: rect.left
 			})
 		}
