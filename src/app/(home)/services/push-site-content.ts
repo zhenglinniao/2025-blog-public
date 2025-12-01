@@ -59,7 +59,9 @@ export async function pushSiteContent(
 			const artConfig = siteContent.artImages?.find(art => art.id === id)
 			if (!artConfig) continue
 
-			const path = artConfig.url.replace(/^\/+/, '')
+			// Ensure blob is saved under public directory while keeping URL as /images/...
+			const normalizedUrlPath = artConfig.url.startsWith('/') ? artConfig.url : `/${artConfig.url}`
+			const path = `public${normalizedUrlPath}`
 			if (!path) continue
 
 			toast.info(`正在上传 Art 图片 ${id}...`)
