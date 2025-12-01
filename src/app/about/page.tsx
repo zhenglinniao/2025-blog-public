@@ -157,7 +157,7 @@ export default function Page() {
 							initial={{ opacity: 0, scale: 0.6 }}
 							animate={{ opacity: 1, scale: 1 }}
 							transition={{ delay: 0 }}
-							className='flex h-[53px] w-[53px] items-center justify-center rounded-full border bg-white/40'>
+							className='flex h-[53px] w-[53px] items-center justify-center rounded-full border bg-card'>
 							<GithubSVG />
 						</motion.a>
 

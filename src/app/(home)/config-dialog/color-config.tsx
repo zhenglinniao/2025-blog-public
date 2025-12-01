@@ -10,11 +10,13 @@ interface ColorConfigProps {
 	setFormData: React.Dispatch<React.SetStateAction<SiteContent>>
 }
 
-const DEFAULT_THEME_COLORS = {
+const DEFAULT_THEME_COLORS: Required<NonNullable<SiteContent['theme']>> = {
+	colorBrand: '#35bfab',
 	colorPrimary: '#334f52',
 	colorSecondary: '#7b888e',
 	colorBg: '#eeeeee',
-	colorBorder: '#ffffff'
+	colorBorder: '#ffffff',
+	colorCard: '#ffffff66'
 }
 
 interface ColorPreset {
@@ -140,6 +142,10 @@ export function ColorConfig({ formData, setFormData }: ColorConfigProps) {
 					<div className='flex items-center gap-3'>
 						<ColorPicker value={theme.colorBorder ?? DEFAULT_THEME_COLORS.colorBorder} onChange={value => handleThemeColorChange('colorBorder', value)} />
 						<span className='text-xs'>边框色</span>
+					</div>
+					<div className='flex items-center gap-3'>
+						<ColorPicker value={theme.colorCard ?? DEFAULT_THEME_COLORS.colorCard} onChange={value => handleThemeColorChange('colorCard', value)} />
+						<span className='text-xs'>卡片色</span>
 					</div>
 				</div>
 			</div>

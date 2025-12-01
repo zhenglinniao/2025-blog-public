@@ -90,9 +90,7 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 			// Calculate removed art images so that we can delete files in repo
 			const originalArtImages = originalData.artImages ?? []
 			const currentArtImages = formData.artImages ?? []
-			const removedArtImages = originalArtImages.filter(
-				orig => !currentArtImages.some(current => current.id === orig.id)
-			)
+			const removedArtImages = originalArtImages.filter(orig => !currentArtImages.some(current => current.id === orig.id))
 
 			await pushSiteContent(formData, cardStylesData, faviconItem, avatarItem, artImageUploads, removedArtImages)
 			setSiteContent(formData)
@@ -145,40 +143,27 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 	const updateThemeVariables = (theme?: SiteContent['theme']) => {
 		if (typeof document === 'undefined' || !theme) return
 
-		const { colorBrand, colorPrimary, colorSecondary, colorBg, colorBorder } = theme
+		const { colorBrand, colorPrimary, colorSecondary, colorBg, colorBorder, colorCard } = theme
 
 		const root = document.documentElement
-		const body = document.body
 
 		if (colorBrand) {
 			root.style.setProperty('--color-brand', colorBrand)
-			if (body) {
-				body.style.setProperty('--color-brand', colorBrand)
-			}
 		}
 		if (colorPrimary) {
 			root.style.setProperty('--color-primary', colorPrimary)
-			if (body) {
-				body.style.setProperty('--color-primary', colorPrimary)
-			}
 		}
 		if (colorSecondary) {
 			root.style.setProperty('--color-secondary', colorSecondary)
-			if (body) {
-				body.style.setProperty('--color-secondary', colorSecondary)
-			}
 		}
 		if (colorBg) {
 			root.style.setProperty('--color-bg', colorBg)
-			if (body) {
-				body.style.setProperty('--color-bg', colorBg)
-			}
 		}
 		if (colorBorder) {
 			root.style.setProperty('--color-border', colorBorder)
-			if (body) {
-				body.style.setProperty('--color-border', colorBorder)
-			}
+		}
+		if (colorCard) {
+			root.style.setProperty('--color-card', colorCard)
 		}
 	}
 

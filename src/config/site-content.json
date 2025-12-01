@@ -8,7 +8,8 @@
 		"colorPrimary": "#334f52",
 		"colorSecondary": "#7b888e",
 		"colorBg": "#eeeeee",
-		"colorBorder": "#ffffff"
+		"colorBorder": "#ffffff",
+		"colorCard": "#ffffff66"
 	},
 	"backgroundColors": [
 		"#EDDD62",
