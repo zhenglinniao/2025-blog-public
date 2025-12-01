@@ -6,11 +6,22 @@
 	"theme": {
 		"colorBrand": "#35bfab"
 	},
-	"backgroundColors": ["#EDDD62", "#9EE7D1", "#84D68A", "#EDDD62", "#88E6E5", "#a7f3d0"],
+	"backgroundColors": [
+		"#EDDD62",
+		"#9EE7D1",
+		"#84D68A",
+		"#EDDD62",
+		"#88E6E5",
+		"#a7f3d0"
+	],
 	"artImages": [
 		{
 			"id": "cat",
 			"url": "/images/art/cat.png"
+		},
+		{
+			"id": "06f1d66d39e8d6e5",
+			"url": "/images/art/06f1d66d39e8d6e5.webp"
 		}
 	],
 	"currentArtImageId": "cat"
