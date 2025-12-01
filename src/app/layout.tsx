@@ -1,7 +1,6 @@
 import '@/styles/globals.css'
 
 import type { Metadata } from 'next'
-import type { CSSProperties } from 'react'
 import Layout from '@/layout'
 import Head from '@/layout/head'
 import siteContent from '@/config/site-content.json'
@@ -26,12 +25,14 @@ export const metadata: Metadata = {
 
 const htmlStyle = {
 	cursor: 'url(/images/cursor.svg) 2 1, auto',
-	'--color-brand': theme?.colorBrand,
-	'--color-primary': theme?.colorPrimary,
-	'--color-secondary': theme?.colorSecondary,
-	'--color-bg': theme?.colorBg,
-	'--color-border': theme?.colorBorder,
-	'--color-card': theme?.colorCard
+	'--color-brand': theme.colorBrand,
+	'--color-primary': theme.colorPrimary,
+	'--color-secondary': theme.colorSecondary,
+	'--color-brand-secondary': theme.colorBrandSecondary,
+	'--color-bg': theme.colorBg,
+	'--color-border': theme.colorBorder,
+	'--color-card': theme.colorCard,
+	'--color-article': theme.colorArticle
 }
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

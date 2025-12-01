@@ -103,7 +103,7 @@ export default function NavCard() {
 		if (form === 'mini') return { width: 64, height: 64 }
 		else if (form === 'icons') return { width: 340, height: 64 }
 		else return { width: styles.width, height: styles.height }
-	}, [form])
+	}, [form, styles])
 
 	useEffect(() => {
 		if (form === 'icons' && activeIndex !== undefined && hoveredIndex !== activeIndex) {

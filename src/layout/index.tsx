@@ -1,5 +1,5 @@
 'use client'
-import { PropsWithChildren, useEffect } from 'react'
+import { PropsWithChildren } from 'react'
 import { useCenterInit } from '@/hooks/use-center'
 import BlurredBubblesBackground from './backgrounds/blurred-bubbles'
 import NavCard from '@/components/nav-card'
@@ -15,23 +15,11 @@ export default function Layout({ children }: PropsWithChildren) {
 	const { siteContent, regenerateKey } = useConfigStore()
 	const { maxSM, init } = useSize()
 
-	useEffect(() => {
-		if (typeof document === 'undefined') return
-		const color = siteContent.theme?.colorBrand
-		if (color) {
-			document.documentElement.style.setProperty('--color-brand', color)
-			if (document.body) {
-				document.body.style.setProperty('--color-brand', color)
-			}
-		}
-	}, [siteContent.theme?.colorBrand])
-
 	return (
 		<>
 			<Toaster
 				position='bottom-right'
 				richColors
-				// closeButton
 				icons={{
 					success: <CircleCheckIcon className='size-4' />,
 					info: <InfoIcon className='size-4' />,

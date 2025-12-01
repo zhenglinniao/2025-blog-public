@@ -99,14 +99,14 @@
 }
 
 @utility text-linear {
-	background: linear-gradient(to right bottom, #2a91be 40%, #afe68c);
+	background: linear-gradient(to right bottom, #0003 0%, #aaa1), linear-gradient(to right bottom, var(--color-brand) 40%, var(--color-brand-secondary));
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 	background-clip: text;
 }
 
 @utility bg-linear {
-	background: linear-gradient(to right bottom, var(--color-brand) 0%, #1fc9e7);
+	background: linear-gradient(to right bottom, var(--color-brand) 0%, var(--color-brand-secondary));
 	color: white;
 }
 

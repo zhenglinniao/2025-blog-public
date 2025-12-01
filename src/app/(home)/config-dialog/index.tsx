@@ -143,28 +143,17 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 	const updateThemeVariables = (theme?: SiteContent['theme']) => {
 		if (typeof document === 'undefined' || !theme) return
 
-		const { colorBrand, colorPrimary, colorSecondary, colorBg, colorBorder, colorCard } = theme
+		const { colorBrand, colorBrandSecondary, colorPrimary, colorSecondary, colorBg, colorBorder, colorCard } = theme
 
 		const root = document.documentElement
 
-		if (colorBrand) {
-			root.style.setProperty('--color-brand', colorBrand)
-		}
-		if (colorPrimary) {
-			root.style.setProperty('--color-primary', colorPrimary)
-		}
-		if (colorSecondary) {
-			root.style.setProperty('--color-secondary', colorSecondary)
-		}
-		if (colorBg) {
-			root.style.setProperty('--color-bg', colorBg)
-		}
-		if (colorBorder) {
-			root.style.setProperty('--color-border', colorBorder)
-		}
-		if (colorCard) {
-			root.style.setProperty('--color-card', colorCard)
-		}
+		if (colorBrand) root.style.setProperty('--color-brand', colorBrand)
+		if (colorBrandSecondary) root.style.setProperty('--color-brand-secondary', colorBrandSecondary)
+		if (colorPrimary) root.style.setProperty('--color-primary', colorPrimary)
+		if (colorSecondary) root.style.setProperty('--color-secondary', colorSecondary)
+		if (colorBg) root.style.setProperty('--color-bg', colorBg)
+		if (colorBorder) root.style.setProperty('--color-border', colorBorder)
+		if (colorCard) root.style.setProperty('--color-card', colorCard)
 	}
 
 	const handlePreview = () => {
@@ -180,6 +169,7 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 				metaDescription.setAttribute('content', formData.meta.description)
 			}
 		}
+		console.log('theme', formData.theme)
 		updateThemeVariables(formData.theme)
 
 		onClose()
