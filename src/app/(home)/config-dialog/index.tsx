@@ -97,7 +97,7 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 			await pushSiteContent(formData, cardStylesData, faviconItem, avatarItem, artImageUploads, removedArtImages)
 			setSiteContent(formData)
 			setCardStyles(cardStylesData)
-			updateBrandColorVariable(formData.theme?.colorBrand)
+			updateThemeVariables(formData.theme)
 			setFaviconItem(null)
 			setAvatarItem(null)
 			setArtImageUploads({})
@@ -135,18 +135,50 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 				metaDescription.setAttribute('content', originalData.meta.description)
 			}
 		}
-		updateBrandColorVariable(originalData.theme?.colorBrand)
+		updateThemeVariables(originalData.theme)
 		setFaviconItem(null)
 		setAvatarItem(null)
 		setArtImageUploads({})
 		onClose()
 	}
 
-	const updateBrandColorVariable = (color?: string) => {
-		if (typeof document === 'undefined' || !color) return
-		document.documentElement.style.setProperty('--color-brand', color)
-		if (document.body) {
-			document.body.style.setProperty('--color-brand', color)
+	const updateThemeVariables = (theme?: SiteContent['theme']) => {
+		if (typeof document === 'undefined' || !theme) return
+
+		const { colorBrand, colorPrimary, colorSecondary, colorBg, colorBorder } = theme
+
+		const root = document.documentElement
+		const body = document.body
+
+		if (colorBrand) {
+			root.style.setProperty('--color-brand', colorBrand)
+			if (body) {
+				body.style.setProperty('--color-brand', colorBrand)
+			}
+		}
+		if (colorPrimary) {
+			root.style.setProperty('--color-primary', colorPrimary)
+			if (body) {
+				body.style.setProperty('--color-primary', colorPrimary)
+			}
+		}
+		if (colorSecondary) {
+			root.style.setProperty('--color-secondary', colorSecondary)
+			if (body) {
+				body.style.setProperty('--color-secondary', colorSecondary)
+			}
+		}
+		if (colorBg) {
+			root.style.setProperty('--color-bg', colorBg)
+			if (body) {
+				body.style.setProperty('--color-bg', colorBg)
+			}
+		}
+		if (colorBorder) {
+			root.style.setProperty('--color-border', colorBorder)
+			if (body) {
+				body.style.setProperty('--color-border', colorBorder)
+			}
 		}
 	}
 
@@ -163,7 +195,7 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 				metaDescription.setAttribute('content', formData.meta.description)
 			}
 		}
-		updateBrandColorVariable(formData.theme?.colorBrand)
+		updateThemeVariables(formData.theme)
 
 		onClose()
 	}

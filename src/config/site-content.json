@@ -4,7 +4,11 @@
 		"description": "YYsuni 的个人博客，记录前端开发、探索笔记。前端 UI 更新代码仓库。"
 	},
 	"theme": {
-		"colorBrand": "#35bfab"
+		"colorBrand": "#35bfab",
+		"colorPrimary": "#334f52",
+		"colorSecondary": "#7b888e",
+		"colorBg": "#eeeeee",
+		"colorBorder": "#ffffff"
 	},
 	"backgroundColors": [
 		"#EDDD62",
