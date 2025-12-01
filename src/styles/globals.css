@@ -41,19 +41,19 @@
 		appearance: none;
 		height: 6px;
 		border-radius: 9999px;
-		background: linear-gradient(90deg, var(--color-brand) 0%, var(--color-brand-light) 100%);
+		background: linear-gradient(90deg, var(--color-brand) 0%, color-mix(in srgb, var(--color-brand) 50%, transparent) 100%);
 	}
 
 	.range-track::-webkit-slider-runnable-track {
 		height: 6px;
 		border-radius: 9999px;
-		background: linear-gradient(90deg, 0%, var(--color-brand-light) 100%);
+		background: linear-gradient(90deg, 0%, color-mix(in srgb, var(--color-brand) 50%, transparent) 100%);
 	}
 
 	.range-track::-moz-range-track {
 		height: 6px;
 		border-radius: 9999px;
-		background: linear-gradient(90deg, var(--color-brand) 0%, var(--color-brand-light) 100%);
+		background: linear-gradient(90deg, var(--color-brand) 0%, color-mix(in srgb, var(--color-brand) 50%, transparent) 100%);
 	}
 
 	.range-track::-webkit-slider-thumb {
@@ -64,7 +64,7 @@
 		background: var(--color-brand);
 		border: 2px solid white;
 		margin-top: -5px;
-		box-shadow: 0 5px 12px var(--color-brand-light);
+		box-shadow: 0 5px 12px color-mix(in srgb, var(--color-brand) 50%, transparent);
 	}
 
 	.range-track::-moz-range-thumb {
@@ -73,7 +73,7 @@
 		border-radius: 9999px;
 		background: var(--color-brand);
 		border: 2px solid white;
-		box-shadow: 0 5px 12px var(--color-brand-light);
+		box-shadow: 0 5px 12px color-mix(in srgb, var(--color-brand) 50%, transparent);
 	}
 
 	.windows {
