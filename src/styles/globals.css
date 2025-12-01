@@ -119,6 +119,16 @@
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
+@utility no-spinner {
+	&::-webkit-outer-spin-button,
+	&::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+
+	-moz-appearance: textfield;
+}
+
 @keyframes heartbeat-frame {
 	0%,
 	100% {

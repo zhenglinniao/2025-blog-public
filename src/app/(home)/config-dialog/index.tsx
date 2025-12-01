@@ -8,7 +8,7 @@ import { useAuthStore } from '@/hooks/use-auth'
 import { useConfigStore } from '../stores/config-store'
 import { pushSiteContent } from '../services/push-site-content'
 import type { SiteContent, CardStyles } from '../stores/config-store'
-import { SiteSettings, type FileItem } from './site-settings'
+import { SiteSettings, type FileItem, type ArtImageUploads } from './site-settings'
 import { ColorConfig } from './color-config'
 import { HomeLayout } from './home-layout'
 
@@ -31,6 +31,7 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 	const keyInputRef = useRef<HTMLInputElement>(null)
 	const [faviconItem, setFaviconItem] = useState<FileItem | null>(null)
 	const [avatarItem, setAvatarItem] = useState<FileItem | null>(null)
+	const [artImageUploads, setArtImageUploads] = useState<ArtImageUploads>({})
 
 	useEffect(() => {
 		if (open) {
@@ -42,6 +43,7 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 			setOriginalCardStyles(currentCardStyles)
 			setFaviconItem(null)
 			setAvatarItem(null)
+			setArtImageUploads({})
 			setActiveTab('site')
 		}
 	}, [open, siteContent, cardStyles])
@@ -55,8 +57,13 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 			if (avatarItem?.type === 'file') {
 				URL.revokeObjectURL(avatarItem.previewUrl)
 			}
+			Object.values(artImageUploads).forEach(item => {
+				if (item.type === 'file') {
+					URL.revokeObjectURL(item.previewUrl)
+				}
+			})
 		}
-	}, [faviconItem, avatarItem])
+	}, [faviconItem, avatarItem, artImageUploads])
 
 	const handleChoosePrivateKey = async (file: File) => {
 		try {
@@ -80,12 +87,13 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 	const handleSave = async () => {
 		setIsSaving(true)
 		try {
-			await pushSiteContent(formData, cardStylesData, faviconItem, avatarItem)
+			await pushSiteContent(formData, cardStylesData, faviconItem, avatarItem, artImageUploads)
 			setSiteContent(formData)
 			setCardStyles(cardStylesData)
 			updateBrandColorVariable(formData.theme?.colorBrand)
 			setFaviconItem(null)
 			setAvatarItem(null)
+			setArtImageUploads({})
 			onClose()
 		} catch (error: any) {
 			console.error('Failed to save:', error)
@@ -103,6 +111,11 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 		if (avatarItem?.type === 'file') {
 			URL.revokeObjectURL(avatarItem.previewUrl)
 		}
+		Object.values(artImageUploads).forEach(item => {
+			if (item.type === 'file') {
+				URL.revokeObjectURL(item.previewUrl)
+			}
+		})
 		// Restore to the state when dialog was opened
 		setSiteContent(originalData)
 		setCardStyles(originalCardStyles)
@@ -118,6 +131,7 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 		updateBrandColorVariable(originalData.theme?.colorBrand)
 		setFaviconItem(null)
 		setAvatarItem(null)
+		setArtImageUploads({})
 		onClose()
 	}
 
@@ -169,7 +183,7 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 				}}
 			/>
 
-			<DialogModal open={open} onClose={handleCancel} className='card scrollbar-none h-[600px] max-h-[90vh] w-[640px] overflow-y-auto'>
+			<DialogModal open={open} onClose={handleCancel} className='card scrollbar-none max-h-[90vh] min-h-[600px] w-[640px] overflow-y-auto'>
 				<div className='mb-6 flex items-center justify-between'>
 					<div className='flex gap-1'>
 						{tabs.map(tab => (
@@ -180,14 +194,7 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 									activeTab === tab.id ? 'text-brand' : 'text-gray-600 hover:text-gray-900'
 								}`}>
 								{tab.label}
-								{activeTab === tab.id && (
-									<motion.div
-										layoutId='activeTab'
-										className='bg-brand absolute right-0 bottom-0 left-0 h-0.5'
-										initial={false}
-										transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-									/>
-								)}
+								{activeTab === tab.id && <div className='bg-brand absolute right-0 bottom-0 left-0 h-0.5' />}
 							</button>
 						))}
 					</div>
@@ -222,6 +229,8 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 							setFaviconItem={setFaviconItem}
 							avatarItem={avatarItem}
 							setAvatarItem={setAvatarItem}
+							artImageUploads={artImageUploads}
+							setArtImageUploads={setArtImageUploads}
 						/>
 					)}
 					{activeTab === 'color' && <ColorConfig formData={formData} setFormData={setFormData} />}
