@@ -87,7 +87,14 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 	const handleSave = async () => {
 		setIsSaving(true)
 		try {
-			await pushSiteContent(formData, cardStylesData, faviconItem, avatarItem, artImageUploads)
+			// Calculate removed art images so that we can delete files in repo
+			const originalArtImages = originalData.artImages ?? []
+			const currentArtImages = formData.artImages ?? []
+			const removedArtImages = originalArtImages.filter(
+				orig => !currentArtImages.some(current => current.id === orig.id)
+			)
+
+			await pushSiteContent(formData, cardStylesData, faviconItem, avatarItem, artImageUploads, removedArtImages)
 			setSiteContent(formData)
 			setCardStyles(cardStylesData)
 			updateBrandColorVariable(formData.theme?.colorBrand)

@@ -6,12 +6,15 @@ import { fileToBase64NoPrefix } from '@/lib/file-utils'
 import type { SiteContent, CardStyles } from '../stores/config-store'
 import type { FileItem, ArtImageUploads } from '../config-dialog/site-settings'
 
+type ArtImageConfig = SiteContent['artImages'][number]
+
 export async function pushSiteContent(
 	siteContent: SiteContent,
 	cardStyles: CardStyles,
 	faviconItem?: FileItem | null,
 	avatarItem?: FileItem | null,
-	artImageUploads?: ArtImageUploads
+	artImageUploads?: ArtImageUploads,
+	removedArtImages?: ArtImageConfig[]
 ): Promise<void> {
 	const token = await getAuthToken()
 
@@ -72,6 +75,20 @@ export async function pushSiteContent(
 				mode: '100644',
 				type: 'blob',
 				sha: blobData.sha
+			})
+		}
+	}
+
+	// Handle art images deletion
+	if (removedArtImages && removedArtImages.length > 0) {
+		for (const art of removedArtImages) {
+			const normalizedUrlPath = art.url.startsWith('/') ? art.url : `/${art.url}`
+			const path = `public${normalizedUrlPath}`
+			treeItems.push({
+				path,
+				mode: '100644',
+				type: 'blob',
+				sha: null
 			})
 		}
 	}
