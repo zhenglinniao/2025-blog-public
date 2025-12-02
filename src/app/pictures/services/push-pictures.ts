@@ -2,10 +2,10 @@ import { toBase64Utf8, getRef, createTree, createCommit, updateRef, createBlob, 
 import { fileToBase64NoPrefix, hashFileSHA256 } from '@/lib/file-utils'
 import { getAuthToken } from '@/lib/auth'
 import { GITHUB_CONFIG } from '@/consts'
-import type { Picture } from '../components/picture-card'
 import type { ImageItem } from '../../projects/components/image-upload-dialog'
 import { getFileExt } from '@/lib/utils'
 import { toast } from 'sonner'
+import { Picture } from '../page'
 
 export type PushPicturesParams = {
 	pictures: Picture[]
