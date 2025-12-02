@@ -21,7 +21,7 @@ type ColorPreset = {
 
 const COLOR_PRESETS: ColorPreset[] = [
 	{
-		name: '默认配色',
+		name: '春暖',
 		theme: {
 			colorBrand: '#35bfab',
 			colorBrandSecondary: '#1fc9e7',
@@ -35,13 +35,27 @@ const COLOR_PRESETS: ColorPreset[] = [
 		backgroundColors: ['#EDDD62', '#9EE7D1', '#84D68A', '#EDDD62', '#88E6E5', '#a7f3d0']
 	},
 	{
-		name: '秋日',
+		name: '秋实',
 		theme: {
 			colorPrimary: '#4E3F42',
 			colorBrand: '#de4331',
 			colorBrandSecondary: '#FCC841'
 		},
 		backgroundColors: ['#FCC841', '#DFEFFC', '#DEDE92', '#DE4331', '#FE9750', '#FCC841']
+	},
+	{
+		name: '夜晚',
+		theme: {
+			colorBrand: '#3a8fac',
+			colorPrimary: '#e6e8e8',
+			colorSecondary: '#acadae',
+			colorBrandSecondary: '#51d0b9',
+			colorBg: '#505050',
+			colorBorder: '#8a8a8a5e',
+			colorCard: '#34343466',
+			colorArticle: '#333c'
+		},
+		backgroundColors: ['#669590', '#9ec3e7']
 	}
 ]
 

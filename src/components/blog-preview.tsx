@@ -30,7 +30,7 @@ export function BlogPreview({ markdown, title, tags, date, summary, cover, slug 
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
 				transition={{ delay: INIT_DELAY }}
-				className='card static flex-1 overflow-auto rounded-xl bg-white/80 p-8'>
+				className='card bg-article static flex-1 overflow-auto rounded-xl p-8'>
 				<div>
 					<div className='text-center text-2xl font-semibold'>{title}</div>
 

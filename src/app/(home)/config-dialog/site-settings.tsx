@@ -215,7 +215,7 @@ export function SiteSettings({
 					type='text'
 					value={formData.meta.title}
 					onChange={e => setFormData({ ...formData, meta: { ...formData.meta, title: e.target.value } })}
-					className='w-full rounded-lg border bg-gray-100 px-4 py-2 text-sm'
+					className='bg-secondary/10 w-full rounded-lg border px-4 py-2 text-sm'
 				/>
 			</div>
 
@@ -225,7 +225,7 @@ export function SiteSettings({
 					value={formData.meta.description}
 					onChange={e => setFormData({ ...formData, meta: { ...formData.meta, description: e.target.value } })}
 					rows={3}
-					className='w-full rounded-lg border bg-gray-100 px-4 py-2 text-sm'
+					className='bg-secondary/10 w-full rounded-lg border px-4 py-2 text-sm'
 				/>
 			</div>
 

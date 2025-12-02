@@ -74,7 +74,7 @@ export default function ImageUploadDialog({ currentImage, onClose, onSubmit }: I
 					<input ref={fileInputRef} type='file' accept='image/*' className='hidden' onChange={handleFileSelect} />
 					<div
 						onClick={() => fileInputRef.current?.click()}
-						className='mx-auto flex h-32 w-32 cursor-pointer items-center justify-center rounded-xl border border-gray-300 bg-gray-100 transition-colors hover:bg-gray-200'>
+						className='mx-auto flex h-32 w-32 cursor-pointer items-center justify-center rounded-xl border border-gray-300 bg-secondary/10 transition-colors hover:bg-gray-200'>
 						{previewFile ? (
 							<img src={previewFile.previewUrl} alt='preview' className='h-full w-full rounded-xl object-cover' />
 						) : (

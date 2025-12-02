@@ -155,7 +155,7 @@ export default function NavCard() {
 									stiffness: 400,
 									damping: 30
 								}}
-								style={{ backgroundImage: 'linear-gradient(to right bottom, #FFFFFF 0%, #fafafa 80%)' }}
+								style={{ backgroundImage: 'linear-gradient(to right bottom, var(--color-border) 60%, var(--color-card) 100%)' }}
 							/>
 
 							{list.map((item, index) => (

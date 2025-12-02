@@ -108,7 +108,7 @@
 
 /* Code */
 .prose code {
-	background: var(--color-blue-50);
+	@apply bg-brand-secondary/8;
 	border: 1px solid rgba(0, 0, 0, 0.06);
 	padding: 0.15em 0.4em;
 	border-radius: 6px;

@@ -29,7 +29,7 @@ export default function ClockCard() {
 
 	return (
 		<Card order={styles.order} width={styles.width} height={styles.height} x={x} y={y} className='p-2'>
-			<div className='flex h-full w-full items-center justify-center gap-1.5 rounded-4xl bg-[#DDDDDD]'>
+			<div className='bg-secondary/20 flex h-full w-full items-center justify-center gap-1.5 rounded-4xl'>
 				<SevenSegmentDigit value={parseInt(hours[0])} />
 				<SevenSegmentDigit value={parseInt(hours[1])} />
 				<Colon />
@@ -60,7 +60,7 @@ function SevenSegmentDigit({ value, className }: SevenSegmentDigitProps) {
 	}
 
 	const segments = segmentMap[value as keyof typeof segmentMap] || segmentMap[0]
-	const activeColor = '#334F52'
+	const activeColor = 'var(--color-primary)'
 	const inactiveColor = 'rgba(0, 0, 0, 0.05)'
 
 	return (

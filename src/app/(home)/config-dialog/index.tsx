@@ -143,7 +143,7 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 	const updateThemeVariables = (theme?: SiteContent['theme']) => {
 		if (typeof document === 'undefined' || !theme) return
 
-		const { colorBrand, colorBrandSecondary, colorPrimary, colorSecondary, colorBg, colorBorder, colorCard } = theme
+		const { colorBrand, colorBrandSecondary, colorPrimary, colorSecondary, colorBg, colorBorder, colorCard, colorArticle } = theme
 
 		const root = document.documentElement
 
@@ -154,9 +154,11 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 		if (colorBg) root.style.setProperty('--color-bg', colorBg)
 		if (colorBorder) root.style.setProperty('--color-border', colorBorder)
 		if (colorCard) root.style.setProperty('--color-card', colorCard)
+		if (colorArticle) root.style.setProperty('--color-article', colorArticle)
 	}
 
 	const handlePreview = () => {
+		console.log('formData', formData)
 		setSiteContent(formData)
 		setCardStyles(cardStylesData)
 		regenerateBubbles()
@@ -169,7 +171,6 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 				metaDescription.setAttribute('content', formData.meta.description)
 			}
 		}
-		console.log('theme', formData.theme)
 		updateThemeVariables(formData.theme)
 
 		onClose()
@@ -205,7 +206,7 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 								key={tab.id}
 								onClick={() => setActiveTab(tab.id)}
 								className={`relative px-4 py-2 text-sm font-medium transition-colors ${
-									activeTab === tab.id ? 'text-brand' : 'text-gray-600 hover:text-gray-900'
+									activeTab === tab.id ? 'text-brand' : 'text-secondary hover:text-primary'
 								}`}>
 								{tab.label}
 								{activeTab === tab.id && <div className='bg-brand absolute right-0 bottom-0 left-0 h-0.5' />}

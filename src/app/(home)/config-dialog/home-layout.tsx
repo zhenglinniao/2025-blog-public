@@ -53,7 +53,7 @@ export function HomeLayout({ cardStylesData, setCardStylesData }: HomeLayoutProp
 												}
 											}))
 										}
-										className='no-spinner w-full rounded-lg border bg-gray-100 px-3 py-1.5 text-xs'
+										className='no-spinner w-full rounded-lg border bg-secondary/10 px-3 py-1.5 text-xs'
 									/>
 								) : (
 									<span className='text-xs text-gray-400'>-</span>
@@ -73,7 +73,7 @@ export function HomeLayout({ cardStylesData, setCardStylesData }: HomeLayoutProp
 												}
 											}))
 										}
-										className='no-spinner w-full rounded-lg border bg-gray-100 px-3 py-1.5 text-xs'
+										className='no-spinner w-full rounded-lg border bg-secondary/10 px-3 py-1.5 text-xs'
 									/>
 								) : (
 									<span className='text-xs text-gray-400'>-</span>
@@ -92,7 +92,7 @@ export function HomeLayout({ cardStylesData, setCardStylesData }: HomeLayoutProp
 											}
 										}))
 									}
-									className='w-full rounded-lg border bg-gray-100 px-3 py-1.5 text-xs'
+									className='w-full rounded-lg border bg-secondary/10 px-3 py-1.5 text-xs'
 								/>
 							</td>
 							<td className='px-3 py-2'>
@@ -110,7 +110,7 @@ export function HomeLayout({ cardStylesData, setCardStylesData }: HomeLayoutProp
 											}
 										}))
 									}}
-									className='no-spinner w-full rounded-lg border bg-gray-100 px-3 py-1.5 text-xs'
+									className='no-spinner w-full rounded-lg border bg-secondary/10 px-3 py-1.5 text-xs'
 								/>
 							</td>
 							<td className='px-3 py-2'>
@@ -128,7 +128,7 @@ export function HomeLayout({ cardStylesData, setCardStylesData }: HomeLayoutProp
 											}
 										}))
 									}}
-									className='no-spinner w-full rounded-lg border bg-gray-100 px-3 py-1.5 text-xs'
+									className='no-spinner w-full rounded-lg border bg-secondary/10 px-3 py-1.5 text-xs'
 								/>
 							</td>
 						</tr>

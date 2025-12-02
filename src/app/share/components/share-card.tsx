@@ -151,7 +151,7 @@ export function ShareCard({ share, isEditMode = false, onUpdate, onDelete }: Sha
 						/>
 					) : (
 						localShare.tags.map(tag => (
-							<span key={tag} className='rounded-full bg-gray-100 px-2.5 py-0.5 text-xs text-gray-600'>
+							<span key={tag} className='rounded-full bg-secondary/10 px-2.5 py-0.5 text-xs text-gray-600'>
 								{tag}
 							</span>
 						))
