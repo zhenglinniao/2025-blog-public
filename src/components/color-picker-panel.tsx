@@ -198,7 +198,7 @@ export function ColorPickerPanel({ value, onChange, style, className }: ColorPic
 	return (
 		<div
 			data-color-picker-panel
-			className={cn('w-64 rounded-lg border bg-white p-3 shadow-lg select-none', className, show ? 'opacity-100' : 'opacity-0')}
+			className={cn('w-56 rounded-lg border bg-white p-3 shadow-lg select-none', className, show ? 'opacity-100' : 'opacity-0')}
 			style={style}>
 			{/* Saturation and brightness picker */}
 			<div

@@ -37,6 +37,7 @@ const COLOR_PRESETS: ColorPreset[] = [
 	{
 		name: '秋日',
 		theme: {
+			colorPrimary: '#4E3F42',
 			colorBrand: '#de4331',
 			colorBrandSecondary: '#FCC841'
 		},

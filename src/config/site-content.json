@@ -5,7 +5,7 @@
 	},
 	"theme": {
 		"colorBrand": "#de4331",
-		"colorPrimary": "#334f52",
+		"colorPrimary": "#4E3F42",
 		"colorSecondary": "#7b888e",
 		"colorBrandSecondary": "#FCC841",
 		"colorBg": "#eeeeee",
@@ -13,14 +13,7 @@
 		"colorCard": "#ffffff66",
 		"colorArticle": "#ffffffcc"
 	},
-	"backgroundColors": [
-		"#FCC841",
-		"#DFEFFC",
-		"#DEDE92",
-		"#DE4331",
-		"#FE9750",
-		"#FCC841"
-	],
+	"backgroundColors": ["#FCC841", "#DFEFFC", "#DEDE92", "#DE4331", "#FE9750", "#FCC841"],
 	"artImages": [
 		{
 			"id": "cat",
