@@ -4,12 +4,20 @@ import { useState, useRef } from 'react'
 import { motion } from 'motion/react'
 import { toast } from 'sonner'
 import initialList from './list.json'
-import { PictureCard, type Picture } from './components/picture-card'
+import { RandomLayout } from './components/random-layout'
 import UploadDialog from './components/upload-dialog'
 import { pushPictures } from './services/push-pictures'
 import { useAuthStore } from '@/hooks/use-auth'
 import type { ImageItem } from '../projects/components/image-upload-dialog'
 import { useRouter } from 'next/navigation'
+
+export interface Picture {
+	id: string
+	uploadedAt: string
+	description?: string
+	image?: string
+	images?: string[]
+}
 
 export default function Page() {
 	const [pictures, setPictures] = useState<Picture[]>(initialList as Picture[])
@@ -133,15 +141,13 @@ export default function Page() {
 				}}
 			/>
 
-			<div className='flex flex-col items-center justify-center px-6 pt-32 pb-12'>
-				<div className='grid w-full max-w-[1200px] grid-cols-3 gap-6 max-lg:grid-cols-2 max-sm:grid-cols-1'>
-					{pictures.map(picture => (
-						<PictureCard key={picture.id} picture={picture} isEditMode={isEditMode} onDelete={() => handleDelete(picture)} />
-					))}
-				</div>
+			<RandomLayout pictures={pictures} />
 
-				{pictures.length === 0 && <div className='mt-16 text-center text-sm text-gray-500'>还没有上传图片，点击右上角「编辑」后即可开始上传。</div>}
-			</div>
+			{pictures.length === 0 && (
+				<div className='text-secondary flex min-h-screen items-center justify-center text-center text-sm'>
+					还没有上传图片，点击右上角「编辑」后即可开始上传。
+				</div>
+			)}
 
 			<motion.div initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }} className='absolute top-4 right-6 flex gap-3 max-sm:hidden'>
 				{isEditMode ? (

@@ -30,3 +30,7 @@ export function getFileExt(filename: string): string {
 	if (lower.endsWith('.svg')) return '.svg'
 	return '.png'
 }
+
+export function rand(a: number, b: number) {
+	return a + Math.random() * (b - a)
+}
