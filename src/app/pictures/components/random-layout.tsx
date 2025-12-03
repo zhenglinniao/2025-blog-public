@@ -97,6 +97,27 @@ const formatUploadedAt = (uploadedAt?: string) => {
 	return `${year}-${month}-${day} ${hours}:${minutes}`
 }
 
+const loadSavedOffset = (url: string): { x: number; y: number } => {
+	try {
+		const saved = localStorage.getItem(`picture-offset-${url}`)
+		if (saved) {
+			const parsed = JSON.parse(saved)
+			return { x: parsed.x || 0, y: parsed.y || 0 }
+		}
+	} catch (error) {
+		console.error('Failed to load saved offset:', error)
+	}
+	return { x: 0, y: 0 }
+}
+
+const saveOffset = (url: string, offset: { x: number; y: number }) => {
+	try {
+		localStorage.setItem(`picture-offset-${url}`, JSON.stringify(offset))
+	} catch (error) {
+		console.error('Failed to save offset:', error)
+	}
+}
+
 const FloatingImage = ({
 	url,
 	index,
@@ -115,7 +136,8 @@ const FloatingImage = ({
 	const mouseDownTimeRef = useRef<number | null>(null)
 	const [zIndex, setZIndex] = useState(index)
 	const [show, setShow] = useState(false)
-	const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
+	const [dragOffset, setDragOffset] = useState(() => loadSavedOffset(url))
+
 	useEffect(() => {
 		setTimeout(() => {
 			setShow(true)
@@ -193,10 +215,12 @@ const FloatingImage = ({
 				}}
 				onDragEnd={(_, info) => {
 					if (!isZoomed) {
-						setDragOffset({
+						const newOffset = {
 							x: dragStartOffsetRef.current.x + info.offset.x,
 							y: dragStartOffsetRef.current.y + info.offset.y
-						})
+						}
+						setDragOffset(newOffset)
+						saveOffset(url, newOffset)
 					}
 				}}
 				initial={{
@@ -206,8 +230,8 @@ const FloatingImage = ({
 					rotate: position.rotation,
 					scale: 0.6,
 					opacity: 0,
-					x: 0,
-					y: 0
+					x: dragOffset.x,
+					y: dragOffset.y
 				}}
 				animate={
 					isZoomed
