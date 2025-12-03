@@ -4,8 +4,8 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { motion } from 'motion/react'
 import { useCenterInit, useCenterStore } from '@/hooks/use-center'
 import { Picture } from '../page'
-import { cn, rand } from '@/lib/utils'
 import siteContent from '@/config/site-content.json'
+import { cn } from '@/lib/utils'
 
 interface RandomLayoutProps {
 	pictures: Picture[]
@@ -28,6 +28,7 @@ type OriginalSize = {
 interface FloatingImageProps {
 	url: string
 	index: number
+	groupIndex: number
 	position: PositionedItem
 	description?: string
 	uploadedAt?: string
@@ -40,6 +41,7 @@ interface FloatingImageProps {
 
 type UrlItem = {
 	url: string
+	groupIndex: number
 	description?: string
 	uploadedAt?: string
 	pictureId: string
@@ -49,10 +51,11 @@ type UrlItem = {
 const buildUrlList = (pictures: Picture[]): UrlItem[] => {
 	const result: UrlItem[] = []
 
-	for (const picture of pictures) {
+	for (const [index, picture] of pictures.entries()) {
 		if (picture.image) {
 			result.push({
 				url: picture.image,
+				groupIndex: index,
 				description: picture.description,
 				uploadedAt: picture.uploadedAt,
 				pictureId: picture.id,
@@ -62,12 +65,13 @@ const buildUrlList = (pictures: Picture[]): UrlItem[] => {
 
 		if (picture.images && picture.images.length > 0) {
 			result.push(
-				...picture.images.map((url, index) => ({
+				...picture.images.map((url, imageIndex) => ({
 					url,
+					groupIndex: index,
 					description: picture.description,
 					uploadedAt: picture.uploadedAt,
 					pictureId: picture.id,
-					imageIndex: index
+					imageIndex: imageIndex
 				}))
 			)
 		}
@@ -96,6 +100,7 @@ const formatUploadedAt = (uploadedAt?: string) => {
 const FloatingImage = ({
 	url,
 	index,
+	groupIndex,
 	position,
 	description,
 	uploadedAt,
@@ -105,13 +110,12 @@ const FloatingImage = ({
 	onDeleteSingle,
 	onDeleteGroup
 }: FloatingImageProps) => {
-	const { centerX, centerY, width, height } = useCenterStore()
+	const { centerX, centerY } = useCenterStore()
 	const bodyRef = useRef(document.body)
 	const mouseDownTimeRef = useRef<number | null>(null)
 	const [zIndex, setZIndex] = useState(index)
 	const [show, setShow] = useState(false)
 	const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
-	const [isHovered, setIsHovered] = useState(false)
 	useEffect(() => {
 		setTimeout(() => {
 			setShow(true)
@@ -179,8 +183,6 @@ const FloatingImage = ({
 				/>
 			)}
 			<motion.div
-				onMouseEnter={() => setIsHovered(true)}
-				onMouseLeave={() => setIsHovered(false)}
 				drag={!isZoomed}
 				dragConstraints={bodyRef}
 				dragMomentum={false}
@@ -230,18 +232,7 @@ const FloatingImage = ({
 								y: dragOffset.y
 							}
 				}
-				transition={
-					isZoomed
-						? {
-								rotate: { type: 'tween', ease: 'easeOut' },
-								x: { type: 'tween', ease: 'easeOut' },
-								y: { type: 'tween', ease: 'easeOut' }
-							}
-						: {
-								x: { type: 'tween', ease: 'easeOut' },
-								y: { type: 'tween', ease: 'easeOut' }
-							}
-				}
+				transition={{ type: 'tween', ease: 'easeOut' }}
 				className='pointer-events-auto absolute -translate-1/2'>
 				<motion.img
 					initial={{
@@ -282,19 +273,20 @@ const FloatingImage = ({
 						mouseDownTimeRef.current = null
 					}}
 					draggable={false}
-					className='cursor-pointer rounded border-8 object-cover shadow-xl select-none'
+					className={cn(
+						'group cursor-pointer rounded border-8 object-cover shadow-xl transition-[scale] select-none',
+						!isEditMode && !isZoomed && 'hover:scale-110'
+					)}
 				/>
-				{isEditMode && isHovered && !isZoomed && (
+				{isEditMode && !isZoomed && (
 					<motion.button
 						initial={{ opacity: 0, scale: 0.8 }}
 						animate={{ opacity: 1, scale: 1 }}
-						whileHover={{ scale: 1.1 }}
-						whileTap={{ scale: 0.9 }}
 						onClick={e => {
 							e.stopPropagation()
 							onDeleteSingle?.(pictureId, imageIndex)
 						}}
-						className='absolute -top-2 -right-2 rounded-full bg-red-500 p-1.5 shadow-lg transition-colors hover:bg-red-600'
+						className='absolute -top-2 -right-2 rounded-full bg-red-500 p-1.5 opacity-0 shadow-lg transition-all group-hover:opacity-100 hover:scale-105 hover:bg-red-600'
 						style={{ zIndex: 1 }}>
 						<svg xmlns='http://www.w3.org/2000/svg' className='h-3 w-3 text-white' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
 							<path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
@@ -310,7 +302,7 @@ const FloatingImage = ({
 					dragMomentum={false}
 					className='fixed min-h-[150px] w-[200px] cursor-pointer p-6 shadow'
 					style={{
-						backgroundColor: siteContent.backgroundColors[index % siteContent.backgroundColors.length],
+						backgroundColor: siteContent.backgroundColors[groupIndex % siteContent.backgroundColors.length],
 						zIndex: TOP_Z_INDEX + 1,
 						right: centerX / 3,
 						top: centerY
@@ -325,11 +317,10 @@ const FloatingImage = ({
 	)
 }
 
+// 基于唯一标识生成稳定的位置
 // 使用 ref 存储稳定的位置映射
 const positionCacheRef = new Map<string, PositionedItem>()
-
-// 基于唯一标识生成稳定的位置
-const getStablePosition = (uniqueId: string, totalCount: number, width: number, height: number): PositionedItem => {
+const getStablePosition = (uniqueId: string, width: number, height: number): PositionedItem => {
 	// 如果已有缓存，直接返回
 	if (positionCacheRef.has(uniqueId)) {
 		return positionCacheRef.get(uniqueId)!
@@ -369,7 +360,6 @@ const getStablePosition = (uniqueId: string, totalCount: number, width: number, 
 		rotation
 	}
 
-	// 缓存位置
 	positionCacheRef.set(uniqueId, position)
 	return position
 }
@@ -386,16 +376,6 @@ export const RandomLayout = ({ pictures, isEditMode = false, onDeleteSingle, onD
 	}, [])
 
 	const urls = useMemo(() => buildUrlList(pictures), [pictures])
-
-	// 清理已删除图片的位置缓存
-	useEffect(() => {
-		const currentIds = new Set(urls.map(item => `${item.pictureId}::${item.imageIndex}`))
-		for (const key of positionCacheRef.keys()) {
-			if (!currentIds.has(key)) {
-				positionCacheRef.delete(key)
-			}
-		}
-	}, [urls])
 
 	const pictureMap = useMemo(() => {
 		const map = new Map<string, Picture>()
@@ -417,14 +397,15 @@ export const RandomLayout = ({ pictures, isEditMode = false, onDeleteSingle, onD
 		<>
 			{urls.map((item, index) => {
 				const picture = pictureMap.get(item.pictureId)
-				const uniqueId = `${item.pictureId}::${item.imageIndex}`
-				const position = getStablePosition(uniqueId, urls.length, width, height)
+				const uniqueId = item.url
+				const position = getStablePosition(uniqueId, width, height)
 
 				return (
 					<FloatingImage
 						key={uniqueId}
 						url={item.url}
 						index={index}
+						groupIndex={item.groupIndex}
 						position={position}
 						description={item.description}
 						uploadedAt={item.uploadedAt}
