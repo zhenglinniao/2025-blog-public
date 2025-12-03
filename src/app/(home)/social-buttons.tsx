@@ -8,6 +8,7 @@ import { motion } from 'motion/react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { useSize } from '@/hooks/use-size'
+import { HomeDraggableLayer } from './home-draggable-layer'
 
 let delay = 100
 
@@ -31,13 +32,15 @@ export default function SocialButtons() {
 		setTimeout(() => setTertiaryShow(true), order * ANIMATION_DELAY * 1000 + 2 * delay)
 	}, [order])
 
-	const x = styles.offsetX !== null ? center.x + styles.offsetX : center.x + hiCardStyles.width / 2
+	const x = styles.offsetX !== null ? center.x + styles.offsetX : center.x + hiCardStyles.width / 2 - styles.width
 	const y = styles.offsetY !== null ? center.y + styles.offsetY : center.y + hiCardStyles.height / 2 + CARD_SPACING
 
-	if (show)
-		return (
+	if (!show) return null
+
+	return (
+		<HomeDraggableLayer cardKey='socialButtons' x={x} y={y} width={styles.width} height={styles.height}>
 			<motion.div className='absolute max-sm:static' animate={{ left: x, top: y }} initial={{ left: x, top: y }}>
-				<div className='absolute top-0 right-0 flex items-center gap-3 max-sm:static'>
+				<div className='absolute top-0 left-0 flex items-center justify-end gap-3 max-sm:static' style={{ width: styles.width }}>
 					{tertiaryShow && (
 						<motion.a
 							href='https://github.com/yysuni'
@@ -82,6 +85,6 @@ export default function SocialButtons() {
 					</motion.button>
 				</div>
 			</motion.div>
-		)
-	return null
+		</HomeDraggableLayer>
+	)
 }

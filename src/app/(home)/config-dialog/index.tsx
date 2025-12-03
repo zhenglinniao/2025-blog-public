@@ -249,7 +249,7 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 						/>
 					)}
 					{activeTab === 'color' && <ColorConfig formData={formData} setFormData={setFormData} />}
-					{activeTab === 'layout' && <HomeLayout cardStylesData={cardStylesData} setCardStylesData={setCardStylesData} />}
+					{activeTab === 'layout' && <HomeLayout cardStylesData={cardStylesData} setCardStylesData={setCardStylesData} onClose={onClose} />}
 				</div>
 			</DialogModal>
 		</>

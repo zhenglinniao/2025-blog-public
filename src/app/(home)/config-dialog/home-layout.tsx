@@ -1,6 +1,9 @@
 'use client'
 
-import type { CardStyles } from '../stores/config-store'
+import { motion } from 'motion/react'
+import { useConfigStore, type CardStyles } from '../stores/config-store'
+import { useLayoutEditStore } from '../stores/layout-edit-store'
+import cardStylesDefault from '@/config/card-styles-default.json'
 
 const CARD_LABELS: Record<string, string> = {
 	artCard: '首图',
@@ -12,18 +15,48 @@ const CARD_LABELS: Record<string, string> = {
 	shareCard: '分享',
 	articleCard: '文章',
 	writeButtons: '写作',
-	navCard: '导航'
+	navCard: '导航',
+	likePosition: '点赞'
 }
 
 interface HomeLayoutProps {
 	cardStylesData: CardStyles
 	setCardStylesData: React.Dispatch<React.SetStateAction<CardStyles>>
+	onClose?: () => void
 }
 
-export function HomeLayout({ cardStylesData, setCardStylesData }: HomeLayoutProps) {
+export function HomeLayout({ cardStylesData, setCardStylesData, onClose }: HomeLayoutProps) {
+	const { setCardStyles } = useConfigStore()
+	const startEditing = useLayoutEditStore(state => state.startEditing)
+	const editing = useLayoutEditStore(state => state.editing)
+
+	const handleStartManualLayout = () => {
+		setCardStyles(cardStylesData)
+		startEditing()
+		onClose?.()
+	}
+
+	const handleReset = () => {
+		setCardStylesData(cardStylesDefault as CardStyles)
+	}
+
 	return (
 		<div className='overflow-x-auto'>
-			<div className='text-secondary text-sm'>（偏移代表相对平面中心的偏移，比如 (0,0) 代表卡牌左上角为屏幕中心）</div>
+			<div className='flex items-center justify-between'>
+				<div className='text-secondary text-sm'>（偏移代表相对中心的偏移）</div>
+				<div className='flex shrink-0 items-center gap-2 whitespace-nowrap'>
+					<button type='button' onClick={handleReset} className='bg-card rounded-xl border px-3 py-1.5 text-xs font-medium'>
+						重置
+					</button>
+					<button
+						type='button'
+						onClick={handleStartManualLayout}
+						disabled={editing}
+						className='bg-card rounded-xl border px-3 py-1.5 text-xs font-medium disabled:cursor-not-allowed disabled:opacity-50'>
+						{editing ? '主页正在编辑中' : '进入主页拖拽布局'}
+					</button>
+				</div>
+			</div>
 			<table className='mt-3 w-full border-collapse text-sm'>
 				<thead>
 					<tr className='border-b text-xs text-gray-500'>
@@ -53,7 +86,7 @@ export function HomeLayout({ cardStylesData, setCardStylesData }: HomeLayoutProp
 												}
 											}))
 										}
-										className='no-spinner w-full rounded-lg border bg-secondary/10 px-3 py-1.5 text-xs'
+										className='no-spinner bg-secondary/10 w-full rounded-lg border px-3 py-1.5 text-xs'
 									/>
 								) : (
 									<span className='text-xs text-gray-400'>-</span>
@@ -73,7 +106,7 @@ export function HomeLayout({ cardStylesData, setCardStylesData }: HomeLayoutProp
 												}
 											}))
 										}
-										className='no-spinner w-full rounded-lg border bg-secondary/10 px-3 py-1.5 text-xs'
+										className='no-spinner bg-secondary/10 w-full rounded-lg border px-3 py-1.5 text-xs'
 									/>
 								) : (
 									<span className='text-xs text-gray-400'>-</span>
@@ -92,7 +125,7 @@ export function HomeLayout({ cardStylesData, setCardStylesData }: HomeLayoutProp
 											}
 										}))
 									}
-									className='w-full rounded-lg border bg-secondary/10 px-3 py-1.5 text-xs'
+									className='bg-secondary/10 w-full rounded-lg border px-3 py-1.5 text-xs'
 								/>
 							</td>
 							<td className='px-3 py-2'>
@@ -110,7 +143,7 @@ export function HomeLayout({ cardStylesData, setCardStylesData }: HomeLayoutProp
 											}
 										}))
 									}}
-									className='no-spinner w-full rounded-lg border bg-secondary/10 px-3 py-1.5 text-xs'
+									className='no-spinner bg-secondary/10 w-full rounded-lg border px-3 py-1.5 text-xs'
 								/>
 							</td>
 							<td className='px-3 py-2'>
@@ -128,7 +161,7 @@ export function HomeLayout({ cardStylesData, setCardStylesData }: HomeLayoutProp
 											}
 										}))
 									}}
-									className='no-spinner w-full rounded-lg border bg-secondary/10 px-3 py-1.5 text-xs'
+									className='no-spinner bg-secondary/10 w-full rounded-lg border px-3 py-1.5 text-xs'
 								/>
 							</td>
 						</tr>

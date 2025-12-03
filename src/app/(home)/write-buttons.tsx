@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 import { useSize } from '@/hooks/use-size'
 import DotsSVG from '@/svgs/dots.svg'
 import ConfigDialog from './config-dialog/index'
+import { HomeDraggableLayer } from './home-draggable-layer'
 
 export default function WriteButton() {
 	const center = useCenterStore()
@@ -32,28 +33,30 @@ export default function WriteButton() {
 	const y = styles.offsetY !== null ? center.y + styles.offsetY : center.y - clockCardStyles.offset - styles.height - CARD_SPACING / 2 - clockCardStyles.height
 
 	return (
-		<motion.div initial={{ left: x, top: y }} animate={{ left: x, top: y }} className='absolute flex items-center gap-4'>
-			<motion.button
-				onClick={() => router.push('/write')}
-				initial={{ opacity: 0, scale: 0.6 }}
-				animate={{ opacity: 1, scale: 1 }}
-				whileHover={{ scale: 1.05 }}
-				whileTap={{ scale: 0.95 }}
-				style={{ boxShadow: 'inset 0 0 12px rgba(255, 255, 255, 0.4)' }}
-				className='brand-btn whitespace-nowrap'>
-				<PenSVG />
-				<span>写文章</span>
-			</motion.button>
-			<motion.button
-				initial={{ opacity: 0, scale: 0.6 }}
-				animate={{ opacity: 1, scale: 1 }}
-				whileHover={{ scale: 1.05 }}
-				whileTap={{ scale: 0.95 }}
-				onClick={() => setIsConfigOpen(true)}
-				className='p-2'>
-				<DotsSVG className='h-6 w-6' />
-			</motion.button>
-			<ConfigDialog open={isConfigOpen} onClose={() => setIsConfigOpen(false)} />
-		</motion.div>
+		<HomeDraggableLayer cardKey='writeButtons' x={x} y={y} width={styles.width} height={styles.height}>
+			<motion.div initial={{ left: x, top: y }} animate={{ left: x, top: y }} className='absolute flex items-center gap-4'>
+				<motion.button
+					onClick={() => router.push('/write')}
+					initial={{ opacity: 0, scale: 0.6 }}
+					animate={{ opacity: 1, scale: 1 }}
+					whileHover={{ scale: 1.05 }}
+					whileTap={{ scale: 0.95 }}
+					style={{ boxShadow: 'inset 0 0 12px rgba(255, 255, 255, 0.4)' }}
+					className='brand-btn whitespace-nowrap'>
+					<PenSVG />
+					<span>写文章</span>
+				</motion.button>
+				<motion.button
+					initial={{ opacity: 0, scale: 0.6 }}
+					animate={{ opacity: 1, scale: 1 }}
+					whileHover={{ scale: 1.05 }}
+					whileTap={{ scale: 0.95 }}
+					onClick={() => setIsConfigOpen(true)}
+					className='p-2'>
+					<DotsSVG className='h-6 w-6' />
+				</motion.button>
+				<ConfigDialog open={isConfigOpen} onClose={() => setIsConfigOpen(false)} />
+			</motion.div>
+		</HomeDraggableLayer>
 	)
 }

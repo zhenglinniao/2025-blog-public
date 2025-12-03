@@ -3,6 +3,7 @@ import { useCenterStore } from '@/hooks/use-center'
 import { useConfigStore } from './stores/config-store'
 import { CARD_SPACING } from '@/consts'
 import { useRouter } from 'next/navigation'
+import { HomeDraggableLayer } from './home-draggable-layer'
 
 export default function ArtCard() {
 	const center = useCenterStore()
@@ -11,8 +12,8 @@ export default function ArtCard() {
 	const styles = cardStyles.artCard
 	const hiCardStyles = cardStyles.hiCard
 
-	const x = styles.offsetX !== null ? center.x + styles.offsetX : center.x
-	const y = styles.offsetY !== null ? center.y + styles.offsetY : center.y - hiCardStyles.height / 2 - styles.height / 2 - CARD_SPACING
+	const x = styles.offsetX !== null ? center.x + styles.offsetX : center.x - styles.width / 2
+	const y = styles.offsetY !== null ? center.y + styles.offsetY : center.y - hiCardStyles.height / 2 - styles.height - CARD_SPACING
 
 	const artImages = siteContent.artImages ?? []
 	const currentId = siteContent.currentArtImageId
@@ -20,8 +21,10 @@ export default function ArtCard() {
 	const artUrl = currentArt?.url || '/images/art/cat.png'
 
 	return (
-		<Card className='-translate-1/2 p-2 max-sm:static max-sm:translate-0' order={styles.order} width={styles.width} height={styles.height} x={x} y={y}>
-			<img onClick={() => router.push('/pictures')} src={artUrl} alt='wall art' className='h-full w-full rounded-[32px] object-cover' />
-		</Card>
+		<HomeDraggableLayer cardKey='artCard' x={x} y={y} width={styles.width} height={styles.height}>
+			<Card className='p-2 max-sm:static max-sm:translate-0' order={styles.order} width={styles.width} height={styles.height} x={x} y={y}>
+				<img onClick={() => router.push('/pictures')} src={artUrl} alt='wall art' className='h-full w-full rounded-[32px] object-cover' />
+			</Card>
+		</HomeDraggableLayer>
 	)
 }
