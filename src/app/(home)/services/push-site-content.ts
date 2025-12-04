@@ -5,8 +5,10 @@ import { toast } from 'sonner'
 import { fileToBase64NoPrefix } from '@/lib/file-utils'
 import type { SiteContent, CardStyles } from '../stores/config-store'
 import type { FileItem, ArtImageUploads } from '../config-dialog/site-settings'
+import type { BackgroundImageUploads } from '../config-dialog/home-layout'
 
 type ArtImageConfig = SiteContent['artImages'][number]
+type BackgroundImageConfig = SiteContent['backgroundImages'][number]
 
 export async function pushSiteContent(
 	siteContent: SiteContent,
@@ -14,7 +16,9 @@ export async function pushSiteContent(
 	faviconItem?: FileItem | null,
 	avatarItem?: FileItem | null,
 	artImageUploads?: ArtImageUploads,
-	removedArtImages?: ArtImageConfig[]
+	removedArtImages?: ArtImageConfig[],
+	backgroundImageUploads?: BackgroundImageUploads,
+	removedBackgroundImages?: BackgroundImageConfig[]
 ): Promise<void> {
 	const token = await getAuthToken()
 
@@ -83,6 +87,50 @@ export async function pushSiteContent(
 	if (removedArtImages && removedArtImages.length > 0) {
 		for (const art of removedArtImages) {
 			const normalizedUrlPath = art.url.startsWith('/') ? art.url : `/${art.url}`
+			const path = `public${normalizedUrlPath}`
+			treeItems.push({
+				path,
+				mode: '100644',
+				type: 'blob',
+				sha: null
+			})
+		}
+	}
+
+	// Handle background images upload
+	if (backgroundImageUploads) {
+		for (const [id, item] of Object.entries(backgroundImageUploads)) {
+			if (item.type !== 'file') continue
+
+			const bgConfig = siteContent.backgroundImages?.find(bg => bg.id === id)
+			if (!bgConfig) continue
+
+			// Only upload if URL starts with /images/background/ (local file)
+			if (!bgConfig.url.startsWith('/images/background/')) continue
+
+			const normalizedUrlPath = bgConfig.url.startsWith('/') ? bgConfig.url : `/${bgConfig.url}`
+			const path = `public${normalizedUrlPath}`
+			if (!path) continue
+
+			toast.info(`正在上传背景图片 ${id}...`)
+			const contentBase64 = await fileToBase64NoPrefix(item.file)
+			const blobData = await createBlob(token, GITHUB_CONFIG.OWNER, GITHUB_CONFIG.REPO, contentBase64, 'base64')
+			treeItems.push({
+				path,
+				mode: '100644',
+				type: 'blob',
+				sha: blobData.sha
+			})
+		}
+	}
+
+	// Handle background images deletion
+	if (removedBackgroundImages && removedBackgroundImages.length > 0) {
+		for (const bg of removedBackgroundImages) {
+			// Only delete if URL starts with /images/background/ (local file)
+			if (!bg.url.startsWith('/images/background/')) continue
+
+			const normalizedUrlPath = bg.url.startsWith('/') ? bg.url : `/${bg.url}`
 			const path = `public${normalizedUrlPath}`
 			treeItems.push({
 				path,

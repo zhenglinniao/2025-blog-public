@@ -8,7 +8,7 @@ import { useAuthStore } from '@/hooks/use-auth'
 import { useConfigStore } from '../stores/config-store'
 import { pushSiteContent } from '../services/push-site-content'
 import type { SiteContent, CardStyles } from '../stores/config-store'
-import { SiteSettings, type FileItem, type ArtImageUploads } from './site-settings'
+import { SiteSettings, type FileItem, type ArtImageUploads, type BackgroundImageUploads } from './site-settings'
 import { ColorConfig } from './color-config'
 import { HomeLayout } from './home-layout'
 
@@ -32,6 +32,7 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 	const [faviconItem, setFaviconItem] = useState<FileItem | null>(null)
 	const [avatarItem, setAvatarItem] = useState<FileItem | null>(null)
 	const [artImageUploads, setArtImageUploads] = useState<ArtImageUploads>({})
+	const [backgroundImageUploads, setBackgroundImageUploads] = useState<BackgroundImageUploads>({})
 
 	useEffect(() => {
 		if (open) {
@@ -44,6 +45,7 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 			setFaviconItem(null)
 			setAvatarItem(null)
 			setArtImageUploads({})
+			setBackgroundImageUploads({})
 			setActiveTab('site')
 		}
 	}, [open, siteContent, cardStyles])
@@ -62,8 +64,13 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 					URL.revokeObjectURL(item.previewUrl)
 				}
 			})
+			Object.values(backgroundImageUploads).forEach(item => {
+				if (item.type === 'file') {
+					URL.revokeObjectURL(item.previewUrl)
+				}
+			})
 		}
-	}, [faviconItem, avatarItem, artImageUploads])
+	}, [faviconItem, avatarItem, artImageUploads, backgroundImageUploads])
 
 	const handleChoosePrivateKey = async (file: File) => {
 		try {
@@ -92,13 +99,28 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 			const currentArtImages = formData.artImages ?? []
 			const removedArtImages = originalArtImages.filter(orig => !currentArtImages.some(current => current.id === orig.id))
 
-			await pushSiteContent(formData, cardStylesData, faviconItem, avatarItem, artImageUploads, removedArtImages)
+			// Calculate removed background images
+			const originalBackgroundImages = originalData.backgroundImages ?? []
+			const currentBackgroundImages = formData.backgroundImages ?? []
+			const removedBackgroundImages = originalBackgroundImages.filter(orig => !currentBackgroundImages.some(current => current.id === orig.id))
+
+			await pushSiteContent(
+				formData,
+				cardStylesData,
+				faviconItem,
+				avatarItem,
+				artImageUploads,
+				removedArtImages,
+				backgroundImageUploads,
+				removedBackgroundImages
+			)
 			setSiteContent(formData)
 			setCardStyles(cardStylesData)
 			updateThemeVariables(formData.theme)
 			setFaviconItem(null)
 			setAvatarItem(null)
 			setArtImageUploads({})
+			setBackgroundImageUploads({})
 			onClose()
 		} catch (error: any) {
 			console.error('Failed to save:', error)
@@ -121,6 +143,11 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 				URL.revokeObjectURL(item.previewUrl)
 			}
 		})
+		Object.values(backgroundImageUploads).forEach(item => {
+			if (item.type === 'file') {
+				URL.revokeObjectURL(item.previewUrl)
+			}
+		})
 		// Restore to the state when dialog was opened
 		setSiteContent(originalData)
 		setCardStyles(originalCardStyles)
@@ -137,6 +164,7 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 		setFaviconItem(null)
 		setAvatarItem(null)
 		setArtImageUploads({})
+		setBackgroundImageUploads({})
 		onClose()
 	}
 
@@ -246,6 +274,8 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 							setAvatarItem={setAvatarItem}
 							artImageUploads={artImageUploads}
 							setArtImageUploads={setArtImageUploads}
+							backgroundImageUploads={backgroundImageUploads}
+							setBackgroundImageUploads={setBackgroundImageUploads}
 						/>
 					)}
 					{activeTab === 'color' && <ColorConfig formData={formData} setFormData={setFormData} />}
