@@ -32,4 +32,3 @@ export function SiteMetaForm({ formData, setFormData }: SiteMetaFormProps) {
 		</>
 	)
 }
-

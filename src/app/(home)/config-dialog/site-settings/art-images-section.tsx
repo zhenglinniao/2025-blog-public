@@ -13,12 +13,7 @@ interface ArtImagesSectionProps {
 	setArtImageUploads: React.Dispatch<React.SetStateAction<ArtImageUploads>>
 }
 
-export function ArtImagesSection({
-	formData,
-	setFormData,
-	artImageUploads,
-	setArtImageUploads
-}: ArtImagesSectionProps) {
+export function ArtImagesSection({ formData, setFormData, artImageUploads, setArtImageUploads }: ArtImagesSectionProps) {
 	const artInputRef = useRef<HTMLInputElement>(null)
 	const [artUrlInput, setArtUrlInput] = useState('')
 
@@ -173,4 +168,3 @@ export function ArtImagesSection({
 		</div>
 	)
 }
-

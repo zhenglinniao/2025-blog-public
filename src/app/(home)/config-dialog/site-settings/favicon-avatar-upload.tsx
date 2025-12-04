@@ -13,12 +13,7 @@ interface FaviconAvatarUploadProps {
 	setAvatarItem: React.Dispatch<React.SetStateAction<FileItem | null>>
 }
 
-export function FaviconAvatarUpload({
-	faviconItem,
-	setFaviconItem,
-	avatarItem,
-	setAvatarItem
-}: FaviconAvatarUploadProps) {
+export function FaviconAvatarUpload({ faviconItem, setFaviconItem, avatarItem, setAvatarItem }: FaviconAvatarUploadProps) {
 	const faviconInputRef = useRef<HTMLInputElement>(null)
 	const avatarInputRef = useRef<HTMLInputElement>(null)
 
@@ -130,4 +125,3 @@ export function FaviconAvatarUpload({
 		</div>
 	)
 }
-

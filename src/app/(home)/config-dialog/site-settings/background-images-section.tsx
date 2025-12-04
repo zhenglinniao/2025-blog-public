@@ -13,12 +13,7 @@ interface BackgroundImagesSectionProps {
 	setBackgroundImageUploads: React.Dispatch<React.SetStateAction<BackgroundImageUploads>>
 }
 
-export function BackgroundImagesSection({
-	formData,
-	setFormData,
-	backgroundImageUploads,
-	setBackgroundImageUploads
-}: BackgroundImagesSectionProps) {
+export function BackgroundImagesSection({ formData, setFormData, backgroundImageUploads, setBackgroundImageUploads }: BackgroundImagesSectionProps) {
 	const backgroundInputRef = useRef<HTMLInputElement>(null)
 	const [backgroundUrlInput, setBackgroundUrlInput] = useState('')
 
@@ -190,4 +185,3 @@ export function BackgroundImagesSection({
 		</div>
 	)
 }
-

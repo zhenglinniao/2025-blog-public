@@ -36,21 +36,11 @@ export function SiteSettings({
 }: SiteSettingsProps) {
 	return (
 		<div className='space-y-6'>
-			<FaviconAvatarUpload
-				faviconItem={faviconItem}
-				setFaviconItem={setFaviconItem}
-				avatarItem={avatarItem}
-				setAvatarItem={setAvatarItem}
-			/>
+			<FaviconAvatarUpload faviconItem={faviconItem} setFaviconItem={setFaviconItem} avatarItem={avatarItem} setAvatarItem={setAvatarItem} />
 
 			<SiteMetaForm formData={formData} setFormData={setFormData} />
 
-			<ArtImagesSection
-				formData={formData}
-				setFormData={setFormData}
-				artImageUploads={artImageUploads}
-				setArtImageUploads={setArtImageUploads}
-			/>
+			<ArtImagesSection formData={formData} setFormData={setFormData} artImageUploads={artImageUploads} setArtImageUploads={setArtImageUploads} />
 
 			<BackgroundImagesSection
 				formData={formData}
@@ -61,4 +51,3 @@ export function SiteSettings({
 		</div>
 	)
 }
-
