@@ -142,6 +142,9 @@ export const GITHUB_CONFIG = {
 QQ 群：[https://qm.qq.com/q/spdpenr4k2](https://qm.qq.com/q/spdpenr4k2)
 > 不好意思，之前的那个qq群ID 不知道为啥搜不到😂
 
+微信群：刚建好了一个微信群，没有 qq 的可以用这个微信群
+![](/blogs/readme/343f2c62035b8e23.webp)
+
 应该主要是我自己亲自帮助你们遇到问题怎么办。（后续看看有没有好心人）
 
 希望多多的非程序员加入 blogger 行列，web blog 还是很好玩的，属于自己的 blog 世界。
