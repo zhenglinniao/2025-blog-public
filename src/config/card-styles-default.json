@@ -4,14 +4,16 @@
 		"height": 200,
 		"order": 3,
 		"offsetX": null,
-		"offsetY": null
+		"offsetY": null,
+		"enabled": true
 	},
 	"hiCard": {
 		"width": 360,
 		"height": 288,
 		"order": 1,
 		"offsetX": null,
-		"offsetY": null
+		"offsetY": null,
+		"enabled": true
 	},
 	"clockCard": {
 		"width": 232,
@@ -19,14 +21,16 @@
 		"offset": 92,
 		"order": 4,
 		"offsetX": null,
-		"offsetY": null
+		"offsetY": null,
+		"enabled": true
 	},
 	"calendarCard": {
 		"width": 350,
 		"height": 286,
 		"order": 5,
 		"offsetX": null,
-		"offsetY": null
+		"offsetY": null,
+		"enabled": true
 	},
 	"musicCard": {
 		"width": 293,
@@ -34,48 +38,55 @@
 		"offset": 120,
 		"order": 6,
 		"offsetX": null,
-		"offsetY": null
+		"offsetY": null,
+		"enabled": true
 	},
 	"socialButtons": {
 		"width": 315,
 		"height": 48,
 		"order": 6,
 		"offsetX": null,
-		"offsetY": null
+		"offsetY": null,
+		"enabled": true
 	},
 	"shareCard": {
 		"width": 200,
 		"height": 180,
 		"order": 7,
 		"offsetX": null,
-		"offsetY": null
+		"offsetY": null,
+		"enabled": true
 	},
 	"articleCard": {
 		"width": 266,
 		"height": 160,
 		"order": 8,
 		"offsetX": null,
-		"offsetY": null
+		"offsetY": null,
+		"enabled": true
 	},
 	"writeButtons": {
 		"height": 42,
 		"width": 180,
 		"order": 8,
 		"offsetX": null,
-		"offsetY": null
+		"offsetY": null,
+		"enabled": true
 	},
 	"navCard": {
 		"width": 280,
 		"height": 434,
 		"order": 2,
 		"offsetX": null,
-		"offsetY": null
+		"offsetY": null,
+		"enabled": true
 	},
 	"likePosition": {
 		"width": 54,
 		"height": 54,
 		"order": 8,
 		"offsetX": null,
-		"offsetY": null
+		"offsetY": null,
+		"enabled": true
 	}
 }
