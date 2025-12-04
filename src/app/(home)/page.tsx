@@ -34,7 +34,7 @@ export default function Home() {
 	return (
 		<>
 			{editing && (
-				<div className='pointer-events-none fixed inset-x-0 top-0 z-40 flex justify-center pt-6'>
+				<div className='pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center pt-6'>
 					<div className='pointer-events-auto flex items-center gap-3 rounded-2xl bg-white/80 px-4 py-2 shadow-lg backdrop-blur'>
 						<span className='text-xs text-gray-600'>正在编辑首页布局，拖拽卡片调整位置</span>
 						<div className='flex gap-2'>
@@ -46,12 +46,7 @@ export default function Home() {
 								className='rounded-xl border bg-white px-3 py-1 text-xs font-medium text-gray-700'>
 								取消
 							</motion.button>
-							<motion.button
-								type='button'
-								whileHover={{ scale: 1.05 }}
-								whileTap={{ scale: 0.95 }}
-								onClick={handleSave}
-								className='brand-btn px-3 py-1 text-xs'>
+							<motion.button type='button' whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={handleSave} className='brand-btn px-3 py-1 text-xs'>
 								保存偏移
 							</motion.button>
 						</div>
