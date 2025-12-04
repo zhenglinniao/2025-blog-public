@@ -6,6 +6,7 @@ import { useCenterInit, useCenterStore } from '@/hooks/use-center'
 import { Picture } from '../page'
 import siteContent from '@/config/site-content.json'
 import { cn } from '@/lib/utils'
+import { useSize } from '@/hooks/use-size'
 
 interface RandomLayoutProps {
 	pictures: Picture[]
@@ -132,6 +133,7 @@ const FloatingImage = ({
 	onDeleteGroup
 }: FloatingImageProps) => {
 	const { centerX, centerY } = useCenterStore()
+	const { maxSM, init } = useSize()
 	const bodyRef = useRef(document.body)
 	const mouseDownTimeRef = useRef<number | null>(null)
 	const [zIndex, setZIndex] = useState(index)
@@ -174,8 +176,8 @@ const FloatingImage = ({
 		}
 
 		const padding = 24
-		const maxWidth = window.innerWidth - padding * 2
-		const maxHeight = window.innerHeight - padding * 2
+		const maxWidth = document.documentElement.clientWidth - padding * 2
+		const maxHeight = document.documentElement.clientHeight - padding * 2
 
 		const scale = Math.min(maxWidth / originalSize.width, maxHeight / originalSize.height, 1)
 
@@ -213,6 +215,24 @@ const FloatingImage = ({
 						dragStartOffsetRef.current = { ...dragOffset }
 					}
 				}}
+				onMouseDown={event => {
+					lastZIndex = lastZIndex + 1
+					setZIndex(lastZIndex)
+					mouseDownTimeRef.current = event.timeStamp
+				}}
+				onMouseUp={event => {
+					if (mouseDownTimeRef.current !== null) {
+						const duration = event.timeStamp - mouseDownTimeRef.current
+						if (duration <= 150) {
+							if (!isZoomed) {
+								setIsZoomed(true)
+							} else if (maxSM) {
+								setIsZoomed(false)
+							}
+						}
+					}
+					mouseDownTimeRef.current = null
+				}}
 				onDragEnd={(_, info) => {
 					if (!isZoomed) {
 						const newOffset = {
@@ -224,6 +244,9 @@ const FloatingImage = ({
 					}
 				}}
 				initial={{
+					width: displaySize.width,
+					height: displaySize.height,
+					borderWidth: 8,
 					zIndex,
 					left: centerX + position.x,
 					top: centerY + position.y,
@@ -243,7 +266,10 @@ const FloatingImage = ({
 								scale: 1,
 								opacity: 1,
 								x: 0,
-								y: 0
+								y: 0,
+								width: zoomedSize.width,
+								height: zoomedSize.height,
+								borderWidth: maxSM ? 12 : 24
 							}
 						: {
 								zIndex,
@@ -253,54 +279,25 @@ const FloatingImage = ({
 								top: centerY + position.y,
 								rotate: position.rotation,
 								x: dragOffset.x,
-								y: dragOffset.y
+								y: dragOffset.y,
+								width: displaySize.width,
+								height: displaySize.height,
+								borderWidth: 8
 							}
 				}
 				transition={{ type: 'tween', ease: 'easeOut' }}
-				className='pointer-events-auto absolute -translate-1/2'>
+				className={cn(
+					'pointer-events-auto absolute origin-center -translate-1/2 cursor-pointer shadow-xl transition-[scale]',
+					!isEditMode && !isZoomed && 'hover:scale-105'
+				)}>
 				<motion.img
-					initial={{
-						width: displaySize.width,
-						height: displaySize.height,
-						borderWidth: 8
-					}}
-					animate={
-						isZoomed
-							? {
-									width: zoomedSize.width,
-									height: zoomedSize.height,
-									borderWidth: 24
-								}
-							: {
-									width: displaySize.width,
-									height: displaySize.height,
-									borderWidth: 8
-								}
-					}
 					src={url}
 					onLoad={event => {
 						const img = event.currentTarget
 						setOriginalSize({ width: img.naturalWidth, height: img.naturalHeight })
 					}}
-					onMouseDown={event => {
-						lastZIndex = lastZIndex + 1
-						setZIndex(lastZIndex)
-						mouseDownTimeRef.current = event.timeStamp
-					}}
-					onMouseUp={event => {
-						if (mouseDownTimeRef.current !== null) {
-							const duration = event.timeStamp - mouseDownTimeRef.current
-							if (duration <= 150) {
-								setIsZoomed(true)
-							}
-						}
-						mouseDownTimeRef.current = null
-					}}
 					draggable={false}
-					className={cn(
-						'group cursor-pointer rounded border-8 object-cover shadow-xl transition-[scale] select-none',
-						!isEditMode && !isZoomed && 'hover:scale-110'
-					)}
+					className={cn('h-full w-full object-cover select-none')}
 				/>
 				{isEditMode && !isZoomed && (
 					<motion.button
@@ -309,6 +306,9 @@ const FloatingImage = ({
 						onClick={e => {
 							e.stopPropagation()
 							onDeleteSingle?.(pictureId, imageIndex)
+						}}
+						onMouseUp={e => {
+							e.stopPropagation()
 						}}
 						className='absolute -top-2 -right-2 rounded-full bg-red-500 p-1.5 opacity-0 shadow-lg transition-all group-hover:opacity-100 hover:scale-105 hover:bg-red-600'
 						style={{ zIndex: 1 }}>
@@ -322,14 +322,14 @@ const FloatingImage = ({
 			{isZoomed && description && (
 				<motion.div
 					drag
-					dragConstraints={bodyRef}
+					dragConstraints={maxSM ? undefined : bodyRef}
 					dragMomentum={false}
 					className='fixed min-h-[150px] w-[200px] cursor-pointer p-6 shadow'
 					style={{
 						backgroundColor: siteContent.backgroundColors[groupIndex % siteContent.backgroundColors.length],
 						zIndex: TOP_Z_INDEX + 1,
-						right: centerX / 3,
-						top: centerY
+						right: maxSM ? 12 : centerX / 3,
+						top: maxSM ? 12 : centerY
 					}}
 					initial={{ opacity: 0, scale: 0.4 }}
 					animate={{ opacity: 1, scale: 1 }}>
