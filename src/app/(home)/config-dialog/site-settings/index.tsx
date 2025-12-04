@@ -6,6 +6,7 @@ import { FaviconAvatarUpload } from './favicon-avatar-upload'
 import { SiteMetaForm } from './site-meta-form'
 import { ArtImagesSection } from './art-images-section'
 import { BackgroundImagesSection } from './background-images-section'
+import { SocialButtonsSection } from './social-buttons-section'
 
 export type { FileItem, ArtImageUploads, BackgroundImageUploads } from './types'
 
@@ -39,6 +40,8 @@ export function SiteSettings({
 			<FaviconAvatarUpload faviconItem={faviconItem} setFaviconItem={setFaviconItem} avatarItem={avatarItem} setAvatarItem={setAvatarItem} />
 
 			<SiteMetaForm formData={formData} setFormData={setFormData} />
+
+			<SocialButtonsSection formData={formData} setFormData={setFormData} />
 
 			<ArtImagesSection formData={formData} setFormData={setFormData} artImageUploads={artImageUploads} setArtImageUploads={setArtImageUploads} />
 
