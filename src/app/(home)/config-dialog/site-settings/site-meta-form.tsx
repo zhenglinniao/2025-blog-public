@@ -10,24 +10,26 @@ interface SiteMetaFormProps {
 export function SiteMetaForm({ formData, setFormData }: SiteMetaFormProps) {
 	return (
 		<>
-			<div>
-				<label className='mb-2 block text-sm font-medium'>站点标题</label>
-				<input
-					type='text'
-					value={formData.meta.title}
-					onChange={e => setFormData({ ...formData, meta: { ...formData.meta, title: e.target.value } })}
-					className='bg-secondary/10 w-full rounded-lg border px-4 py-2 text-sm'
-				/>
-			</div>
+			<div className='mb-2 grid grid-cols-2 gap-2'>
+				<div>
+					<label className='block text-sm font-medium'>站点标题</label>
+					<input
+						type='text'
+						value={formData.meta.title}
+						onChange={e => setFormData({ ...formData, meta: { ...formData.meta, title: e.target.value } })}
+						className='bg-secondary/10 w-full rounded-lg border px-4 py-2 text-sm'
+					/>
+				</div>
 
-			<div>
-				<label className='mb-2 block text-sm font-medium'>用户名</label>
-				<input
-					type='text'
-					value={formData.meta.username || ''}
-					onChange={e => setFormData({ ...formData, meta: { ...formData.meta, username: e.target.value } })}
-					className='bg-secondary/10 w-full rounded-lg border px-4 py-2 text-sm'
-				/>
+				<div>
+					<label className='block text-sm font-medium'>用户名</label>
+					<input
+						type='text'
+						value={formData.meta.username || ''}
+						onChange={e => setFormData({ ...formData, meta: { ...formData.meta, username: e.target.value } })}
+						className='bg-secondary/10 w-full rounded-lg border px-4 py-2 text-sm'
+					/>
+				</div>
 			</div>
 
 			<div>
