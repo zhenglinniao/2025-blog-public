@@ -22,6 +22,19 @@ export default function WriteButton() {
 
 	const [show, setShow] = useState(false)
 	useEffect(() => {
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if ((e.ctrlKey || e.metaKey) && e.key === 'l') {
+				e.preventDefault()
+				setIsConfigOpen(true)
+			}
+		}
+
+		window.addEventListener('keydown', handleKeyDown)
+		return () => {
+			window.removeEventListener('keydown', handleKeyDown)
+		}
+	}, [])
+	useEffect(() => {
 		setTimeout(() => setShow(true), styles.order * ANIMATION_DELAY * 1000)
 	}, [styles.order])
 
