@@ -7,33 +7,19 @@ import { useCenterStore } from '@/hooks/use-center'
 import { useRouter } from 'next/navigation'
 import { useSize } from '@/hooks/use-size'
 import DotsSVG from '@/svgs/dots.svg'
-import ConfigDialog from './config-dialog/index'
 import { HomeDraggableLayer } from './home-draggable-layer'
 
 export default function WriteButton() {
 	const center = useCenterStore()
-	const { cardStyles } = useConfigStore()
+	const { cardStyles, setConfigDialogOpen } = useConfigStore()
 	const { maxSM } = useSize()
 	const router = useRouter()
-	const [isConfigOpen, setIsConfigOpen] = useState(false)
 	const styles = cardStyles.writeButtons
 	const hiCardStyles = cardStyles.hiCard
 	const clockCardStyles = cardStyles.clockCard
 
 	const [show, setShow] = useState(false)
-	useEffect(() => {
-		const handleKeyDown = (e: KeyboardEvent) => {
-			if ((e.ctrlKey || e.metaKey) && e.key === 'l') {
-				e.preventDefault()
-				setIsConfigOpen(true)
-			}
-		}
 
-		window.addEventListener('keydown', handleKeyDown)
-		return () => {
-			window.removeEventListener('keydown', handleKeyDown)
-		}
-	}, [])
 	useEffect(() => {
 		setTimeout(() => setShow(true), styles.order * ANIMATION_DELAY * 1000)
 	}, [styles.order])
@@ -64,11 +50,10 @@ export default function WriteButton() {
 					animate={{ opacity: 1, scale: 1 }}
 					whileHover={{ scale: 1.05 }}
 					whileTap={{ scale: 0.95 }}
-					onClick={() => setIsConfigOpen(true)}
+					onClick={() => setConfigDialogOpen(true)}
 					className='p-2'>
 					<DotsSVG className='h-6 w-6' />
 				</motion.button>
-				<ConfigDialog open={isConfigOpen} onClose={() => setIsConfigOpen(false)} />
 			</motion.div>
 		</HomeDraggableLayer>
 	)
