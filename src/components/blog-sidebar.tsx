@@ -81,7 +81,7 @@ export function BlogSidebar({ cover, summary, toc, slug }: BlogSidebarProps) {
 					transition={{ delay: INIT_DELAY + ANIMATION_DELAY * 2 }}
 					className='bg-card w-full rounded-xl border p-3 text-sm'>
 					<h2 className='text-secondary mb-2 font-medium'>摘要</h2>
-					<div className='text-secondary cursor-text'>{summary}</div>
+					<div className='text-secondary scrollbar-none max-h-[240px] cursor-text overflow-auto'>{summary}</div>
 				</motion.div>
 			)}
 
