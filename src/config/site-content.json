@@ -55,5 +55,6 @@
 			"label": "",
 			"order": 1
 		}
-	]
+	],
+	"clockShowSeconds": false
 }
