@@ -1,10 +1,23 @@
 'use client'
 
-import { useState } from 'react'
-import { toast } from 'sonner'
 import type { SiteContent } from '../../stores/config-store'
 
-type SocialButtonType = 'github' | 'juejin' | 'email' | 'link'
+type SocialButtonType =
+	| 'github'
+	| 'juejin'
+	| 'email'
+	| 'link'
+	| 'x'
+	| 'tg'
+	| 'wechat'
+	| 'facebook'
+	| 'tiktok'
+	| 'instagram'
+	| 'weibo'
+	| 'xiaohongshu'
+	| 'zhihu'
+	| 'bilibili'
+	| 'qq'
 
 interface SocialButtonConfig {
 	id: string
@@ -89,16 +102,27 @@ export function SocialButtonsSection({ formData, setFormData }: SocialButtonsSec
 							<option value='github'>Github</option>
 							<option value='juejin'>掘金</option>
 							<option value='email'>邮箱</option>
+							<option value='x'>X</option>
+							<option value='tg'>Telegram</option>
+							<option value='wechat'>微信</option>
+							<option value='facebook'>Facebook</option>
+							<option value='tiktok'>TikTok</option>
+							<option value='instagram'>Instagram</option>
+							<option value='weibo'>微博</option>
+							<option value='xiaohongshu'>小红书</option>
+							<option value='zhihu'>知乎</option>
+							<option value='bilibili'>哔哩哔哩</option>
+							<option value='qq'>QQ</option>
 							<option value='link'>链接</option>
 						</select>
 						<input
 							type={button.type === 'email' ? 'email' : 'url'}
 							value={button.value}
 							onChange={e => handleUpdateButton(button.id, { value: e.target.value })}
-							placeholder={button.type === 'email' ? 'example@email.com' : 'https://example.com'}
+							placeholder={button.type === 'email' ? 'example@email.com' : button.type === 'wechat' ? '微信号或二维码链接' : 'https://example.com'}
 							className='bg-secondary/10 flex-1 rounded-lg border px-3 py-1.5 text-xs'
 						/>
-						{button.type !== 'email' && (
+						{button.type !== 'email' && button.type !== 'wechat' && (
 							<input
 								type='text'
 								value={button.label || ''}
