@@ -21,6 +21,16 @@ export function SiteMetaForm({ formData, setFormData }: SiteMetaFormProps) {
 			</div>
 
 			<div>
+				<label className='mb-2 block text-sm font-medium'>用户名</label>
+				<input
+					type='text'
+					value={formData.meta.username || ''}
+					onChange={e => setFormData({ ...formData, meta: { ...formData.meta, username: e.target.value } })}
+					className='bg-secondary/10 w-full rounded-lg border px-4 py-2 text-sm'
+				/>
+			</div>
+
+			<div>
 				<label className='mb-2 block text-sm font-medium'>站点描述</label>
 				<textarea
 					value={formData.meta.description}
