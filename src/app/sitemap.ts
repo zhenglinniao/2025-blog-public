@@ -28,9 +28,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       : 'http://localhost:3000'
 
   // GitHub 仓库配置：
-  const ghOwner = process.env.GITHUB_OWNER      // GitHub 用户名
-  const ghRepo = process.env.GITHUB_REPO || '2025-blog-public'   // 仓库名
-  const ghBranch = process.env.GITHUB_BRANCH || 'main'           // 分支名
+  const ghOwner = process.env.NEXT_PUBLIC_GITHUB_OWNER      // GitHub 用户名
+  const ghRepo = process.env.NEXT_PUBLIC_GITHUB_REPO || '2025-blog-public'   // 仓库名
+  const ghBranch = process.env.NEXT_PUBLIC_GITHUB_BRANCH || 'main'           // 分支名
 
   // 构造 Raw 文件地址
   const githubIndexUrl = `https://raw.githubusercontent.com/${ghOwner}/${ghRepo}/${ghBranch}/public/blogs/index.json`
