@@ -39,12 +39,7 @@ interface SocialButtonsSectionProps {
 	setSocialButtonImageUploads: React.Dispatch<React.SetStateAction<SocialButtonImageUploads>>
 }
 
-export function SocialButtonsSection({
-	formData,
-	setFormData,
-	socialButtonImageUploads,
-	setSocialButtonImageUploads
-}: SocialButtonsSectionProps) {
+export function SocialButtonsSection({ formData, setFormData, socialButtonImageUploads, setSocialButtonImageUploads }: SocialButtonsSectionProps) {
 	const buttons = (formData.socialButtons || []) as SocialButtonConfig[]
 	const imageInputRefs = useRef<Record<string, HTMLInputElement | null>>({})
 
@@ -120,9 +115,7 @@ export function SocialButtonsSection({
 
 		setFormData(prev => ({
 			...prev,
-			socialButtons: (prev.socialButtons || []).map(btn =>
-				btn.id === buttonId ? { ...btn, value: targetPath } : btn
-			)
+			socialButtons: (prev.socialButtons || []).map(btn => (btn.id === buttonId ? { ...btn, value: targetPath } : btn))
 		}))
 
 		if (e.currentTarget) e.currentTarget.value = ''
@@ -152,7 +145,7 @@ export function SocialButtonsSection({
 		<div>
 			<label className='mb-2 block text-sm font-medium'>社交按钮</label>
 			{buttons.length === 0 && <p className='mb-2 text-xs text-gray-500'>暂未配置社交按钮，点击下方「+」添加。</p>}
-			<div className='space-y-2'>
+			<div className='space-y-2 whitespace-nowrap'>
 				{sortedButtons.map((button, index) => (
 					<div key={button.id} className='flex items-center gap-2'>
 						<Select
@@ -177,7 +170,7 @@ export function SocialButtonsSection({
 								{ value: 'link', label: '链接' }
 							]}
 						/>
-						{(button.type === 'wechat' || button.type === 'qq') ? (
+						{button.type === 'wechat' || button.type === 'qq' ? (
 							<div className='flex flex-1 items-center gap-2'>
 								<input
 									ref={el => {
@@ -202,10 +195,7 @@ export function SocialButtonsSection({
 											placeholder={button.type === 'wechat' ? '微信号或二维码链接' : 'QQ号或二维码链接'}
 											className='bg-secondary/10 flex-1 rounded-lg border px-3 py-1.5 text-xs'
 										/>
-										<button
-											type='button'
-											onClick={() => handleRemoveImage(button.id)}
-											className='text-red-500 hover:text-red-600 text-xs'>
+										<button type='button' onClick={() => handleRemoveImage(button.id)} className='text-xs text-red-500 hover:text-red-600'>
 											删除图片
 										</button>
 									</div>
@@ -247,7 +237,7 @@ export function SocialButtonsSection({
 								className='bg-secondary/10 flex-1 rounded-lg border px-3 py-1.5 text-xs'
 							/>
 						)}
-						{button.type !== 'email' && button.type !== 'wechat' && (
+						{button.type !== 'email' && button.type !== 'wechat' && button.type !== 'qq' && (
 							<input
 								type='text'
 								value={button.label || ''}
