@@ -83,7 +83,7 @@ export function WriteActions() {
 							whileTap={{ scale: 0.95 }}
 							onClick={handleCancel}
 							disabled={saving}
-							className='rounded-xl border bg-white/60 px-4 py-2 text-sm'>
+							className='bg-card rounded-xl border px-4 py-2 text-sm'>
 							取消
 						</motion.button>
 					</>
@@ -94,7 +94,7 @@ export function WriteActions() {
 					animate={{ opacity: 1, scale: 1 }}
 					whileHover={{ scale: 1.05 }}
 					whileTap={{ scale: 0.95 }}
-					className='rounded-xl border bg-white/60 px-6 py-2 text-sm'
+					className='bg-card rounded-xl border px-6 py-2 text-sm'
 					disabled={loading}
 					onClick={openPreview}>
 					预览

@@ -29,7 +29,7 @@ export function ImagesSection({ delay = 0 }: ImagesSectionProps) {
 				<input
 					type='text'
 					placeholder='https://...'
-					className='flex-1 rounded-lg border bg-white/70 px-3 py-2 text-sm'
+					className='bg-card flex-1 rounded-lg border px-3 py-2 text-sm'
 					value={urlInput}
 					onChange={e => setUrlInput(e.target.value)}
 				/>
@@ -63,7 +63,7 @@ export function ImagesSection({ delay = 0 }: ImagesSectionProps) {
 			<div className='mt-3 grid grid-cols-4 gap-2'>
 				{/* plus tile */}
 				<div
-					className='group relative grid aspect-square cursor-pointer place-items-center rounded-lg border bg-white/50 hover:bg-white/70'
+					className='group bg-card hover:bg-secondary/20 relative grid aspect-square cursor-pointer place-items-center rounded-lg border'
 					onClick={() => fileInputRef.current?.click()}
 					onDragOver={e => {
 						e.preventDefault()

@@ -16,7 +16,7 @@ export function MetaSection({ delay = 0 }: MetaSectionProps) {
 				<textarea
 					placeholder='为这篇文章写一段简短摘要'
 					rows={2}
-					className='block w-full resize-none rounded-xl border bg-white/60 p-3 text-sm'
+					className='bg-card block w-full resize-none rounded-xl border p-3 text-sm'
 					value={form.summary}
 					onChange={e => updateForm({ summary: e.target.value })}
 				/>
@@ -25,7 +25,7 @@ export function MetaSection({ delay = 0 }: MetaSectionProps) {
 				<input
 					type='date'
 					placeholder='日期'
-					className='w-full rounded-lg border bg-white/60 px-3 py-2 text-sm'
+					className='bg-card w-full rounded-lg border px-3 py-2 text-sm'
 					value={form.date}
 					onChange={e => updateForm({ date: e.target.value })}
 				/>

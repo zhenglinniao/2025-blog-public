@@ -20,7 +20,7 @@ export function TagInput({ tags, onChange }: TagInputProps) {
 	}
 
 	return (
-		<div className='w-full rounded-lg border bg-white/70 px-3 py-2'>
+		<div className='bg-card w-full rounded-lg border px-3 py-2'>
 			{tags.length > 0 && (
 				<div className='mb-2 flex flex-wrap gap-2'>
 					{tags.map((tag, index) => (

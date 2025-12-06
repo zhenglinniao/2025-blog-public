@@ -1,6 +1,7 @@
 'use client'
 
 import type { SiteContent } from '../../stores/config-store'
+import { Select } from '@/components/select'
 
 type SocialButtonType =
 	| 'github'
@@ -95,26 +96,28 @@ export function SocialButtonsSection({ formData, setFormData }: SocialButtonsSec
 			<div className='space-y-2'>
 				{sortedButtons.map((button, index) => (
 					<div key={button.id} className='flex items-center gap-2'>
-						<select
+						<Select
 							value={button.type}
-							onChange={e => handleUpdateButton(button.id, { type: e.target.value as SocialButtonType })}
-							className='bg-secondary/10 w-24 rounded-lg border px-2 py-1.5 text-xs'>
-							<option value='github'>Github</option>
-							<option value='juejin'>掘金</option>
-							<option value='email'>邮箱</option>
-							<option value='x'>X</option>
-							<option value='tg'>Telegram</option>
-							<option value='wechat'>微信</option>
-							<option value='facebook'>Facebook</option>
-							<option value='tiktok'>TikTok</option>
-							<option value='instagram'>Instagram</option>
-							<option value='weibo'>微博</option>
-							<option value='xiaohongshu'>小红书</option>
-							<option value='zhihu'>知乎</option>
-							<option value='bilibili'>哔哩哔哩</option>
-							<option value='qq'>QQ</option>
-							<option value='link'>链接</option>
-						</select>
+							onChange={value => handleUpdateButton(button.id, { type: value as SocialButtonType })}
+							className='w-24'
+							options={[
+								{ value: 'github', label: 'Github' },
+								{ value: 'juejin', label: '掘金' },
+								{ value: 'email', label: '邮箱' },
+								{ value: 'x', label: 'X' },
+								{ value: 'tg', label: 'Telegram' },
+								{ value: 'wechat', label: '微信' },
+								{ value: 'facebook', label: 'Facebook' },
+								{ value: 'tiktok', label: 'TikTok' },
+								{ value: 'instagram', label: 'Instagram' },
+								{ value: 'weibo', label: '微博' },
+								{ value: 'xiaohongshu', label: '小红书' },
+								{ value: 'zhihu', label: '知乎' },
+								{ value: 'bilibili', label: '哔哩哔哩' },
+								{ value: 'qq', label: 'QQ' },
+								{ value: 'link', label: '链接' }
+							]}
+						/>
 						<input
 							type={button.type === 'email' ? 'email' : 'url'}
 							value={button.value}
@@ -168,7 +171,7 @@ export function SocialButtonsSection({ formData, setFormData }: SocialButtonsSec
 				<button
 					type='button'
 					onClick={handleAddButton}
-					className='hover:border-brand/60 flex w-full items-center justify-center rounded-xl border border-dashed py-2 text-sm text-gray-400 hover:bg-gray-50'>
+					className='hover:border-brand/60 text-secondary hover:bg-card flex w-full items-center justify-center rounded-xl border border-dashed py-2 text-sm'>
 					+ 添加按钮
 				</button>
 			</div>

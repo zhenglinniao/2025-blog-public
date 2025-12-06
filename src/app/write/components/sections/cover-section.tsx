@@ -83,7 +83,7 @@ export function CoverSection({ delay = 0 }: CoverSectionProps) {
 			<h2 className='text-sm'>封面</h2>
 			<input ref={fileInputRef} type='file' accept='image/*' className='hidden' onChange={handleFileChange} />
 			<div
-				className='mt-3 h-[150px] overflow-hidden rounded-xl border bg-white/60'
+				className='bg-card mt-3 h-[150px] overflow-hidden rounded-xl border'
 				onDragOver={e => {
 					e.preventDefault()
 				}}

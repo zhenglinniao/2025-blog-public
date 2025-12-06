@@ -246,7 +246,7 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 							whileHover={{ scale: 1.05 }}
 							whileTap={{ scale: 0.95 }}
 							onClick={handlePreview}
-							className='rounded-xl border bg-white/60 px-6 py-2 text-sm'>
+							className='bg-card rounded-xl border px-6 py-2 text-sm'>
 							预览
 						</motion.button>
 						<motion.button
@@ -254,7 +254,7 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 							whileTap={{ scale: 0.95 }}
 							onClick={handleCancel}
 							disabled={isSaving}
-							className='rounded-xl border bg-white/60 px-6 py-2 text-sm'>
+							className='bg-card rounded-xl border px-6 py-2 text-sm'>
 							取消
 						</motion.button>
 						<motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={handleSaveClick} disabled={isSaving} className='brand-btn px-6'>
