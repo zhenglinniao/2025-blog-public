@@ -63,5 +63,6 @@
 			"order": 1
 		}
 	],
-	"clockShowSeconds": false
+	"clockShowSeconds": false,
+	"summaryInContent": false
 }

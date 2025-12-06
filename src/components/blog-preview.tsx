@@ -5,6 +5,7 @@ import { INIT_DELAY } from '@/consts'
 import { useMarkdownRender } from '@/hooks/use-markdown-render'
 import { useSize } from '@/hooks/use-size'
 import { BlogSidebar } from '@/components/blog-sidebar'
+import { useConfigStore } from '@/app/(home)/stores/config-store'
 
 type BlogPreviewProps = {
 	markdown: string
@@ -19,6 +20,8 @@ type BlogPreviewProps = {
 export function BlogPreview({ markdown, title, tags, date, summary, cover, slug }: BlogPreviewProps) {
 	const { maxSM: isMobile } = useSize()
 	const { content, toc, loading } = useMarkdownRender(markdown)
+	const { siteContent } = useConfigStore()
+	const summaryInContent = siteContent.summaryInContent ?? false
 
 	if (loading) {
 		return <div className='text-secondary flex h-full items-center justify-center text-sm'>渲染中...</div>
@@ -41,6 +44,9 @@ export function BlogPreview({ markdown, title, tags, date, summary, cover, slug 
 					</div>
 
 					<div className='text-secondary mt-3 text-center text-sm'>{date}</div>
+
+					{summary && summaryInContent && <div className='text-secondary mt-6 cursor-text text-center text-sm'>“{summary}”</div>}
+
 					<div className='prose mt-6 max-w-none cursor-text'>{content}</div>
 				</div>
 			</motion.article>
