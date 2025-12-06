@@ -4,8 +4,7 @@ import { GITHUB_CONFIG } from '@/consts'
 import { toast } from 'sonner'
 import { fileToBase64NoPrefix } from '@/lib/file-utils'
 import type { SiteContent, CardStyles } from '../stores/config-store'
-import type { FileItem, ArtImageUploads } from '../config-dialog/site-settings'
-import type { BackgroundImageUploads } from '../config-dialog/home-layout'
+import type { FileItem, ArtImageUploads, SocialButtonImageUploads, BackgroundImageUploads } from '../config-dialog/site-settings'
 
 type ArtImageConfig = SiteContent['artImages'][number]
 type BackgroundImageConfig = SiteContent['backgroundImages'][number]
@@ -18,7 +17,8 @@ export async function pushSiteContent(
 	artImageUploads?: ArtImageUploads,
 	removedArtImages?: ArtImageConfig[],
 	backgroundImageUploads?: BackgroundImageUploads,
-	removedBackgroundImages?: BackgroundImageConfig[]
+	removedBackgroundImages?: BackgroundImageConfig[],
+	socialButtonImageUploads?: SocialButtonImageUploads
 ): Promise<void> {
 	const token = await getAuthToken()
 
@@ -137,6 +137,33 @@ export async function pushSiteContent(
 				mode: '100644',
 				type: 'blob',
 				sha: null
+			})
+		}
+	}
+
+	// Handle social button images upload
+	if (socialButtonImageUploads) {
+		for (const [buttonId, item] of Object.entries(socialButtonImageUploads)) {
+			if (item.type !== 'file') continue
+
+			const button = siteContent.socialButtons?.find(btn => btn.id === buttonId)
+			if (!button) continue
+
+			// Only upload if URL starts with /images/social-buttons/ (local file)
+			if (!button.value.startsWith('/images/social-buttons/')) continue
+
+			const normalizedUrlPath = button.value.startsWith('/') ? button.value : `/${button.value}`
+			const path = `public${normalizedUrlPath}`
+			if (!path) continue
+
+			toast.info(`正在上传社交按钮图片 ${buttonId}...`)
+			const contentBase64 = await fileToBase64NoPrefix(item.file)
+			const blobData = await createBlob(token, GITHUB_CONFIG.OWNER, GITHUB_CONFIG.REPO, contentBase64, 'base64')
+			treeItems.push({
+				path,
+				mode: '100644',
+				type: 'blob',
+				sha: blobData.sha
 			})
 		}
 	}

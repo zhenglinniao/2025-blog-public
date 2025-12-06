@@ -1,7 +1,11 @@
 'use client'
 
+import { useRef } from 'react'
+import { toast } from 'sonner'
 import type { SiteContent } from '../../stores/config-store'
 import { Select } from '@/components/select'
+import type { SocialButtonImageUploads } from './types'
+import { hashFileSHA256 } from '@/lib/file-utils'
 
 type SocialButtonType =
 	| 'github'
@@ -31,10 +35,18 @@ interface SocialButtonConfig {
 interface SocialButtonsSectionProps {
 	formData: SiteContent
 	setFormData: React.Dispatch<React.SetStateAction<SiteContent>>
+	socialButtonImageUploads: SocialButtonImageUploads
+	setSocialButtonImageUploads: React.Dispatch<React.SetStateAction<SocialButtonImageUploads>>
 }
 
-export function SocialButtonsSection({ formData, setFormData }: SocialButtonsSectionProps) {
+export function SocialButtonsSection({
+	formData,
+	setFormData,
+	socialButtonImageUploads,
+	setSocialButtonImageUploads
+}: SocialButtonsSectionProps) {
 	const buttons = (formData.socialButtons || []) as SocialButtonConfig[]
+	const imageInputRefs = useRef<Record<string, HTMLInputElement | null>>({})
 
 	const handleAddButton = () => {
 		const newId = `button-${Date.now()}`
@@ -87,6 +99,53 @@ export function SocialButtonsSection({ formData, setFormData }: SocialButtonsSec
 		}))
 	}
 
+	const handleImageSelect = async (buttonId: string, e: React.ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files?.[0]
+		if (!file) return
+
+		if (!file.type.startsWith('image/')) {
+			toast.error('请选择图片文件')
+			return
+		}
+
+		const hash = await hashFileSHA256(file)
+		const ext = file.name.split('.').pop() || 'png'
+		const targetPath = `/images/social-buttons/${hash}.${ext}`
+		const previewUrl = URL.createObjectURL(file)
+
+		setSocialButtonImageUploads(prev => ({
+			...prev,
+			[buttonId]: { type: 'file', file, previewUrl, hash }
+		}))
+
+		setFormData(prev => ({
+			...prev,
+			socialButtons: (prev.socialButtons || []).map(btn =>
+				btn.id === buttonId ? { ...btn, value: targetPath } : btn
+			)
+		}))
+
+		if (e.currentTarget) e.currentTarget.value = ''
+	}
+
+	const handleRemoveImage = (buttonId: string) => {
+		const uploadItem = socialButtonImageUploads[buttonId]
+		if (uploadItem?.type === 'file') {
+			URL.revokeObjectURL(uploadItem.previewUrl)
+		}
+
+		setSocialButtonImageUploads(prev => {
+			const next = { ...prev }
+			delete next[buttonId]
+			return next
+		})
+
+		setFormData(prev => ({
+			...prev,
+			socialButtons: (prev.socialButtons || []).map(btn => (btn.id === buttonId ? { ...btn, value: '' } : btn))
+		}))
+	}
+
 	const sortedButtons = [...buttons].sort((a, b) => a.order - b.order)
 
 	return (
@@ -118,13 +177,76 @@ export function SocialButtonsSection({ formData, setFormData }: SocialButtonsSec
 								{ value: 'link', label: '链接' }
 							]}
 						/>
-						<input
-							type={button.type === 'email' ? 'email' : 'url'}
-							value={button.value}
-							onChange={e => handleUpdateButton(button.id, { value: e.target.value })}
-							placeholder={button.type === 'email' ? 'example@email.com' : button.type === 'wechat' ? '微信号或二维码链接' : 'https://example.com'}
-							className='bg-secondary/10 flex-1 rounded-lg border px-3 py-1.5 text-xs'
-						/>
+						{(button.type === 'wechat' || button.type === 'qq') ? (
+							<div className='flex flex-1 items-center gap-2'>
+								<input
+									ref={el => {
+										imageInputRefs.current[button.id] = el
+									}}
+									type='file'
+									accept='image/*'
+									className='hidden'
+									onChange={e => handleImageSelect(button.id, e)}
+								/>
+								{socialButtonImageUploads[button.id]?.type === 'file' ? (
+									<div className='relative flex flex-1 items-center gap-2'>
+										<img
+											src={(socialButtonImageUploads[button.id] as { type: 'file'; file: File; previewUrl: string; hash?: string }).previewUrl}
+											alt='preview'
+											className='h-10 w-10 rounded-lg object-cover'
+										/>
+										<input
+											type='text'
+											value={button.value}
+											onChange={e => handleUpdateButton(button.id, { value: e.target.value })}
+											placeholder={button.type === 'wechat' ? '微信号或二维码链接' : 'QQ号或二维码链接'}
+											className='bg-secondary/10 flex-1 rounded-lg border px-3 py-1.5 text-xs'
+										/>
+										<button
+											type='button'
+											onClick={() => handleRemoveImage(button.id)}
+											className='text-red-500 hover:text-red-600 text-xs'>
+											删除图片
+										</button>
+									</div>
+								) : button.value && button.value.startsWith('/images/social-buttons/') ? (
+									<div className='relative flex flex-1 items-center gap-2'>
+										<img src={button.value} alt='preview' className='h-10 w-10 rounded-lg object-cover' />
+										<input
+											type='text'
+											value={button.value}
+											onChange={e => handleUpdateButton(button.id, { value: e.target.value })}
+											placeholder={button.type === 'wechat' ? '微信号或二维码链接' : 'QQ号或二维码链接'}
+											className='bg-secondary/10 flex-1 rounded-lg border px-3 py-1.5 text-xs'
+										/>
+									</div>
+								) : (
+									<>
+										<input
+											type='text'
+											value={button.value}
+											onChange={e => handleUpdateButton(button.id, { value: e.target.value })}
+											placeholder={button.type === 'wechat' ? '微信号或二维码链接' : 'QQ号或二维码链接'}
+											className='bg-secondary/10 flex-1 rounded-lg border px-3 py-1.5 text-xs'
+										/>
+										<button
+											type='button'
+											onClick={() => imageInputRefs.current[button.id]?.click()}
+											className='bg-card rounded-lg border px-3 py-1.5 text-xs font-medium'>
+											上传图片
+										</button>
+									</>
+								)}
+							</div>
+						) : (
+							<input
+								type={button.type === 'email' ? 'email' : 'url'}
+								value={button.value}
+								onChange={e => handleUpdateButton(button.id, { value: e.target.value })}
+								placeholder={button.type === 'email' ? 'example@email.com' : 'https://example.com'}
+								className='bg-secondary/10 flex-1 rounded-lg border px-3 py-1.5 text-xs'
+							/>
+						)}
 						{button.type !== 'email' && button.type !== 'wechat' && (
 							<input
 								type='text'
