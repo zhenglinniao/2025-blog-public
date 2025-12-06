@@ -46,6 +46,17 @@ export function Select({ value, onChange, options, className, disabled }: Select
 	useEffect(() => {
 		if (!open) return
 
+		const updatePosition = () => {
+			if (triggerRef.current) {
+				const rect = triggerRef.current.getBoundingClientRect()
+				setPosition({
+					top: rect.bottom + 8,
+					left: rect.left,
+					width: rect.width
+				})
+			}
+		}
+
 		const handleClickOutside = (e: MouseEvent) => {
 			const target = e.target as Node
 			if (triggerRef.current && !triggerRef.current.contains(target) && dropdownRef.current && !dropdownRef.current.contains(target)) {
@@ -59,12 +70,24 @@ export function Select({ value, onChange, options, className, disabled }: Select
 			}
 		}
 
+		const handleScroll = () => {
+			updatePosition()
+		}
+
+		const handleResize = () => {
+			updatePosition()
+		}
+
 		document.addEventListener('mousedown', handleClickOutside)
 		document.addEventListener('keydown', handleEscape)
+		window.addEventListener('scroll', handleScroll, true)
+		window.addEventListener('resize', handleResize)
 
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside)
 			document.removeEventListener('keydown', handleEscape)
+			window.removeEventListener('scroll', handleScroll, true)
+			window.removeEventListener('resize', handleResize)
 		}
 	}, [open])
 

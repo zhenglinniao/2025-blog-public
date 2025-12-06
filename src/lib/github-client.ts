@@ -2,6 +2,7 @@
 
 import { useAuthStore } from '@/hooks/use-auth'
 import { KJUR, KEYUTIL } from 'jsrsasign'
+import { toast } from 'sonner'
 
 export const GH_API = 'https://api.github.com'
 
@@ -12,6 +13,10 @@ function handle401Error(): void {
 	} catch (error) {
 		console.error('Failed to clear auth cache:', error)
 	}
+}
+
+function handle422Error(): void {
+	toast.error('操作太快了，请操作慢一点')
 }
 
 export function toBase64Utf8(input: string): string {
@@ -35,6 +40,7 @@ export async function getInstallationId(jwt: string, owner: string, repo: string
 		}
 	})
 	if (res.status === 401) handle401Error()
+	if (res.status === 422) handle422Error()
 	if (!res.ok) throw new Error(`installation lookup failed: ${res.status}`)
 	const data = await res.json()
 	return data.id
@@ -50,6 +56,7 @@ export async function createInstallationToken(jwt: string, installationId: numbe
 		}
 	})
 	if (res.status === 401) handle401Error()
+	if (res.status === 422) handle422Error()
 	if (!res.ok) throw new Error(`create token failed: ${res.status}`)
 	const data = await res.json()
 	return data.token as string
@@ -64,6 +71,7 @@ export async function getFileSha(token: string, owner: string, repo: string, pat
 		}
 	})
 	if (res.status === 401) handle401Error()
+	if (res.status === 422) handle422Error()
 	if (res.status === 404) return undefined
 	if (!res.ok) throw new Error(`get file sha failed: ${res.status}`)
 	const data = await res.json()
@@ -83,6 +91,7 @@ export async function putFile(token: string, owner: string, repo: string, path: 
 		body: JSON.stringify({ message, content: contentBase64, branch, ...(sha ? { sha } : {}) })
 	})
 	if (res.status === 401) handle401Error()
+	if (res.status === 422) handle422Error()
 	if (!res.ok) throw new Error(`put file failed: ${res.status}`)
 	return res.json()
 }
@@ -98,6 +107,7 @@ export async function getRef(token: string, owner: string, repo: string, ref: st
 		}
 	})
 	if (res.status === 401) handle401Error()
+	if (res.status === 422) handle422Error()
 	if (!res.ok) throw new Error(`get ref failed: ${res.status}`)
 	const data = await res.json()
 	return { sha: data.object.sha }
@@ -123,6 +133,7 @@ export async function createTree(token: string, owner: string, repo: string, tre
 		body: JSON.stringify({ tree, base_tree: baseTree })
 	})
 	if (res.status === 401) handle401Error()
+	if (res.status === 422) handle422Error()
 	if (!res.ok) throw new Error(`create tree failed: ${res.status}`)
 	const data = await res.json()
 	return { sha: data.sha }
@@ -140,6 +151,7 @@ export async function createCommit(token: string, owner: string, repo: string, m
 		body: JSON.stringify({ message, tree, parents })
 	})
 	if (res.status === 401) handle401Error()
+	if (res.status === 422) handle422Error()
 	if (!res.ok) throw new Error(`create commit failed: ${res.status}`)
 	const data = await res.json()
 	return { sha: data.sha }
@@ -157,6 +169,7 @@ export async function updateRef(token: string, owner: string, repo: string, ref:
 		body: JSON.stringify({ sha, force })
 	})
 	if (res.status === 401) handle401Error()
+	if (res.status === 422) handle422Error()
 	if (!res.ok) throw new Error(`update ref failed: ${res.status}`)
 }
 
@@ -169,6 +182,7 @@ export async function readTextFileFromRepo(token: string, owner: string, repo: s
 		}
 	})
 	if (res.status === 401) handle401Error()
+	if (res.status === 422) handle422Error()
 	if (res.status === 404) return null
 	if (!res.ok) throw new Error(`read file failed: ${res.status}`)
 	const data: any = await res.json()
@@ -190,6 +204,7 @@ export async function listRepoFilesRecursive(token: string, owner: string, repo:
 			}
 		})
 		if (res.status === 401) handle401Error()
+		if (res.status === 422) handle422Error()
 		if (res.status === 404) return []
 		if (!res.ok) throw new Error(`read directory failed: ${res.status}`)
 		const data: any = await res.json()
@@ -231,6 +246,7 @@ export async function createBlob(
 		body: JSON.stringify({ content, encoding })
 	})
 	if (res.status === 401) handle401Error()
+	if (res.status === 422) handle422Error()
 	if (!res.ok) throw new Error(`create blob failed: ${res.status}`)
 	const data = await res.json()
 	return { sha: data.sha }
