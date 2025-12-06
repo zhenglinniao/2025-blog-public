@@ -1,15 +1,18 @@
 import { motion } from 'motion/react'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 import { useWriteStore } from '../stores/write-store'
 import { usePreviewStore } from '../stores/preview-store'
 import { usePublish } from '../hooks/use-publish'
 
 export function WriteActions() {
-	const { loading, mode, form } = useWriteStore()
+	const { loading, mode, form, loadBlogForEdit, originalSlug } = useWriteStore()
 	const { openPreview } = usePreviewStore()
 	const { isAuth, onChoosePrivateKey, onPublish, onDelete } = usePublish()
+	const [saving, setSaving] = useState(false)
 	const keyInputRef = useRef<HTMLInputElement>(null)
+	const router = useRouter()
 
 	const handleImportOrPublish = () => {
 		if (!isAuth) {
@@ -18,6 +21,18 @@ export function WriteActions() {
 			onPublish()
 		}
 	}
+
+	const handleCancel = () => {
+        if (!window.confirm('放弃本次修改吗？')) {
+            return
+        }
+		if (mode === 'edit' && originalSlug) {
+			router.push(`/blog/${originalSlug}`)
+		} else {
+			router.push('/')
+		}
+    }
+	
 
 	const buttonText = isAuth ? (mode === 'edit' ? '更新' : '发布') : '导入密钥'
 
@@ -52,6 +67,14 @@ export function WriteActions() {
 						<motion.div initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }} className='flex items-center gap-2'>
 							<div className='rounded-lg border bg-blue-50 px-4 py-2 text-sm text-blue-700'>编辑模式</div>
 						</motion.div>
+						<motion.button
+							whileHover={{ scale: 1.05 }}
+							whileTap={{ scale: 0.95 }}
+							onClick={handleCancel}
+							disabled={saving}
+							className='rounded-xl border bg-white/60 px-6 py-2 text-sm'>
+							取消
+						</motion.button>
 						<motion.button
 							initial={{ opacity: 0, scale: 0.6 }}
 							animate={{ opacity: 1, scale: 1 }}
