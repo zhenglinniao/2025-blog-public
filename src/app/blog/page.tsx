@@ -43,13 +43,13 @@ export default function BlogPage() {
 
 	const { groupedItems, groupKeys, getGroupLabel } = useMemo(() => {
 		const sorted = [...displayItems].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-		
+
 		const grouped = sorted.reduce(
 			(acc, item) => {
 				let key: string
 				let label: string
 				const date = dayjs(item.date)
-				
+
 				switch (displayMode) {
 					case 'day':
 						key = date.format('YYYY-MM-DD')
@@ -70,7 +70,7 @@ export default function BlogPage() {
 						label = date.format('YYYY年')
 						break
 				}
-				
+
 				if (!acc[key]) {
 					acc[key] = { items: [], label }
 				}
@@ -79,7 +79,7 @@ export default function BlogPage() {
 			},
 			{} as Record<string, { items: BlogIndexItem[]; label: string }>
 		)
-		
+
 		const keys = Object.keys(grouped).sort((a, b) => {
 			// 按时间倒序排序
 			if (displayMode === 'week') {
@@ -91,7 +91,7 @@ export default function BlogPage() {
 			}
 			return b.localeCompare(a)
 		})
-		
+
 		return {
 			groupedItems: grouped,
 			groupKeys: keys,
@@ -207,57 +207,48 @@ export default function BlogPage() {
 				}}
 			/>
 
-			{/* 时间维度切换器 */}
-			{items.length > 0 && (
-				<motion.div
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					className='flex flex-col items-center justify-center gap-4 px-6 pt-32 pb-4 max-sm:pt-32'>
-					{/* 桌面端：切换器居中显示 */}
-					<div className='hidden w-full max-w-[840px] items-center justify-center sm:flex'>
-						<div className='card flex items-center gap-1 rounded-xl border bg-white/60 p-1 backdrop-blur-sm'>
-							{(['day', 'week', 'month', 'year'] as DisplayMode[]).map(mode => (
-								<motion.button
-									key={mode}
-									whileHover={{ scale: 1.05 }}
-									whileTap={{ scale: 0.95 }}
-									onClick={() => setDisplayMode(mode)}
-									className={cn(
-										'rounded-lg px-3 py-1.5 text-xs font-medium transition-all',
-										displayMode === mode
-											? 'bg-brand text-white shadow-sm'
-											: 'text-secondary hover:bg-white/60 hover:text-brand'
-									)}>
-									{mode === 'day' ? '日' : mode === 'week' ? '周' : mode === 'month' ? '月' : '年'}
-								</motion.button>
-							))}
-						</div>
-					</div>
-				</motion.div>
-			)}
+			<div className='flex flex-col items-center justify-center gap-6 px-6 pt-24 max-sm:pt-24'>
+				{items.length > 0 && (
+					<motion.div
+						initial={{ opacity: 0, scale: 0.6 }}
+						animate={{ opacity: 1, scale: 1 }}
+						className='card relative mx-auto flex items-center gap-1 rounded-xl p-1 max-sm:hidden'>
+						{(['day', 'week', 'month', 'year'] as DisplayMode[]).map(mode => (
+							<motion.button
+								key={mode}
+								whileHover={{ scale: 1.05 }}
+								whileTap={{ scale: 0.95 }}
+								onClick={() => setDisplayMode(mode)}
+								className={cn(
+									'rounded-lg px-3 py-1.5 text-xs font-medium transition-all',
+									displayMode === mode ? 'bg-brand text-white shadow-sm' : 'text-secondary hover:text-brand hover:bg-white/60'
+								)}>
+								{mode === 'day' ? '日' : mode === 'week' ? '周' : mode === 'month' ? '月' : '年'}
+							</motion.button>
+						))}
+					</motion.div>
+				)}
 
-			<div className='flex flex-col items-center justify-center gap-6 px-6 pt-4 pb-12 max-sm:pt-4'>
-				<>
-					{groupKeys.map((groupKey, index) => {
-						const group = groupedItems[groupKey]
-						if (!group) return null
-						
-						return (
-							<motion.div
-								key={groupKey}
-								initial={{ opacity: 0, scale: 0.9 }}
-								animate={{ opacity: 1, scale: 1 }}
-								transition={{ delay: INIT_DELAY + ANIMATION_DELAY * index }}
-								className='card relative w-full max-w-[840px] space-y-6'>
-								<div className='mb-3 flex items-center gap-3 text-base'>
-									<div className='font-medium'>{getGroupLabel(groupKey)}</div>
+				{groupKeys.map((groupKey, index) => {
+					const group = groupedItems[groupKey]
+					if (!group) return null
 
-									<div className='h-2 w-2 rounded-full bg-[#D9D9D9]'></div>
+					return (
+						<motion.div
+							key={groupKey}
+							initial={{ opacity: 0, scale: 0.95 }}
+							whileInView={{ opacity: 1, scale: 1 }}
+							transition={{ delay: INIT_DELAY / 2 }}
+							className='card relative w-full max-w-[840px] space-y-6'>
+							<div className='mb-3 flex items-center gap-3 text-base'>
+								<div className='font-medium'>{getGroupLabel(groupKey)}</div>
 
-									<div className='text-secondary text-sm'>{group.items.length} 篇文章</div>
-								</div>
-								<div>
-									{group.items.map(it => {
+								<div className='h-2 w-2 rounded-full bg-[#D9D9D9]'></div>
+
+								<div className='text-secondary text-sm'>{group.items.length} 篇文章</div>
+							</div>
+							<div>
+								{group.items.map(it => {
 									const hasRead = isRead(it.slug)
 									const isSelected = selectedSlugs.has(it.slug)
 									return (
@@ -306,29 +297,31 @@ export default function BlogPage() {
 											</div>
 										</Link>
 									)
-									})}
-								</div>
-							</motion.div>
-						)
-					})}
-					{items.length > 0 && (
-						<div className='text-center'>
-							<motion.a
-								initial={{ opacity: 0, scale: 0.6 }}
-								animate={{ opacity: 1, scale: 1 }}
-								whileHover={{ scale: 1.05 }}
-								whileTap={{ scale: 0.95 }}
-								href='https://juejin.cn/user/2427311675422382/posts'
-								target='_blank'
-								className='card text-secondary static inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs'>
-								<JuejinSVG className='h-4 w-4' />
-								更多
-							</motion.a>
-						</div>
-					)}
-					{!loading && items.length === 0 && <div className='text-secondary py-6 text-center text-sm'>暂无文章</div>}
-					{loading && <div className='text-secondary py-6 text-center text-sm'>加载中...</div>}
-				</>
+								})}
+							</div>
+						</motion.div>
+					)
+				})}
+				{items.length > 0 && (
+					<div className='text-center'>
+						<motion.a
+							initial={{ opacity: 0, scale: 0.6 }}
+							animate={{ opacity: 1, scale: 1 }}
+							whileHover={{ scale: 1.05 }}
+							whileTap={{ scale: 0.95 }}
+							href='https://juejin.cn/user/2427311675422382/posts'
+							target='_blank'
+							className='card text-secondary static inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs'>
+							<JuejinSVG className='h-4 w-4' />
+							更多
+						</motion.a>
+					</div>
+				)}
+			</div>
+
+			<div className='pt-12'>
+				{!loading && items.length === 0 && <div className='text-secondary py-6 text-center text-sm'>暂无文章</div>}
+				{loading && <div className='text-secondary py-6 text-center text-sm'>加载中...</div>}
 			</div>
 
 			<motion.div initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }} className='absolute top-4 right-6 flex gap-3 max-sm:hidden'>
