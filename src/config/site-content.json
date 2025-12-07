@@ -64,5 +64,6 @@
 		}
 	],
 	"clockShowSeconds": false,
-	"summaryInContent": false
+	"summaryInContent": false,
+	"isCachePem": false
 }

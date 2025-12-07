@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { clearAllAuthCache, getAuthToken as getToken, hasAuth as checkAuth, getPemFromCache, savePemToCache } from '@/lib/auth'
-
+import { useConfigStore } from '@/app/(home)/stores/config-store'
 interface AuthStore {
 	// State
 	isAuth: boolean
@@ -19,7 +19,10 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 
 	setPrivateKey: (key: string) => {
 		set({ isAuth: true, privateKey: key })
-		savePemToCache(key)
+		const { siteContent } = useConfigStore.getState()
+		if (siteContent?.isCachePem) {
+			savePemToCache(key)
+		}
 	},
 
 	clearAuth: () => {
