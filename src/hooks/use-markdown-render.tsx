@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactElement } from 'react'
+import { useEffect, useState, type ReactElement, Fragment } from 'react'
 import parse, { type HTMLReactParserOptions, Element, type DOMNode } from 'html-react-parser'
 import { renderMarkdown, type TocItem } from '@/lib/markdown-renderer'
 import { MarkdownImage } from '@/components/markdown-image'
@@ -50,21 +50,31 @@ export function useMarkdownRender(markdown: string): MarkdownRenderResult {
 								return <MarkdownImage src={src} alt={alt} title={title} />
 							}
 							// Handle code block placeholders in text nodes
-							if (domNode.type === 'text' && domNode.data) {
+							if (domNode.type === 'text' && domNode.data && domNode.data.includes('__CODE_BLOCK_')) {
 								const text = domNode.data
-								for (const block of codeBlocks) {
-									if (text.includes(block.placeholder)) {
-										const parts = text.split(block.placeholder)
-										const preElement = parse(block.preHtml) as ReactElement
-										return (
-											<>
-												{parts[0] && <>{parts[0]}</>}
-												<CodeBlock code={block.code}>{preElement}</CodeBlock>
-												{parts[1] && <>{parts[1]}</>}
-											</>
-										)
-									}
-								}
+								const result = text
+												.split(/(__CODE_BLOCK_\d+__)/)
+												.filter(Boolean);
+
+								return (
+									<>
+										{result.map((item, index) => {
+											if(item.startsWith('__CODE_BLOCK_')){
+												const block = codeBlocks.find(b => b.placeholder === item)
+												if(block){
+													const preElement = parse(block.preHtml) as ReactElement
+													return (
+														<CodeBlock key={block.placeholder} code={block.code}>{preElement}</CodeBlock>
+													)
+												}
+											}else{
+												return item
+													? <Fragment key={index}>{item}</Fragment>
+													: null
+											}
+										})}
+									</>
+								)
 							}
 						}
 					}
