@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { clearAllAuthCache, getAuthToken as getToken, hasAuth as checkAuth } from '@/lib/auth'
+import { clearAllAuthCache, getAuthToken as getToken, hasAuth as checkAuth, getPemFromCache, savePemToCache } from '@/lib/auth'
 
 interface AuthStore {
 	// State
@@ -15,10 +15,11 @@ interface AuthStore {
 
 export const useAuthStore = create<AuthStore>((set, get) => ({
 	isAuth: checkAuth(),
-	privateKey: null,
+	privateKey: getPemFromCache(),
 
 	setPrivateKey: (key: string) => {
 		set({ isAuth: true, privateKey: key })
+		savePemToCache(key)
 	},
 
 	clearAuth: () => {

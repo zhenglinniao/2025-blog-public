@@ -4,6 +4,7 @@ import { useAuthStore } from '@/hooks/use-auth'
 import { toast } from 'sonner'
 
 const GITHUB_TOKEN_CACHE_KEY = 'github_token'
+const GITHUB_PEM_CACHE_KEY = 'github_pem'
 
 function getTokenFromCache(): string | null {
 	if (typeof sessionStorage === 'undefined') return null
@@ -32,12 +33,40 @@ function clearTokenCache(): void {
 	}
 }
 
+export function getPemFromCache(): string | null {
+	if (typeof sessionStorage === 'undefined') return null
+	try {
+		return sessionStorage.getItem(GITHUB_PEM_CACHE_KEY)
+	} catch {
+		return null
+	}
+}
+
+export function savePemToCache(pem: string): void {
+	if (typeof sessionStorage === 'undefined') return
+	try {
+		sessionStorage.setItem(GITHUB_PEM_CACHE_KEY, pem)
+	} catch (error) {
+		console.error('Failed to save pem to cache:', error)
+	}
+}
+
+function clearPemCache(): void {
+	if (typeof sessionStorage === 'undefined') return
+	try {
+		sessionStorage.removeItem(GITHUB_PEM_CACHE_KEY)
+	} catch (error) {
+		console.error('Failed to clear pem cache:', error)
+	}
+}
+
 export function clearAllAuthCache(): void {
 	clearTokenCache()
+	clearPemCache()
 }
 
 export function hasAuth(): boolean {
-	return !!getTokenFromCache()
+	return !!getTokenFromCache() || !!getPemFromCache()
 }
 
 /**
