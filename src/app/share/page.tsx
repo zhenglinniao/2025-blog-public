@@ -1,12 +1,13 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { motion } from 'motion/react'
 import { toast } from 'sonner'
 import GridView from './grid-view'
 import CreateDialog from './components/create-dialog'
 import { pushShares } from './services/push-shares'
 import { useAuthStore } from '@/hooks/use-auth'
+import { useConfigStore } from '@/app/(home)/stores/config-store'
 import initialList from './list.json'
 import type { Share } from './components/share-card'
 import type { LogoItem } from './components/logo-upload-dialog'
@@ -22,6 +23,8 @@ export default function Page() {
 	const keyInputRef = useRef<HTMLInputElement>(null)
 
 	const { isAuth, setPrivateKey } = useAuthStore()
+	const { siteContent } = useConfigStore()
+	const hideEditButton = siteContent.hideEditButton ?? false
 
 	const handleUpdate = (updatedShare: Share, oldShare: Share, logoItem?: LogoItem) => {
 		setShares(prev => prev.map(s => (s.url === oldShare.url ? updatedShare : s)))
@@ -103,6 +106,20 @@ export default function Page() {
 
 	const buttonText = isAuth ? '保存' : '导入密钥'
 
+	useEffect(() => {
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if (!isEditMode && (e.ctrlKey || e.metaKey) && e.key === ',') {
+				e.preventDefault()
+				setIsEditMode(true)
+			}
+		}
+
+		window.addEventListener('keydown', handleKeyDown)
+		return () => {
+			window.removeEventListener('keydown', handleKeyDown)
+		}
+	}, [isEditMode])
+
 	return (
 		<>
 			<input
@@ -142,13 +159,15 @@ export default function Page() {
 						</motion.button>
 					</>
 				) : (
-					<motion.button
-						whileHover={{ scale: 1.05 }}
-						whileTap={{ scale: 0.95 }}
-						onClick={() => setIsEditMode(true)}
-						className='bg-card rounded-xl border px-6 py-2 text-sm backdrop-blur-sm transition-colors hover:bg-white/80'>
-						编辑
-					</motion.button>
+					!hideEditButton && (
+						<motion.button
+							whileHover={{ scale: 1.05 }}
+							whileTap={{ scale: 0.95 }}
+							onClick={() => setIsEditMode(true)}
+							className='bg-card rounded-xl border px-6 py-2 text-sm backdrop-blur-sm transition-colors hover:bg-white/80'>
+							编辑
+						</motion.button>
+					)
 				)}
 			</motion.div>
 

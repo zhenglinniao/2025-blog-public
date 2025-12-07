@@ -81,6 +81,16 @@ export function SiteSettings({
 					/>
 					<span className='text-sm font-medium'>摘要放入内容</span>
 				</label>
+
+				<label className='flex items-center gap-2'>
+					<input
+						type='checkbox'
+						checked={formData.hideEditButton ?? false}
+						onChange={e => setFormData({ ...formData, hideEditButton: e.target.checked })}
+						className='accent-brand h-4 w-4 rounded'
+					/>
+					<span className='text-sm font-medium'>隐藏编辑按钮（页面编辑快捷键 ctrl/cmd + ,）</span>
+				</label>
 			</div>
 		</div>
 	)
