@@ -5,6 +5,7 @@ import { Heart } from 'lucide-react'
 import clsx from 'clsx'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
+import { BLOG_SLUG_KEY } from '@/consts'
 
 type LikeButtonProps = {
 	slug?: string
@@ -15,6 +16,7 @@ type LikeButtonProps = {
 const ENDPOINT = 'https://blog-liker.yysuni1001.workers.dev/api/like'
 
 export default function LikeButton({ slug = 'yysuni', delay, className }: LikeButtonProps) {
+	slug = BLOG_SLUG_KEY + slug
 	const [liked, setLiked] = useState(false)
 	const [show, setShow] = useState(false)
 	const [justLiked, setJustLiked] = useState(false)
