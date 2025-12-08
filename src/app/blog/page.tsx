@@ -14,6 +14,7 @@ import { useBlogIndex, type BlogIndexItem } from '@/hooks/use-blog-index'
 import { useReadArticles } from '@/hooks/use-read-articles'
 import JuejinSVG from '@/svgs/juejin.svg'
 import { useAuthStore } from '@/hooks/use-auth'
+import { useConfigStore } from '@/app/(home)/stores/config-store'
 import { readFileAsText } from '@/lib/file-utils'
 import { cn } from '@/lib/utils'
 import { batchDeleteBlogs } from './services/batch-delete-blogs'
@@ -25,6 +26,8 @@ export default function BlogPage() {
 	const { items, loading } = useBlogIndex()
 	const { isRead } = useReadArticles()
 	const { isAuth, setPrivateKey } = useAuthStore()
+	const { siteContent } = useConfigStore()
+	const hideEditButton = siteContent.hideEditButton ?? false
 
 	const keyInputRef = useRef<HTMLInputElement>(null)
 	const [editMode, setEditMode] = useState(false)
@@ -231,6 +234,20 @@ export default function BlogPage() {
 		[setPrivateKey]
 	)
 
+	useEffect(() => {
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if (!editMode && (e.ctrlKey || e.metaKey) && e.key === ',') {
+				e.preventDefault()
+				toggleEditMode()
+			}
+		}
+
+		window.addEventListener('keydown', handleKeyDown)
+		return () => {
+			window.removeEventListener('keydown', handleKeyDown)
+		}
+	}, [editMode, toggleEditMode])
+
 	return (
 		<>
 			<input
@@ -414,13 +431,15 @@ export default function BlogPage() {
 						</motion.button>
 					</>
 				) : (
-					<motion.button
-						whileHover={{ scale: 1.05 }}
-						whileTap={{ scale: 0.95 }}
-						onClick={toggleEditMode}
-						className='bg-card rounded-xl border px-6 py-2 text-sm backdrop-blur-sm transition-colors hover:bg-white/80'>
-						编辑
-					</motion.button>
+					!hideEditButton && (
+						<motion.button
+							whileHover={{ scale: 1.05 }}
+							whileTap={{ scale: 0.95 }}
+							onClick={toggleEditMode}
+							className='bg-card rounded-xl border px-6 py-2 text-sm backdrop-blur-sm transition-colors hover:bg-white/80'>
+							编辑
+						</motion.button>
+					)
 				)}
 			</motion.div>
 		</>

@@ -37,7 +37,7 @@ export default function Home() {
 
 	useEffect(() => {
 		const handleKeyDown = (e: KeyboardEvent) => {
-			if ((e.ctrlKey || e.metaKey) && e.key === 'l') {
+			if ((e.ctrlKey || e.metaKey) && (e.key === 'l' || e.key === ',')) {
 				e.preventDefault()
 				setConfigDialogOpen(true)
 			}
