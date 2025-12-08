@@ -44,7 +44,7 @@ export default function ClockCard() {
 							router.push('/clock')
 						}
 					}}
-					className={`bg-secondary/20 flex h-full w-full items-center justify-center gap-1.5 rounded-4xl transition-opacity ${!editing ? 'cursor-pointer hover:opacity-80' : ''}`}>
+					className='bg-secondary/20 flex h-full w-full cursor-pointer items-center justify-center gap-1.5 rounded-4xl'>
 					<SevenSegmentDigit value={parseInt(hours[0])} />
 					<SevenSegmentDigit value={parseInt(hours[1])} />
 					<Colon />
