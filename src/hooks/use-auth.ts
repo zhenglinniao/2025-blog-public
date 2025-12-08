@@ -14,14 +14,14 @@ interface AuthStore {
 }
 
 export const useAuthStore = create<AuthStore>((set, get) => ({
-	isAuth: checkAuth(),
-	privateKey: getPemFromCache(),
+	isAuth: false,
+	privateKey: null,
 
-	setPrivateKey: (key: string) => {
+	setPrivateKey: async (key: string) => {
 		set({ isAuth: true, privateKey: key })
 		const { siteContent } = useConfigStore.getState()
 		if (siteContent?.isCachePem) {
-			savePemToCache(key)
+			await savePemToCache(key)
 		}
 	},
 
@@ -30,8 +30,8 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 		set({ isAuth: false })
 	},
 
-	refreshAuthState: () => {
-		set({ isAuth: checkAuth() })
+	refreshAuthState: async () => {
+		set({ isAuth: await checkAuth() })
 	},
 
 	getAuthToken: async () => {
@@ -40,3 +40,15 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 		return token
 	}
 }))
+
+getPemFromCache().then((key) => {
+	if (key) {
+		useAuthStore.setState({ privateKey: key })
+	}
+})
+
+checkAuth().then((isAuth) => {
+	if (isAuth) {
+		useAuthStore.setState({ isAuth })
+	}
+})

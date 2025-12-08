@@ -89,7 +89,7 @@ export function SiteSettings({
 						onChange={e => setFormData({ ...formData, isCachePem: e.target.checked })}
 						className='accent-brand h-4 w-4 rounded'
 					/>
-					<span className='text-sm font-medium'>缓存 PEM</span>
+					<span className='text-sm font-medium'>缓存PEM(已加密，但存在风险)</span>
 				</label>
 			</div>
 		</div>

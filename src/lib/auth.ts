@@ -2,9 +2,10 @@ import { createInstallationToken, getInstallationId, signAppJwt } from './github
 import { GITHUB_CONFIG } from '@/consts'
 import { useAuthStore } from '@/hooks/use-auth'
 import { toast } from 'sonner'
+import { decrypt,encrypt } from './aes256-util'
 
 const GITHUB_TOKEN_CACHE_KEY = 'github_token'
-const GITHUB_PEM_CACHE_KEY = 'github_pem'
+const GITHUB_PEM_CACHE_KEY = 'p_info'
 
 function getTokenFromCache(): string | null {
 	if (typeof sessionStorage === 'undefined') return null
@@ -33,19 +34,24 @@ function clearTokenCache(): void {
 	}
 }
 
-export function getPemFromCache(): string | null {
+export async function getPemFromCache(): Promise<string | null> {
 	if (typeof sessionStorage === 'undefined') return null
 	try {
-		return sessionStorage.getItem(GITHUB_PEM_CACHE_KEY)
+		// 解密缓存中的 pem
+		const encryptedPem = sessionStorage.getItem(GITHUB_PEM_CACHE_KEY)
+		if (!encryptedPem) return null
+		return await decrypt(encryptedPem, GITHUB_CONFIG.ENCRYPT_KEY)
 	} catch {
 		return null
 	}
 }
 
-export function savePemToCache(pem: string): void {
+export async function savePemToCache(pem: string): Promise<void> {
 	if (typeof sessionStorage === 'undefined') return
 	try {
-		sessionStorage.setItem(GITHUB_PEM_CACHE_KEY, pem)
+		// 加密 pem 后存储
+		const encryptedPem = await encrypt(pem, GITHUB_CONFIG.ENCRYPT_KEY)
+		sessionStorage.setItem(GITHUB_PEM_CACHE_KEY, encryptedPem)
 	} catch (error) {
 		console.error('Failed to save pem to cache:', error)
 	}
@@ -65,8 +71,8 @@ export function clearAllAuthCache(): void {
 	clearPemCache()
 }
 
-export function hasAuth(): boolean {
-	return !!getTokenFromCache() || !!getPemFromCache()
+export async function hasAuth(): Promise<boolean> {
+	return !!getTokenFromCache() || !!(await getPemFromCache())
 }
 
 /**
