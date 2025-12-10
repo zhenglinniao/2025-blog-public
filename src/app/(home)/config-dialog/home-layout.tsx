@@ -16,7 +16,8 @@ const CARD_LABELS: Record<string, string> = {
 	articleCard: '文章',
 	writeButtons: '写作',
 	navCard: '导航',
-	likePosition: '点赞'
+	likePosition: '点赞',
+	hatCard: '帽子'
 }
 
 interface HomeLayoutProps {

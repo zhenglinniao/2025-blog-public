@@ -7,6 +7,7 @@ import { SiteMetaForm } from './site-meta-form'
 import { ArtImagesSection } from './art-images-section'
 import { BackgroundImagesSection } from './background-images-section'
 import { SocialButtonsSection } from './social-buttons-section'
+import { HatSection } from './hat-section'
 
 export type { FileItem, ArtImageUploads, BackgroundImageUploads, SocialButtonImageUploads } from './types'
 
@@ -103,6 +104,8 @@ export function SiteSettings({
 					<span className='text-sm font-medium'>缓存PEM(已加密，但存在风险)</span>
 				</label>
 			</div>
+
+			<HatSection formData={formData} setFormData={setFormData} />
 		</div>
 	)
 }
