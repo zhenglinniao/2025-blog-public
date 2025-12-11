@@ -15,6 +15,7 @@ export type PushBlogParams = {
 		tags: string[]
 		date?: string
 		summary?: string
+		hidden?: boolean
 	}
 	cover?: ImageItem | null
 	images?: ImageItem[]
@@ -134,34 +135,34 @@ export async function pushBlog(params: PushBlogParams): Promise<void> {
 	})
 
 	const { adminJson, publicJson } = await prepareDualBlogsIndex(
-        token,
-        GITHUB_CONFIG.OWNER,
-        GITHUB_CONFIG.REPO,
-        {
-            slug: form.slug,
-            ...config
-        },
-        GITHUB_CONFIG.BRANCH
-    )
+		token,
+		GITHUB_CONFIG.OWNER,
+		GITHUB_CONFIG.REPO,
+		{
+			slug: form.slug,
+			...config
+		},
+		GITHUB_CONFIG.BRANCH
+	)
 
-    // 3. 创建 Admin Index Blob (index-admin.json)
-    const adminIndexBlob = await createBlob(token, GITHUB_CONFIG.OWNER, GITHUB_CONFIG.REPO, toBase64Utf8(adminJson), 'base64')
-    treeItems.push({
-        path: 'public/blogs/index-admin.json',
-        mode: '100644',
-        type: 'blob',
-        sha: adminIndexBlob.sha
-    })
+	// 3. 创建 Admin Index Blob (index-admin.json)
+	const adminIndexBlob = await createBlob(token, GITHUB_CONFIG.OWNER, GITHUB_CONFIG.REPO, toBase64Utf8(adminJson), 'base64')
+	treeItems.push({
+		path: 'public/blogs/index-admin.json',
+		mode: '100644',
+		type: 'blob',
+		sha: adminIndexBlob.sha
+	})
 
-    // 4. 创建 Public Index Blob (index.json)
-    const publicIndexBlob = await createBlob(token, GITHUB_CONFIG.OWNER, GITHUB_CONFIG.REPO, toBase64Utf8(publicJson), 'base64')
-    treeItems.push({
-        path: 'public/blogs/index.json',
-        mode: '100644',
-        type: 'blob',
-        sha: publicIndexBlob.sha
-    })
-	
+	// 4. 创建 Public Index Blob (index.json)
+	const publicIndexBlob = await createBlob(token, GITHUB_CONFIG.OWNER, GITHUB_CONFIG.REPO, toBase64Utf8(publicJson), 'base64')
+	treeItems.push({
+		path: 'public/blogs/index.json',
+		mode: '100644',
+		type: 'blob',
+		sha: publicIndexBlob.sha
+	})
+
 	// create tree
 	toast.info('正在创建文件树...')
 	const treeData = await createTree(token, GITHUB_CONFIG.OWNER, GITHUB_CONFIG.REPO, treeItems, latestCommitSha)
