@@ -32,7 +32,7 @@ export function useBlogIndex() {
 	})
 
 	let result = data || []
-	if (isAuth) {
+	if (!isAuth) {
 		result = result.filter(item => !item.hidden)
 	}
 
