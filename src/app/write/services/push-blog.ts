@@ -126,6 +126,7 @@ export async function pushBlog(params: PushBlogParams): Promise<void> {
 		cover: coverPath,
 		hidden: form.hidden
 	}
+
 	const configBlob = await createBlob(token, GITHUB_CONFIG.OWNER, GITHUB_CONFIG.REPO, toBase64Utf8(JSON.stringify(config, null, 2)), 'base64')
 	treeItems.push({
 		path: `${basePath}/config.json`,
@@ -145,7 +146,8 @@ export async function pushBlog(params: PushBlogParams): Promise<void> {
 			tags: form.tags,
 			date: dateStr,
 			summary: form.summary,
-			cover: coverPath
+			cover: coverPath,
+			hidden: form.hidden
 		},
 		GITHUB_CONFIG.BRANCH
 	)
