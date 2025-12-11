@@ -205,7 +205,7 @@ export function WriteEditor() {
 				/>
 				<input
 					type='text'
-					placeholder='slug（xx-xx）'
+					placeholder='slug(xx-xx)留空则自动生成'
 					className='bg-card w-[200px] rounded-lg border px-3 py-2 text-sm'
 					value={form.slug}
 					onChange={e => updateForm({ slug: e.target.value })}
