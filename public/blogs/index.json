@@ -1,5 +1,15 @@
 [
   {
+    "slug": "测试",
+    "title": "测试",
+    "tags": [
+      "测试"
+    ],
+    "date": "2025-12-11T23:29",
+    "summary": "撒打算",
+    "cover": "/blogs/测试/837544e8ec5fbb15.webp"
+  },
+  {
     "slug": "ces",
     "title": "新增测试隐藏文章",
     "tags": [
