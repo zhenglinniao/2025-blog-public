@@ -40,9 +40,26 @@ export async function prepareDualBlogsIndex(
 ): Promise<{ adminJson: string, publicJson: string }> {
     let list: BlogIndexItem[] = []
     
-    // 尝试读取 Admin 索引 (主数据源)
+    list = await readAdminIndexJson(token, owner, repo, branch)
+
+    // 更新列表 (全量)
+    const map = new Map<string, BlogIndexItem>(list.map(i => [i.slug, i]))
+    map.set(item.slug, item)
+    const nextFullList = Array.from(map.values()).sort((a, b) => (b.date || '').localeCompare(a.date || ''))
+
+    // 生成公开列表 (过滤掉 hidden 为 true 的文章)
+    const nextPublicList = nextFullList.filter(i => !i.hidden)
+
+    return {
+        adminJson: JSON.stringify(nextFullList, null, 2),
+        publicJson: JSON.stringify(nextPublicList, null, 2)
+    }
+}
+
+export async function readAdminIndexJson(token: string, owner: string, repo: string, branch: string) {
+    let list: BlogIndexItem[] = []
     let txt = await readTextFileFromRepo(token, owner, repo, ADMIN_INDEX_PATH, branch)
-    
+
     // 【关键修复】如果 Admin 索引不存在 (返回 null)，说明是第一次使用或还没生成
     // 必须强制去读取旧的 Public 索引，否则旧文章会丢失！
     if (!txt) {
@@ -61,19 +78,7 @@ export async function prepareDualBlogsIndex(
             console.error('Failed to parse index json:', e)
         }
     }
-
-    // 更新列表 (全量)
-    const map = new Map<string, BlogIndexItem>(list.map(i => [i.slug, i]))
-    map.set(item.slug, item)
-    const nextFullList = Array.from(map.values()).sort((a, b) => (b.date || '').localeCompare(a.date || ''))
-
-    // 生成公开列表 (过滤掉 hidden 为 true 的文章)
-    const nextPublicList = nextFullList.filter(i => !i.hidden)
-
-    return {
-        adminJson: JSON.stringify(nextFullList, null, 2),
-        publicJson: JSON.stringify(nextPublicList, null, 2)
-    }
+    return list
 }
 
 export async function removeBlogsFromIndex(token: string, owner: string, repo: string, slugs: string[], branch: string): Promise<string> {
