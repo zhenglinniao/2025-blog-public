@@ -8,7 +8,8 @@
     ],
     "date": "2025-11-25",
     "summary": "压缩图片的讨论",
-    "cover": "/blogs/texture-format/2c7d9391c47a1876.jpg"
+    "cover": "/blogs/texture-format/2c7d9391c47a1876.jpg",
+    "category": "总结"
   },
   {
     "slug": "kuangyeshidai",
@@ -31,7 +32,8 @@
     ],
     "date": "2025-11-21",
     "summary": "很简单就能实现这个液态玻璃效果，真棒",
-    "cover": "/blogs/liquid-grass/0e7190ecaedc4930.png"
+    "cover": "/blogs/liquid-grass/0e7190ecaedc4930.png",
+    "category": "代码实现"
   },
   {
     "slug": "readme",
@@ -41,7 +43,8 @@
     ],
     "date": "2025-11-16",
     "summary": "2025-blog-public 项目的使用说明以及注意事项",
-    "cover": "/blogs/readme/9532a65cc32ca5eb.png"
+    "cover": "/blogs/readme/9532a65cc32ca5eb.png",
+    "category": "开源"
   },
   {
     "slug": "game-again",
@@ -54,7 +57,8 @@
     ],
     "date": "2025-11-14",
     "summary": "游戏难，又总会悸动",
-    "cover": "/blogs/game-again/4425a1ea5cd869ec.jpg"
+    "cover": "/blogs/game-again/4425a1ea5cd869ec.jpg",
+    "category": "总结"
   },
   {
     "slug": "rewrite-blog-website",
@@ -64,7 +68,8 @@
     ],
     "date": "2025-11-11",
     "summary": "这是重构blog网站的第一篇blog，终于把上个网站的blog 内容移动过来了。当然还有其它内容还没弄。",
-    "cover": "/blogs/rewrite-blog-website/7ec6838f38c9161e.png"
+    "cover": "/blogs/rewrite-blog-website/7ec6838f38c9161e.png",
+    "category": "总结"
   },
   {
     "slug": "retro-grid",
@@ -75,7 +80,8 @@
     ],
     "date": "2025-10-14",
     "summary": "网站设计中，网格实现的研究",
-    "cover": "/blogs/retro-grid/5f88408967c22d252c82ae65d1479d7dd9514921123fd4aeb372dd219037f708.png"
+    "cover": "/blogs/retro-grid/5f88408967c22d252c82ae65d1479d7dd9514921123fd4aeb372dd219037f708.png",
+    "category": "代码实现"
   },
   {
     "slug": "first-ios-app",
