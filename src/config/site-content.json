@@ -67,7 +67,7 @@
 	"summaryInContent": false,
 	"isCachePem": false,
 	"hideEditButton": false,
-	"enableCategories": false,
+	"enableCategories": true,
 	"currentHatIndex": 3,
 	"hatFlipped": false
 }
