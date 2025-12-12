@@ -43,7 +43,8 @@ const initialForm: PublishForm = {
 	tags: [],
 	date: new Date().toISOString(),
 	summary: '',
-	hidden: false
+	hidden: false,
+	category: ''
 }
 
 export const useWriteStore = create<WriteStore>((set, get) => ({
@@ -183,7 +184,8 @@ export const useWriteStore = create<WriteStore>((set, get) => ({
 					tags: blog.config.tags || [],
 					date: blog.config.date || new Date().toISOString(),
 					summary: blog.config.summary || '',
-					hidden: blog.config.hidden || false
+					hidden: blog.config.hidden || false,
+					category: blog.config.category || ''
 				},
 				images,
 				cover,

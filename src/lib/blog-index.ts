@@ -2,15 +2,9 @@
 
 import { putFile, toBase64Utf8, readTextFileFromRepo } from '@/lib/github-client'
 
-export type BlogIndexItem = {
-	slug: string
-	title: string
-	tags: string[]
-	date: string
-	summary?: string
-	cover?: string
-	hidden?: boolean
-}
+import type { BlogIndexItem } from '@/app/blog/types'
+
+export type { BlogIndexItem } from '@/app/blog/types'
 
 export async function upsertBlogsIndex(token: string, owner: string, repo: string, item: BlogIndexItem, branch: string): Promise<void> {
 	const indexPath = 'public/blogs/index.json'

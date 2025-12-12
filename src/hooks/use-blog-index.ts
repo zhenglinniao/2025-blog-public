@@ -1,16 +1,8 @@
 import useSWR from 'swr'
 import { useAuthStore } from '@/hooks/use-auth'
+import type { BlogIndexItem } from '@/app/blog/types'
 
-// 保持类型同步
-export type BlogIndexItem = {
-	slug: string
-	title: string
-	tags: string[]
-	date: string
-	summary?: string
-	cover?: string
-	hidden?: boolean
-}
+export type { BlogIndexItem } from '@/app/blog/types'
 
 // 改进 fetcher，抛出状态码以便处理 404
 const fetcher = async (url: string) => {
