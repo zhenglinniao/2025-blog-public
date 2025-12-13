@@ -233,6 +233,10 @@ export default function BlogPage() {
 		setEditableItems(prev => prev.map(item => (item.category === category ? { ...item, category: undefined } : item)))
 	}, [])
 
+	const handleReorderCategories = useCallback((nextList: string[]) => {
+		setCategoryList(nextList)
+	}, [])
+
 	const handleCancel = useCallback(() => {
 		setEditableItems(items)
 		setSelectedSlugs(new Set())
@@ -525,6 +529,7 @@ export default function BlogPage() {
 				onNewCategoryChange={setNewCategory}
 				onAddCategory={handleAddCategory}
 				onRemoveCategory={handleRemoveCategory}
+				onReorderCategories={handleReorderCategories}
 				editableItems={editableItems}
 				onAssignCategory={handleAssignCategory}
 			/>

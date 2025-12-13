@@ -1,8 +1,10 @@
 'use client'
 
+import { useCallback, useState, type DragEvent } from 'react'
 import dayjs from 'dayjs'
 import type { BlogIndexItem } from '@/hooks/use-blog-index'
 import { DialogModal } from '@/components/dialog-modal'
+import { X } from 'lucide-react'
 
 interface CategoryModalProps {
 	open: boolean
@@ -12,6 +14,7 @@ interface CategoryModalProps {
 	onNewCategoryChange: (value: string) => void
 	onAddCategory: () => void
 	onRemoveCategory: (category: string) => void
+	onReorderCategories: (nextList: string[]) => void
 	editableItems: BlogIndexItem[]
 	onAssignCategory: (slug: string, category?: string) => void
 }
@@ -24,14 +27,50 @@ export function CategoryModal({
 	onNewCategoryChange,
 	onAddCategory,
 	onRemoveCategory,
+	onReorderCategories,
 	editableItems,
 	onAssignCategory
 }: CategoryModalProps) {
+	const [draggingIndex, setDraggingIndex] = useState<number | null>(null)
+
+	const handleDragStart = useCallback((index: number) => {
+		return () => {
+			setDraggingIndex(index)
+		}
+	}, [])
+
+	const handleDragOver = useCallback((index: number) => {
+		return (event: DragEvent<HTMLSpanElement>) => {
+			event.preventDefault()
+			event.dataTransfer.dropEffect = 'move'
+		}
+	}, [])
+
+	const handleDrop = useCallback(
+		(index: number) => {
+			return (event: DragEvent<HTMLSpanElement>) => {
+				event.preventDefault()
+				if (draggingIndex === null || draggingIndex === index) return
+
+				const next = [...categoryList]
+				const [moved] = next.splice(draggingIndex, 1)
+				next.splice(index, 0, moved)
+				onReorderCategories(next)
+				setDraggingIndex(null)
+			}
+		},
+		[categoryList, draggingIndex, onReorderCategories]
+	)
+
+	const handleDragEnd = useCallback(() => {
+		setDraggingIndex(null)
+	}, [])
+
 	return (
 		<DialogModal open={open} onClose={onClose} className='card w-[720px] max-w-[90vw] rounded-2xl p-6'>
 			<div className='mb-4 flex items-center justify-between'>
 				<div className='text-lg font-semibold'>文章分类</div>
-				<button onClick={onClose} className='text-secondary text-sm hover:text-brand'>
+				<button onClick={onClose} className='text-secondary hover:text-brand text-sm'>
 					关闭
 				</button>
 			</div>
@@ -41,9 +80,9 @@ export function CategoryModal({
 						value={newCategory}
 						onChange={e => onNewCategoryChange(e.target.value)}
 						placeholder='输入分类名称'
-						className='w-full rounded-lg border px-3 py-2 text-sm outline-none focus:border-brand'
+						className='focus:border-brand w-full rounded-lg border px-3 py-2 text-sm outline-none'
 					/>
-					<button onClick={onAddCategory} className='brand-btn whitespace-nowrap px-4 py-2 text-sm'>
+					<button onClick={onAddCategory} className='brand-btn px-4 py-2 text-sm whitespace-nowrap'>
 						新增分类
 					</button>
 				</div>
@@ -51,11 +90,24 @@ export function CategoryModal({
 					{categoryList.length === 0 ? (
 						<span className='text-secondary'>暂无分类</span>
 					) : (
-						categoryList.map(cat => (
-							<span key={cat} className='flex items-center gap-2 rounded-full border px-3 py-1'>
-								{cat}
-								<button onClick={() => onRemoveCategory(cat)} className='text-secondary text-xs hover:text-brand'>
-									删除
+						categoryList.map((cat, index) => (
+							<span
+								key={cat}
+								draggable
+								onDragStart={handleDragStart(index)}
+								onDragOver={handleDragOver(index)}
+								onDrop={handleDrop(index)}
+								onDragEnd={handleDragEnd}
+								className={`bg-brand/10 flex cursor-move items-center gap-2 rounded-full border py-1 pr-1.5 pl-3 ${
+									draggingIndex === index ? 'ring-brand/60 opacity-60 ring-1' : ''
+								}`}>
+								<span className='select-none'>{cat}</span>
+								<button
+									type='button'
+									onClick={() => onRemoveCategory(cat)}
+									className='text-secondary hover:text-brand inline-flex h-4 w-4 items-center justify-center'
+									aria-label='Remove category'>
+									<X className='h-3 w-3' />
 								</button>
 							</span>
 						))
@@ -71,7 +123,7 @@ export function CategoryModal({
 							<select
 								value={item.category || ''}
 								onChange={e => onAssignCategory(item.slug, e.target.value)}
-								className='rounded-lg border px-3 py-2 text-sm outline-none focus:border-brand'>
+								className='focus:border-brand rounded-lg border px-3 py-2 text-sm outline-none'>
 								<option value=''>未分类</option>
 								{categoryList.map(cat => (
 									<option key={cat} value={cat}>
@@ -87,4 +139,3 @@ export function CategoryModal({
 		</DialogModal>
 	)
 }
-
