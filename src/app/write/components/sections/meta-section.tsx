@@ -11,6 +11,8 @@ type MetaSectionProps = {
 
 export function MetaSection({ delay = 0 }: MetaSectionProps) {
 	const { form, updateForm } = useWriteStore()
+	console.log(form.date)
+
 	const { categories } = useCategories()
 	const { siteContent } = useConfigStore()
 	const enableCategories = siteContent.enableCategories ?? false
@@ -39,7 +41,9 @@ export function MetaSection({ delay = 0 }: MetaSectionProps) {
 					placeholder='日期'
 					className='bg-card w-full rounded-lg border px-3 py-2 text-sm'
 					value={form.date}
-					onChange={e => updateForm({ date: e.target.value })}
+					onChange={e => {
+						updateForm({ date: e.target.value })
+					}}
 				/>
 
 				<div className='flex items-center gap-2'>

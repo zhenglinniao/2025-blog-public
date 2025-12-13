@@ -6,6 +6,7 @@ import { GITHUB_CONFIG } from '@/consts'
 import type { ImageItem } from '../types'
 import { getFileExt } from '@/lib/utils'
 import { toast } from 'sonner'
+import { formatDateTimeLocal } from '../stores/write-store'
 
 export type PushBlogParams = {
 	form: {
@@ -118,7 +119,7 @@ export async function pushBlog(params: PushBlogParams): Promise<void> {
 	})
 
 	// create blob for config.json
-	const dateStr = form.date || new Date().toISOString()
+	const dateStr = form.date || formatDateTimeLocal()
 	const config = {
 		title: form.title,
 		tags: form.tags,
