@@ -149,7 +149,7 @@ QQ 群：[https://qm.qq.com/q/spdpenr4k2](https://qm.qq.com/q/spdpenr4k2)
 > 不好意思，之前的那个qq群ID 不知道为啥搜不到😂
 
 微信群：刚建好了一个微信群，没有 qq 的可以用这个微信群
-![](/blogs/readme/343f2c62035b8e23.webp)
+![](/blogs/readme/1e38ea817ede4f75.webp)
 
 应该主要是我自己亲自帮助你们遇到问题怎么办。（后续看看有没有好心人）
 
