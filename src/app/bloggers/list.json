@@ -243,5 +243,12 @@
 		"url": "https://blog.dhbxs.top/",
 		"description": "群友，JAVAR，干净blog，让我看到几个人的影子。",
 		"stars": 3
+	},
+	{
+		"name": "23朵毒蘑菇",
+		"avatar": "	https://blog.dumogu.top/web-assets/v-last/public/user.jpg",
+		"url": "https://blog.dumogu.top/",
+		"description": "一个前端开发者（博客一个页面对应一个html,css,js文件简单干净），写文章的水平不太行，但是热爱。其余的就交给YYsuni了😁",
+		"stars": 3
 	}
 ]
