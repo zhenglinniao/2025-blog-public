@@ -2,7 +2,9 @@
   {
     "slug": "electric-border",
     "title": "电光边框效果",
-    "tags": [],
+    "tags": [
+      "学习"
+    ],
     "date": "2026-01-06T17:05",
     "summary": "AI 学习边框特效",
     "cover": "/blogs/electric-border/9b898d43a5a85684.webp",
