@@ -116,7 +116,11 @@ export async function renderMarkdown(markdown: string): Promise<MarkdownRenderRe
 
 	renderer.listitem = (token: Tokens.ListItem) => {
 		// Render inline markdown inside list items (e.g. links, emphasis)
-		const inner = token.tokens ? (marked.parser(token.tokens) as string) : token.text
+		let inner = token.text
+		let tokens = token.tokens
+
+		if (token.task) tokens = tokens.slice(1)
+		inner = marked.parser(tokens) as string
 
 		if (token.task) {
 			const checkbox = token.checked ? '<input type="checkbox" checked disabled />' : '<input type="checkbox" disabled />'
