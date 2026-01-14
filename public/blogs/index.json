@@ -1,5 +1,19 @@
 [
   {
+    "slug": "wave-ball",
+    "title": "波浪小球（待续）",
+    "tags": [
+      "Threejs",
+      "Shader",
+      "学习"
+    ],
+    "date": "2026-01-14T18:03",
+    "summary": "折腾 Shader",
+    "cover": "/blogs/wave-ball/86d118420c399cdb.webp",
+    "hidden": false,
+    "category": "代码实现"
+  },
+  {
     "slug": "fish-animation",
     "title": "鱼鱼动画",
     "tags": [],
