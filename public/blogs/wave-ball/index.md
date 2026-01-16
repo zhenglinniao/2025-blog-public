@@ -187,6 +187,7 @@ void main() {
 ### fragmentShader
 
 ```glsl
+// fragmentShader
 varying float vDisplacement;
 
 void main() {
@@ -203,3 +204,22 @@ void main() {
 
 ![](/blogs/wave-ball/78fbb7964a42fceb.webp)
 
+## 后续
+
+动态上加上 `uTime` 变量，与 y 值相加，就可以做出波动动态效果
+
+`float pattern = smoothMod(csm_Position.y * 6.0 + uTime, 1.0, 1.5);`
+
+
+## 完整示例
+
+[https://practices-sandy.vercel.app/wave-only-demo](https://practices-sandy.vercel.app/wave-only-demo)
+
+
+<iframe
+	src='https://practices-sandy.vercel.app/wave-only-demo'
+	style={{ border: 0 }}
+	allowfullscreen
+	width="100%"
+	height="600px"
+	loading='lazy'></iframe>
