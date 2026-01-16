@@ -103,6 +103,10 @@ void main() {
   csm_Position += pattern * normal * 0.4;
 }
 ```
+### smoothMod 数学公式
+$$
+f(x, A, r) = \frac{A}{2} - \frac{1}{\pi} \arctan \left( \frac{\cos(\frac{\pi x}{A}) \sin(\frac{\pi x}{A})}{\sin^2(\frac{\pi x}{A}) + r^2} \right)
+$$
 
 Desmos 的公式为：
 ```math
@@ -135,4 +139,67 @@ float softSquare(float x, float p, float a){
 
 ![](/blogs/wave-ball/00acb13b040b95ff.webp)
 
+## fit
+线性重映射通过将数值先归一化，再进行线性插值实现：
+$$
+y = \text{outMin} + \frac{\text{value} - \text{inMin}}{\text{inMax} - \text{inMin}} \times (\text{outMax} - \text{outMin})
+$$
+
+```glsl
+float fit(float value, float inMin, float inMax, float outMin, float outMax) {
+  float t = (value - inMin) / (inMax - inMin);
+  return mix(outMin, outMax, t);
+} 
+```
+
+我们需要将变化放大，`fit(modValue, 0.35, 0.5, 0.0, 1.0)`，让波浪效果更抖动
+
+![](/blogs/wave-ball/43e8a306892ddc52.webp)
+
+![](/blogs/wave-ball/efb96e0596d07042.webp)
+
+## 色彩
+
+真实的物理 shader 其实并不好看，尤其在 web 渲染中，所以主动上色会好些，根据起伏量。
+
+
+```glsl
+// vertexShader
+uniform float uTime;
+#define PI 3.141592653589793
+
+varying float vDisplacement; // 新增变量，传递到 fragmentShader
+
+float smoothMod(float axis, float amp, float rad) { ... }
+
+float fit(float value, float inMin, float inMax, float outMin, float outMax) { ... }
+
+void main() {
+  float pattern = smoothMod(csm_Position.y * 6.0, 1.0, 1.5);
+  pattern = fit(pattern, 0.35, 0.6, 0.0, 1.0);
+
+  vDisplacement = pattern; // 赋值
+
+  csm_Position += pattern * normal * 0.4;
+}
+```
+
+### fragmentShader
+
+```glsl
+varying float vDisplacement;
+
+void main() {
+  float intensity = clamp(vDisplacement, 0.0, 1.0);
+
+  vec3 color = vec3(0.5, 0.5, 0.8); // 紫色
+  color *= intensity;
+
+  csm_DiffuseColor.rgb = color;
+}
+```
+
+这样就可以简单的加号起伏的色彩变化
+
+![](/blogs/wave-ball/78fbb7964a42fceb.webp)
 
