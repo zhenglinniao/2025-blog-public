@@ -1,5 +1,18 @@
 [
   {
+    "slug": "daily-note",
+    "title": "任务清单软件",
+    "tags": [
+      "开发",
+      "开源"
+    ],
+    "date": "2026-01-23T09:56",
+    "summary": "一款极简的任务清单",
+    "cover": "/blogs/daily-note/899dca52074bfa0c.webp",
+    "hidden": false,
+    "category": "开源"
+  },
+  {
     "slug": "gpu-twinkle",
     "title": "GPU 闪动",
     "tags": [
