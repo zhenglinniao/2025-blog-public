@@ -40,11 +40,15 @@ let katexModule: typeof import('katex') | null = null
 let katexLoadAttempted = false
 
 async function loadKatex() {
-	if (katexLoadAttempted) return katexModule
+	if (katexModule) return katexModule
+	if (katexLoadAttempted) return null
 	katexLoadAttempted = true
 
 	try {
-		katexModule = await import('katex')
+		// katex is published as CJS; depending on bundler/runtime the dynamic import
+		// may return either the exports object directly or as `default`.
+		const mod: any = await import('katex')
+		katexModule = (mod?.default ?? mod) as any
 		return katexModule
 	} catch (error) {
 		console.warn('Failed to load katex module:', error)
@@ -53,57 +57,10 @@ async function loadKatex() {
 }
 
 export async function renderMarkdown(markdown: string): Promise<MarkdownRenderResult> {
-	// Pre-process with marked lexer first
-	const tokens = marked.lexer(markdown)
-
-	// Extract TOC from parsed tokens (this correctly skips code blocks)
-	const toc: TocItem[] = []
-	function extractHeadings(tokenList: typeof tokens) {
-		for (const token of tokenList) {
-			if (token.type === 'heading' && token.depth <= 3) {
-				// Use the parsed text (markdown syntax like links/code already stripped)
-				const text = token.text
-				const id = slugify(text)
-				toc.push({ id, text, level: token.depth })
-			}
-			// Recursively check nested tokens (e.g., in blockquotes, lists)
-			if ('tokens' in token && token.tokens) {
-				extractHeadings(token.tokens as typeof tokens)
-			}
-		}
-	}
-	extractHeadings(tokens)
-
-	// Pre-process code blocks with Shiki
+	// Load optional renderers first so they apply on the FIRST lex/parse pass.
+	// (If we lex before registering extensions, math tokens won't ever be produced on a cold refresh.)
 	const codeBlockMap = new Map<string, { html: string; original: string }>()
-	const shiki = await loadShiki()
-
-	for (const token of tokens) {
-		if (token.type === 'code') {
-			const codeToken = token as Tokens.Code
-			const originalCode = codeToken.text
-			const key = `__SHIKI_CODE_${codeBlockMap.size}__`
-
-			if (shiki) {
-				try {
-					const html = await shiki.codeToHtml(originalCode, {
-						lang: codeToken.lang || 'text',
-						theme: 'one-light'
-					})
-					codeBlockMap.set(key, { html, original: originalCode })
-					codeToken.text = key
-				} catch {
-					// Keep original if highlighting fails
-					codeBlockMap.set(key, { html: '', original: originalCode })
-					codeToken.text = key
-				}
-			} else {
-				// Fallback when shiki is not available
-				codeBlockMap.set(key, { html: '', original: originalCode })
-				codeToken.text = key
-			}
-		}
-	}
+	const [shiki, katex] = await Promise.all([loadShiki(), loadKatex()])
 
 	// Render HTML with heading ids
 	const renderer = new marked.Renderer()
@@ -147,7 +104,6 @@ export async function renderMarkdown(markdown: string): Promise<MarkdownRenderRe
 		return `<li>${inner}</li>\n`
 	}
 
-	const katex = await loadKatex()
 	const renderMath = (content: string, displayMode: boolean) => {
 		if (!katex) {
 			// Keep original delimiters if katex is not available
@@ -166,6 +122,7 @@ export async function renderMarkdown(markdown: string): Promise<MarkdownRenderRe
 		}
 	}
 
+	// Register extensions BEFORE lexing so math gets tokenized on cold refresh.
 	marked.use({
 		renderer,
 		extensions: [
@@ -221,6 +178,55 @@ export async function renderMarkdown(markdown: string): Promise<MarkdownRenderRe
 			}
 		]
 	})
+
+	// Pre-process with marked lexer first (after extensions are registered)
+	const tokens = marked.lexer(markdown)
+
+	// Extract TOC from parsed tokens (this correctly skips code blocks)
+	const toc: TocItem[] = []
+	function extractHeadings(tokenList: typeof tokens) {
+		for (const token of tokenList) {
+			if (token.type === 'heading' && token.depth <= 3) {
+				// Use the parsed text (markdown syntax like links/code already stripped)
+				const text = token.text
+				const id = slugify(text)
+				toc.push({ id, text, level: token.depth })
+			}
+			// Recursively check nested tokens (e.g., in blockquotes, lists)
+			if ('tokens' in token && token.tokens) {
+				extractHeadings(token.tokens as typeof tokens)
+			}
+		}
+	}
+	extractHeadings(tokens)
+
+	// Pre-process code blocks with Shiki
+	for (const token of tokens) {
+		if (token.type === 'code') {
+			const codeToken = token as Tokens.Code
+			const originalCode = codeToken.text
+			const key = `__SHIKI_CODE_${codeBlockMap.size}__`
+
+			if (shiki) {
+				try {
+					const html = await shiki.codeToHtml(originalCode, {
+						lang: codeToken.lang || 'text',
+						theme: 'one-light'
+					})
+					codeBlockMap.set(key, { html, original: originalCode })
+					codeToken.text = key
+				} catch {
+					// Keep original if highlighting fails
+					codeBlockMap.set(key, { html: '', original: originalCode })
+					codeToken.text = key
+				}
+			} else {
+				// Fallback when shiki is not available
+				codeBlockMap.set(key, { html: '', original: originalCode })
+				codeToken.text = key
+			}
+		}
+	}
 	const html = (marked.parser(tokens) as string) || ''
 
 	return { html, toc }
