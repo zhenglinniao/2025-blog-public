@@ -28,3 +28,7 @@ float random (vec2 st) {
 **计算顺序的不确定性**：GPU 同时处理成千上万个像素。由于热量管理、负载均衡，某些像素的计算顺序或硬件单元分配在每一帧可能会有极其微小的差异。
 
 **超越函数**（sin/cos）的实现：sin 函数在 GPU 硬件层面通常不是通过完美的数学计算，而是通过多项式逼近或查找表实现的。这种逼近在不同频率或不同负载下，可能会有极微小的波动。
+
+## 测试一个公式
+
+$$ \mathcal{L}{\text{SM}} = -\frac{1}{4} G{\mu\nu}^a G^{a\mu\nu} -\frac{1}{4} W_{\mu\nu}^i W^{i\mu\nu} -\frac{1}{4} B_{\mu\nu} B^{\mu\nu} + \bar{\psi}j \left( i \gamma^\mu D\mu - m_j \right) \psi_j + \text{h.c.} + \left( D_\mu \phi \right)^\dagger \left( D^\mu \phi \right) - V(\phi) - \bar{\psi}i y{ij} \phi \psi_j + \text{h.c.} $$
