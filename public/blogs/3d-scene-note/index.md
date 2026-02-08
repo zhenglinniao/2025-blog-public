@@ -41,3 +41,19 @@
 我感觉很完美。棒棒。
 
 ![](/blogs/3d-scene-note/294c666328f27e16.webp)
+
+## 碰撞体
+
+制作碰撞体无需重新建立简单几何体。
+
+还是以模型本身，去除无需碰撞的面。然后可以创建简化面，如果面不多，也可以不管。
+
+导入开启碰撞体，关闭显示，一定要设置 `colliders='trimesh'`
+```tsx
+<RigidBody colliders='trimesh' type='fixed' friction={1}>
+	<mesh geometry={nodes['碰撞'].geometry} receiveShadow>
+		<meshStandardMaterial color='#ffffff' transparent opacity={0} />
+	</mesh>
+</RigidBody>
+```
+![](/blogs/3d-scene-note/82d419dbbe1dd004.webp)
