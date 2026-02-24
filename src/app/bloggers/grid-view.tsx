@@ -5,12 +5,15 @@ import { useState } from 'react'
 import { type AvatarItem } from './components/avatar-upload-dialog'
 import { BloggerCard } from './components/blogger-card'
 
+export type BloggerStatus = 'recent' | 'disconnected'
+
 export interface Blogger {
 	name: string
 	avatar: string
 	url: string
 	description: string
 	stars: number
+	status?: BloggerStatus
 }
 
 interface GridViewProps {
@@ -22,14 +25,19 @@ interface GridViewProps {
 
 export default function GridView({ bloggers, isEditMode = false, onUpdate, onDelete }: GridViewProps) {
 	const [searchTerm, setSearchTerm] = useState('')
+	const [selectedCategory, setSelectedCategory] = useState<BloggerStatus>('recent')
 
-	const filteredBloggers = bloggers.filter(
-		blogger => blogger.name.toLowerCase().includes(searchTerm.toLowerCase()) || blogger.description.toLowerCase().includes(searchTerm.toLowerCase())
-	)
+	const filteredBloggers = bloggers.filter(blogger => {
+		const status = blogger.status ?? 'recent'
+		const matchesCategory = status === selectedCategory
+		const matchesSearch =
+			blogger.name.toLowerCase().includes(searchTerm.toLowerCase()) || blogger.description.toLowerCase().includes(searchTerm.toLowerCase())
+		return matchesCategory && matchesSearch
+	})
 
 	return (
 		<div className='mx-auto w-full max-w-7xl px-6 pt-24 pb-12'>
-			<div className='mb-8'>
+			<div className='mb-8 space-y-4'>
 				<input
 					type='text'
 					placeholder='搜索博主...'
@@ -37,6 +45,23 @@ export default function GridView({ bloggers, isEditMode = false, onUpdate, onDel
 					onChange={e => setSearchTerm(e.target.value)}
 					className='focus:ring-brand mx-auto block w-full max-w-md rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:outline-none'
 				/>
+
+				<div className='flex flex-wrap justify-center gap-2'>
+					<button
+						onClick={() => setSelectedCategory('recent')}
+						className={`rounded-full px-4 py-1.5 text-sm transition-colors ${
+							selectedCategory === 'recent' ? 'bg-brand text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+						}`}>
+						近期更新
+					</button>
+					<button
+						onClick={() => setSelectedCategory('disconnected')}
+						className={`rounded-full px-4 py-1.5 text-sm transition-colors ${
+							selectedCategory === 'disconnected' ? 'bg-brand text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+						}`}>
+						长期失联
+					</button>
+				</div>
 			</div>
 
 			<div className='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3'>

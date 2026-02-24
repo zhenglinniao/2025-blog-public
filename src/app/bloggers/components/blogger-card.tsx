@@ -5,7 +5,7 @@ import StarRating from '@/components/star-rating'
 import { useSize } from '@/hooks/use-size'
 import { cn } from '@/lib/utils'
 import EditableStarRating from '@/components/editable-star-rating'
-import { Blogger } from '../grid-view'
+import { Blogger, type BloggerStatus } from '../grid-view'
 import { useState } from 'react'
 import AvatarUploadDialog, { type AvatarItem } from './avatar-upload-dialog'
 
@@ -122,6 +122,22 @@ export function BloggerCard({ blogger, isEditMode = false, onUpdate, onDelete }:
 					<EditableStarRating stars={localBlogger.stars} editable={true} onChange={stars => handleFieldChange('stars', stars)} />
 				) : (
 					<StarRating stars={localBlogger.stars} />
+				)}
+
+				{canEdit && (
+					<div className='mt-2 flex gap-2'>
+						{(['recent', 'disconnected'] as BloggerStatus[]).map(status => (
+							<button
+								key={status}
+								type='button'
+								onClick={() => handleFieldChange('status', status)}
+								className={`rounded-full px-3 py-1 text-xs transition-colors ${
+									(localBlogger.status ?? 'recent') === status ? 'bg-brand text-white' : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+								}`}>
+								{status === 'recent' ? '近期更新' : '长期失联'}
+							</button>
+						))}
+					</div>
 				)}
 
 				<p
