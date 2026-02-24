@@ -39,28 +39,32 @@
 		"url": "https://www.imrising.cn/",
 		"avatar": "https://www.imrising.cn/images/logo/logo.webp",
 		"description": "网站样式很棒，虽然用的别人的模板，但是他用的很棒。是个初出茅庐的程序员。",
-		"stars": 3
+		"stars": 3,
+		"status": "disconnected"
 	},
 	{
 		"name": "無名小栈",
 		"url": "https://blog.imsyy.top/",
 		"avatar": "https://blog.imsyy.top/images/logo/logo.webp",
 		"description": "Risingle blog 的模板主人，或许是头像和网站风格不搭，显得没有 Risingle 的舒服。Github 热门项目还不少，一看就是爱折腾的人，就是不爱写 blog，没啥内容。01 年，挺年轻的，独立开发者？不知道经历了什么。",
-		"stars": 2
+		"stars": 2,
+		"status": "disconnected"
 	},
 	{
 		"name": "韩小韩博客",
 		"url": "https://www.vvhan.com/",
 		"avatar": "https://q1.qlogo.cn/g?b=qq&nk=1655466387&s=640",
 		"description": "网站很棒，内容多，头像也帅，不知道人帅不帅。就是这个错位滑动效果一直让我头疼，这个阻尼效果还写blog专业上了。。。一个插件导入的事情，啥时候他能把这个效果关掉就好了。挺想多看下他内容的，但是这个效果太头晕了。",
-		"stars": 3
+		"stars": 3,
+		"status": "disconnected"
 	},
 	{
 		"name": "Anthony Fu",
 		"url": "https://antfu.me/",
 		"avatar": "https://avatars.githubusercontent.com/u/11247099?v=4",
 		"description": "很厉害的一个人，好像还很年轻。经常在 b站活跃，开直播（看过）。我记得它几乎毕业就做了很多厉害的事情，vue 系列核心成员，似乎对他来说很轻松的事情。blog 多是英文，生活圈也是大神汇聚，真好。不怎么爱写blog，但相比来说已经算好的了。可以从他这窥探一些 vue \"上流社会\"",
-		"stars": 4
+		"stars": 4,
+		"status": "disconnected"
 	},
 	{
 		"name": "enpitsulin 铅笔",
