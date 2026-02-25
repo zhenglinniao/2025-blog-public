@@ -33,7 +33,8 @@
 		"url": "https://emilkowal.ski/",
 		"avatar": "https://emilkowal.ski/favicon.ico",
 		"description": "Blog 就干脆\"不设计\"，无装饰。技术就比较轻松一些，它更强调动画/交互。Vercel 员工，他的组件很好用，也很 vercel。",
-		"stars": 4
+		"stars": 4,
+		"status": "disconnected"
 	},
 	{
 		"name": "Risingle",
