@@ -12,3 +12,9 @@
 * `Shift + Alt + ↓`
 
 复制当前行到下一行。
+
+## 其它
+
+* 单独想放大左侧目录字体大小
+
+没有单独设置，但是可以先全局放大 `"window.zoomLevel": 0.5`，再单独缩小 editor 文字大小 `"editor.fontSize": 12`
