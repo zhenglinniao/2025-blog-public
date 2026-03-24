@@ -1,5 +1,19 @@
 [
   {
+    "slug": "draggable-card-2",
+    "title": "物理吊牌笔记 - 约束",
+    "tags": [
+      "Threejs",
+      "3D",
+      "笔记"
+    ],
+    "date": "2026-03-24T17:04",
+    "summary": "Threejs 物理效果，吊牌实现笔记，线条部分",
+    "cover": "/blogs/draggable-card-2/5aef3921b3a5a761.webp",
+    "hidden": false,
+    "category": ""
+  },
+  {
     "slug": "draggable-card",
     "title": "物理吊牌笔记 - 抓取",
     "tags": [
