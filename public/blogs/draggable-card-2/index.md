@@ -7,11 +7,11 @@
 6. Spherical，球窝关节
 7. Spring，弹簧
 
-## Hook
+## Hooks
 
 fiber 中使用 hook ,提供 6 种 hook
 
-### Fixed Joint（固定关节）
+* Fixed Joint（固定关节）
 
 ```tsx
 const joint = useFixedJoint(bodyA, bodyB, [
@@ -22,7 +22,7 @@ const joint = useFixedJoint(bodyA, bodyB, [
 ])
 ```
 
-### Spherical Joint（球关节）
+* Spherical Joint（球关节）
 
 ```tsx
 const joint = useSphericalJoint(bodyA, bodyB, [
@@ -31,7 +31,7 @@ const joint = useSphericalJoint(bodyA, bodyB, [
 ])
 ```
 
-### Revolute Joint（旋转关节）
+* Revolute Joint（旋转关节）
 
 ```tsx
 const joint = useRevoluteJoint(bodyA, bodyB, [
@@ -41,7 +41,7 @@ const joint = useRevoluteJoint(bodyA, bodyB, [
 ])
 ```
 
-### Prismatic Joint（移动关节）
+* Prismatic Joint（移动关节）
 
 ```tsx
 const joint = usePrismaticJoint(bodyA, bodyB, [
@@ -50,7 +50,7 @@ const joint = usePrismaticJoint(bodyA, bodyB, [
   [0, 1, 0]        // 平移轴（局部 Y 轴）
 ])
 ```
-### Rope Joint（绳索关节）
+* Rope Joint（绳索关节）
 ```tsx
 const joint = useRopeJoint(bodyA, bodyB, [
   [0, 0, 0],       // bodyA 局部锚点
@@ -59,7 +59,7 @@ const joint = useRopeJoint(bodyA, bodyB, [
 ])
 ```
 
-### Spring Joint（弹簧关节）
+* Spring Joint（弹簧关节）
 ```tsx
 const joint = useSpringJoint(bodyA, bodyB, [
   [0, 0, 0],       // bodyA 局部锚点
@@ -80,7 +80,6 @@ const joint = useSpringJoint(bodyA, bodyB, [
 	height="600px"
 	loading='lazy'></iframe>
 
-### 左边三个
 左边三个更能表现为绳子，所以顶部固定。右边三个，固定的话，会容易崩坏。
 
 `useRopeJoint` 拉长后会产生拉力，形成紧绷效果
