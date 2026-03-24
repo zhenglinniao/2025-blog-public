@@ -56,3 +56,25 @@ rb.setNextKinematicTranslation({ x: desired.x, y: desired.y, z: desired.z })
 	height="600px"
 	loading='lazy'></iframe>
 
+### 惯性
+
+`KinematicPositionBased` 切换回 `Dynamic` 会自动保留物体的速度（线速度/角速度）。
+
+KinematicPositionBased 刚体虽然没有被施加力，但引擎为了计算它与其他动态物体的碰撞，内部仍然会计算并存储一个速度值。
+
+### 优化
+
+1. `pointermove` 去除，逻辑放在 `useFrame`。这样减少事件挂载，还可以更实时地拖拽。
+
+```ts
+if (!state.raycaster.ray.intersectPlane(drag.plane, drag._hit)) return
+
+const desired = drag._desired.copy(drag._hit).sub(drag.grabOffset)
+
+rb.setNextKinematicTranslation({ x: desired.x, y: desired.y, z: desired.z })
+```
+
+2. `pointerup`, `pointercancel` 挂载到 window，避免“沾手”现象
+
+
+
