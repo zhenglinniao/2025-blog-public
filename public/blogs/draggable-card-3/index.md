@@ -178,3 +178,13 @@ mesh 设置 `frustumCulled = false` 防止突然消失。
 ## AI
 
 3D 方面，AI 容易写得不对。但是 AI 帮了很大的忙，比如 曲线生成 geometry , 这不是我能短时间能写出来的，学习知识加应用方面，至少又是半天时间。
+
+## 两条线的版本
+
+<iframe
+	src='https://suni-3d.vercel.app/demo-11'
+	style={{ border: 0 }}
+	allowfullscreen
+	width="100%"
+	height="600px"
+	loading='lazy'></iframe>
