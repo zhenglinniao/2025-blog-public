@@ -36,6 +36,8 @@ Spline 的材质用了多层的效果，材质一般设置了两层，一层 col
 
 * GizmoHelper 和 EffectComposer 同时设置会出现互斥 bug，需要设置 `renderPriority` 先后关系
 
+* shadow 要设置 `THREE.PCFSoftShadowMap`，效果会好一点
+
 
 ## 物理笔记
 
