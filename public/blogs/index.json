@@ -141,58 +141,6 @@
     "category": ""
   },
   {
-    "slug": "model-animation-note",
-    "title": "模型动画笔记",
-    "tags": [
-      "学习",
-      "建模"
-    ],
-    "date": "2026-02-03T11:40",
-    "summary": "骨骼与动画",
-    "cover": "/blogs/model-animation-note/0655bc33056c4af1.webp",
-    "hidden": false,
-    "category": ""
-  },
-  {
-    "slug": "cartoon-note-render",
-    "title": "卡通人物建模笔记 · 三",
-    "tags": [
-      "学习",
-      "渲染"
-    ],
-    "date": "2026-01-29T22:06",
-    "summary": "渲染笔记",
-    "cover": "/blogs/cartoon-note-render/557a9db9106bcde2.webp",
-    "hidden": false,
-    "category": ""
-  },
-  {
-    "slug": "cartoon-note-body",
-    "title": "卡通人物建模笔记 · 二",
-    "tags": [
-      "学习",
-      "建模"
-    ],
-    "date": "2026-01-29T16:02",
-    "summary": "身体建模笔记",
-    "cover": "/blogs/cartoon-note-body/a6cf63f4e4e7ac9c.webp",
-    "hidden": false,
-    "category": ""
-  },
-  {
-    "slug": "cartoon-note-head",
-    "title": "卡通人物建模笔记",
-    "tags": [
-      "学习",
-      "建模"
-    ],
-    "date": "2026-01-28T17:01",
-    "summary": "头部线条记录",
-    "cover": "/blogs/cartoon-note-head/666668e4acc2d75c.webp",
-    "hidden": false,
-    "category": ""
-  },
-  {
     "slug": "math-graph",
     "title": "数学图形工具",
     "tags": [
@@ -246,16 +194,6 @@
     "category": "代码实现"
   },
   {
-    "slug": "fish-animation",
-    "title": "鱼鱼动画",
-    "tags": [],
-    "date": "2026-01-12T10:43",
-    "summary": "规划草稿",
-    "cover": "https://www.yysuni.com/images/pictures/b346636da687740b.webp",
-    "hidden": true,
-    "category": ""
-  },
-  {
     "slug": "love-island",
     "title": "恋爱岛项目需求记录",
     "tags": [
@@ -279,18 +217,6 @@
     "cover": "/blogs/electric-border/9b898d43a5a85684.webp",
     "hidden": false,
     "category": "代码实现"
-  },
-  {
-    "slug": "driving-tour",
-    "title": "年底的自驾游",
-    "tags": [
-      "旅游"
-    ],
-    "date": "2026-01-05T11:50",
-    "summary": "琐碎的自驾游回忆",
-    "cover": "/blogs/driving-tour/474f9e7a4c63084a.webp",
-    "hidden": false,
-    "category": ""
   },
   {
     "slug": "fix-screen",
@@ -734,16 +660,6 @@
     "date": "2023-06-29",
     "summary": "简单记录一下在 MDN 看到的 CSS Blog 文章",
     "cover": "/blogs/css-colors/e5a78a7492d1850d.png"
-  },
-  {
-    "slug": "ruanyifeng",
-    "title": "阮一峰见证前端历史",
-    "tags": [
-      "阮一峰"
-    ],
-    "date": "2023-06-15",
-    "summary": "阮一峰是我最喜欢的博客作者，但他本来不是一名前端开发者，而是学校教书的教授。然而，他的博客伴随着前端在国内的兴起。",
-    "cover": "/blogs/ruanyifeng/16ca1175afbdcd1b.jpg"
   },
   {
     "slug": "design-patterns-react",
