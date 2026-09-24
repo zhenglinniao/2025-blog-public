@@ -42,17 +42,6 @@
 		"npm": "https://www.npmjs.com/package/react18-json-view"
 	},
 	{
-		"name": "第一版 Blog 网站",
-		"year": 2023,
-		"description": "最开始是觉得掘金这种网站写文章挺好的。后面还是想写一个自己网站，体现自己的风格。MDX 还可以自己写组件到 blog，直接交互，多好。。。没想到为以后埋下了坑。",
-		"image": "https://blog-archive.yysuni.com/favicons/android-chrome-512x512.png",
-		"url": "https://blog-archive.yysuni.com/",
-		"tags": [
-			"Next.js",
-			"MDX"
-		]
-	},
-	{
 		"name": "Blockies",
 		"year": 2023,
 		"description": " Blockies React组件，SVG 实现，用于生成区块链地址的图标。这是我的第一个有人用的组件，虽然人不多",
