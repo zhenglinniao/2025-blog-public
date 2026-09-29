@@ -3,7 +3,13 @@ import siteContent from '@/config/site-content.json'
 import cardStyles from '@/config/card-styles.json'
 
 export type SiteContent = typeof siteContent
-export type CardStyles = typeof cardStyles
+type CardStylesJson = typeof cardStyles
+export type CardStyles = {
+	[K in keyof CardStylesJson]: Omit<CardStylesJson[K], 'offsetX' | 'offsetY'> & {
+		offsetX: number | null
+		offsetY: number | null
+	}
+}
 
 interface ConfigStore {
 	siteContent: SiteContent
@@ -20,7 +26,7 @@ interface ConfigStore {
 
 export const useConfigStore = create<ConfigStore>((set, get) => ({
 	siteContent: { ...siteContent },
-	cardStyles: { ...cardStyles },
+	cardStyles: { ...cardStyles } as CardStyles,
 	regenerateKey: 0,
 	configDialogOpen: false,
 	setSiteContent: (content: SiteContent) => {
@@ -33,7 +39,7 @@ export const useConfigStore = create<ConfigStore>((set, get) => ({
 		set({ siteContent: { ...siteContent } })
 	},
 	resetCardStyles: () => {
-		set({ cardStyles: { ...cardStyles } })
+		set({ cardStyles: { ...cardStyles } as CardStyles })
 	},
 	regenerateBubbles: () => {
 		set(state => ({ regenerateKey: state.regenerateKey + 1 }))
@@ -42,4 +48,3 @@ export const useConfigStore = create<ConfigStore>((set, get) => ({
 		set({ configDialogOpen: open })
 	}
 }))
-
