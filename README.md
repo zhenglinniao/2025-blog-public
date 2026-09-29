@@ -123,6 +123,45 @@ NEXT_PUBLIC_SITE_URL=https://your-domain.example
 pnpm test:crosspost
 ```
 
+### 7.1 自动同步到 CSDN 和掘金草稿箱
+
+仓库内置了自动同步任务。`main` 分支中的 `public/blogs/{slug}/index.md` 或 `config.json` 发生变化后，自托管 GitHub Actions Runner 会自动创建或更新两边的原草稿，不需要再复制粘贴。
+
+安全约束：
+
+- 默认且目前仅支持保存草稿，不会点击平台的“发布”按钮。
+- 登录 Cookie 只保存在 Runner 用户目录的 `.blog-crosspost/auth`，不会提交到 Git。
+- 本地状态文件记录 `slug`、平台草稿编号和内容哈希，内容未变化时自动跳过，避免重复草稿。
+- 平台登录失效、页面改版或保存后校验不一致时，任务会失败退出，不会把失败误报为成功。
+
+第一次使用时，在作为发布机的 Windows 电脑上安装 Node.js、pnpm 和 Microsoft Edge，然后执行：
+
+```bash
+pnpm install
+pnpm crosspost:login -- --platform csdn
+pnpm crosspost:login -- --platform juejin
+```
+
+浏览器打开后分别完成登录，确认进入文章编辑器，再回到终端按回车。可以先用指定文章测试：
+
+```bash
+pnpm crosspost:sync -- --slug pnpm-upgrade --platform all --force
+pnpm crosspost:status
+```
+
+需要补发历史文章时，先预演待同步清单，再按每批 5 篇执行。重复运行同一条批量命令会从未完成处继续，不会重复创建已经成功的草稿：
+
+```bash
+pnpm crosspost:sync -- --all --platform all --max-articles 5 --dry-run
+pnpm crosspost:sync -- --all --platform all --max-articles 5 --delay-ms 8000
+```
+
+建议每批完成后检查两边草稿箱，再执行下一批。若遇到验证码或登录过期，重新执行对应平台的 `crosspost:login`，然后再次运行批量命令即可续传。
+
+然后在 GitHub 仓库的 `Settings → Actions → Runners` 添加 Windows 自托管 Runner，并给它增加 `blog-publisher` 标签。仓库中的 `.github/workflows/crosspost.yml` 会在文章提交到 `main` 后运行，也可以在 Actions 页面手动输入 slug 重试。
+
+运行参数和平台开关位于 `.crosspostrc.json`。如果发布机使用其他 Chromium 浏览器，可以通过 `CROSSPOST_BROWSER_CHANNEL` 指定 Playwright channel；Windows 默认使用系统自带的 Microsoft Edge。
+
 ## 8. 写给非前端
 
 非前端配置内容，还是需要一个文件指引。下面写一些更细致的代码配置。

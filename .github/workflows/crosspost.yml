@@ -1,0 +1,61 @@
+name: 自动同步文章草稿
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'public/blogs/*/index.md'
+      - 'public/blogs/*/config.json'
+  workflow_dispatch:
+    inputs:
+      slug:
+        description: 指定文章 slug
+        required: true
+        type: string
+      platform:
+        description: 同步平台
+        required: true
+        default: all
+        type: choice
+        options: [all, csdn, juejin]
+      force:
+        description: 即使内容未变化也强制同步
+        required: true
+        default: false
+        type: boolean
+
+concurrency:
+  group: blog-crosspost
+  cancel-in-progress: false
+
+jobs:
+  crosspost:
+    runs-on: [self-hosted, Windows, X64, blog-publisher]
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.25.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: 同步文章到平台草稿箱
+        shell: pwsh
+        env:
+          CROSSPOST_HEADLESS: 'true'
+          GITHUB_EVENT_BEFORE: ${{ github.event.before }}
+        run: |
+          if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
+            $arguments = @('crosspost:sync', '--', '--slug', '${{ inputs.slug }}', '--platform', '${{ inputs.platform }}')
+            if ('${{ inputs.force }}' -eq 'true') { $arguments += '--force' }
+            pnpm @arguments
+          } else {
+            pnpm crosspost:sync -- --before "$env:GITHUB_EVENT_BEFORE" --after "$env:GITHUB_SHA"
+          }
