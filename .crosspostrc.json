@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "siteUrl": "https://web.zlnblog.asia",
+  "headless": true,
+  "timeoutMs": 45000,
+  "platforms": {
+    "csdn": {
+      "enabled": true,
+      "mode": "draft"
+    },
+    "juejin": {
+      "enabled": true,
+      "mode": "draft"
+    }
+  }
+}

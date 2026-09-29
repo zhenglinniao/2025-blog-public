@@ -2,12 +2,16 @@
   "name": "2025-blog",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@11.25.0",
   "scripts": {
     "dev": "next dev --turbopack -p 2025",
     "svg": "node scripts/gen-svgs-index.js",
     "build": "next build",
     "test:unit": "node --experimental-strip-types --test src/lib/*.test.ts",
     "test:crosspost": "node --experimental-strip-types --test src/lib/crosspost.test.ts",
+    "crosspost:login": "tsx scripts/crosspost/index.ts login",
+    "crosspost:sync": "tsx scripts/crosspost/index.ts sync",
+    "crosspost:status": "tsx scripts/crosspost/index.ts status",
     "start": "next start",
     "build:cf": "opennextjs-cloudflare build",
     "preview": "opennextjs-cloudflare preview",
@@ -45,9 +49,11 @@
     "babel-plugin-react-compiler": "1.0.0",
     "code-inspector-plugin": "^1.2.10",
     "next-sitemap": "^4.2.3",
+    "playwright": "1.63.0",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.7.1",
     "tailwindcss": "^4",
+    "tsx": "^4.23.15",
     "typescript": "^5",
     "wrangler": "^4.53.0"
   }
