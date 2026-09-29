@@ -5,12 +5,14 @@ import { useRouter } from 'next/navigation'
 import { useWriteStore } from '../stores/write-store'
 import { usePreviewStore } from '../stores/preview-store'
 import { usePublish } from '../hooks/use-publish'
+import { CrosspostDialog } from './crosspost-dialog'
 
 export function WriteActions() {
 	const { loading, mode, form, loadBlogForEdit, originalSlug, updateForm } = useWriteStore()
 	const { openPreview } = usePreviewStore()
 	const { isAuth, onChoosePrivateKey, onPublish, onDelete } = usePublish()
 	const [saving, setSaving] = useState(false)
+	const [crosspostOpen, setCrosspostOpen] = useState(false)
 	const keyInputRef = useRef<HTMLInputElement>(null)
 	const mdInputRef = useRef<HTMLInputElement>(null)
 	const router = useRouter()
@@ -68,6 +70,7 @@ export function WriteActions() {
 
 	return (
 		<>
+			<CrosspostDialog open={crosspostOpen} onClose={() => setCrosspostOpen(false)} />
 			<input
 				ref={keyInputRef}
 				type='file'
@@ -82,6 +85,16 @@ export function WriteActions() {
 			<input ref={mdInputRef} type='file' accept='.md' className='hidden' onChange={handleMdFileChange} />
 
 			<ul className='absolute top-4 right-6 flex items-center gap-2'>
+				<motion.button
+					initial={{ opacity: 0, scale: 0.6 }}
+					animate={{ opacity: 1, scale: 1 }}
+					whileHover={{ scale: 1.05 }}
+					whileTap={{ scale: 0.95 }}
+					className='bg-card rounded-xl border px-4 py-2 text-sm'
+					disabled={loading}
+					onClick={() => setCrosspostOpen(true)}>
+					多平台
+				</motion.button>
 				{mode === 'edit' && (
 					<>
 						<motion.div initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }} className='flex items-center gap-2'>

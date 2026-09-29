@@ -29,6 +29,7 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 	const [isSaving, setIsSaving] = useState(false)
 	const [activeTab, setActiveTab] = useState<TabType>('site')
 	const keyInputRef = useRef<HTMLInputElement>(null)
+	const saveInFlightRef = useRef(false)
 	const [faviconItem, setFaviconItem] = useState<FileItem | null>(null)
 	const [avatarItem, setAvatarItem] = useState<FileItem | null>(null)
 	const [artImageUploads, setArtImageUploads] = useState<ArtImageUploads>({})
@@ -99,6 +100,8 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 	}
 
 	const handleSave = async () => {
+		if (saveInFlightRef.current) return
+		saveInFlightRef.current = true
 		setIsSaving(true)
 		try {
 			// Calculate removed art images so that we can delete files in repo
@@ -135,6 +138,7 @@ export default function ConfigDialog({ open, onClose }: ConfigDialogProps) {
 			console.error('Failed to save:', error)
 			toast.error(`保存失败: ${error?.message || '未知错误'}`)
 		} finally {
+			saveInFlightRef.current = false
 			setIsSaving(false)
 		}
 	}
