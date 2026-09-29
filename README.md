@@ -149,6 +149,15 @@ pnpm crosspost:sync -- --slug pnpm-upgrade --platform all --force
 pnpm crosspost:status
 ```
 
+需要补发历史文章时，先预演待同步清单，再按每批 5 篇执行。重复运行同一条批量命令会从未完成处继续，不会重复创建已经成功的草稿：
+
+```bash
+pnpm crosspost:sync -- --all --platform all --max-articles 5 --dry-run
+pnpm crosspost:sync -- --all --platform all --max-articles 5 --delay-ms 8000
+```
+
+建议每批完成后检查两边草稿箱，再执行下一批。若遇到验证码或登录过期，重新执行对应平台的 `crosspost:login`，然后再次运行批量命令即可续传。
+
 然后在 GitHub 仓库的 `Settings → Actions → Runners` 添加 Windows 自托管 Runner，并给它增加 `blog-publisher` 标签。仓库中的 `.github/workflows/crosspost.yml` 会在文章提交到 `main` 后运行，也可以在 Actions 页面手动输入 slug 重试。
 
 运行参数和平台开关位于 `.crosspostrc.json`。如果发布机使用其他 Chromium 浏览器，可以通过 `CROSSPOST_BROWSER_CHANNEL` 指定 Playwright channel；Windows 默认使用系统自带的 Microsoft Edge。

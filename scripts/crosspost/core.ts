@@ -40,6 +40,12 @@ export function loadArticle(repoRoot: string, slug: string): CrosspostInput | nu
 	}
 }
 
+export function listArticleSlugs(repoRoot: string): string[] {
+	const indexPath = path.join(repoRoot, 'public', 'blogs', 'index.json')
+	const items = JSON.parse(fs.readFileSync(indexPath, 'utf8')) as Array<{ slug?: string; hidden?: boolean }>
+	return items.filter(item => item.slug && !item.hidden).map(item => item.slug as string)
+}
+
 export function contentHash(input: CrosspostInput, platform: CrosspostPlatform, siteUrl: string): string {
 	return createHash('sha256')
 		.update(JSON.stringify({ ...input, platform, siteUrl: siteUrl.replace(/\/$/, '') }))
